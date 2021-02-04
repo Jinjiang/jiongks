@@ -47,7 +47,7 @@ jobs:
             git init
             git config user.email "zhaojinjiang@me.com"
             git config user.name "Jinjiang"
-            git remote add origin https://jinjiang:$GITHUB_TOKEN@github.com/Jinjiang/jiongks.name.git
+            git remote add origin https://jinjiang:$GITHUB_TOKEN@github.com/Jinjiang/jiongks.git
             git add .
             git commit -m "generated docs"
             git push origin HEAD:master --force
