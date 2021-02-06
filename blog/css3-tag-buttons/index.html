@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <!-- proud for contributing Vue.js -->
+  <meta charset="utf-8">
+  <meta name="format-detection" content="telephone=no" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-touch-fullscreen" content="yes" />
+
+  
+  <title>
+    
+    用CSS3制作尖角标签按钮样式 -
+    
+    囧克斯
+  </title>
+
+  
+<link rel="stylesheet" href="/css/pure.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+
+  
+  <link rel="alternate" href="/atom.xml" title="囧克斯" type="application/atom+xml">
+  
+  
+  <link rel="icon" href="/favicon.ico">
+  
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+<body>
+  <script>(() => { if ((new Date().getHours() + 6) % 24 < 12) document.body.classList.add('dark-mode') })()</script>
+
+  <div class="dark-mode-helper"></div>
+
+  <div id="wrapper">
+
+    <div id="header">
+      <h1>
+        <a href="/" title="囧克斯">
+          囧克斯
+        </a>
+      </h1>
+      <p class="description">
+        这里是勾三股四的家
+      </p>
+    </div>
+
+    <div id="nav" class="pure-menu pure-menu-open pure-menu-horizontal">
+      <ul>
+        
+        <li>
+          <a href="/all-demos/">
+            线上
+          </a>
+        </li>
+        
+        <li>
+          <a href="/all-slides/">
+            线下
+          </a>
+        </li>
+        
+        <li>
+          <a href="/about/">
+            关于
+          </a>
+        </li>
+        
+        <li><a href="/archives">归档</li>
+      </ul>
+    </div>
+
+    <div id="main"><div class="content">
+  <h2>
+    用CSS3制作尖角标签按钮样式
+  </h2>
+  <p>演示地址：<a href="https://jiongks.name/demos/css3-tag/">https://jiongks.name/demos/css3-tag/</a></p>
+<p><img src="/uploads/2012/03/527861101.png" alt="CSS 3 tag demo"></p>
+<p>如图的效果。标签有背景色，且左侧有一个三角形，三角形中间有个白色的圆圈。</p>
+<ul>
+<li>你一定在想这个效果是背景图切出来的吧——答案是没有用到任何图片</li>
+<li><p>那你会不会在想这个效果的html结构很复杂呢——答案是最简单的html结构</p>
+<p>  &lt;p&gt;  </p>
+<pre><code>&amp;lt;a href=&quot;#&quot;&gt;Tag1&amp;lt;/a&gt;  
+&amp;lt;a href=&quot;#&quot;&gt;Tag2&amp;lt;/a&gt;  
+&amp;lt;a href=&quot;#&quot;&gt;Tag3&amp;lt;/a&gt;  
+&amp;lt;a href=&quot;#&quot;&gt;Tag4&amp;lt;/a&gt;  
+&amp;lt;a href=&quot;#&quot;&gt;Tag5&amp;lt;/a&gt;  
+</code></pre><p>  &lt;/p&gt;</p>
+</li>
+</ul>
+<p>之所以可以达到这样的效果，是因为我们运用了一些比较巧妙的技术。接下来告诉你实现方式：</p>
+<a id="more"></a>
+<h3 id="结构"><a href="#结构" class="headerlink" title="结构"></a>结构</h3><p>我们通过<code>a:before</code>和<code>a:after</code>这两个伪元素，通过绝对定位的方式，为<code>&lt;a&gt;</code>标签做了扩展：首先把一个伪元素<code>a:before</code>当做最左侧的三角形，然后再把另外一个伪元素<code>a:after</code>作为中间的小圆点显示到界面中。</p>
+<pre><code>a &#123;
+    display: inline-block;
+    position: relative;
+&#125;
+
+a:before,
+a:after &#123;
+    position: absulote;
+    content: &quot; &quot;;
+&#125;
+</code></pre><h3 id="左侧的三角形"><a href="#左侧的三角形" class="headerlink" title="左侧的三角形"></a>左侧的三角形</h3><p>三角形的实现方式略带技巧性，其实就是把宽高都设为0，边框宽度设为文本高度的一半。然后将其右边框上色<code>border-right-color</code>，其余三面边框颜色全部设为透明<code>tranaparent</code>，就可以了。当然，在设定边框宽度之前，我们需要确定文本的高度，这里有一个非常合适的单位：<code>em</code>。我们将链接的行高设置为<code>1.5em</code>，然后将伪元素的边框设置为<code>0.75em</code>即可。</p>
+<pre><code>a &#123;
+    background: #ccc;
+    color: green;
+    line-height: 1.5;
+&#125;
+
+a:before &#123;
+    border: transparent 0.75em solid;
+    border-right-color: #ccc;
+    top: 0;
+    left: -1.5em;
+    height: 0;
+    width: 0;
+&#125;
+</code></pre><h3 id="左侧三角形中间的小圆点"><a href="#左侧三角形中间的小圆点" class="headerlink" title="左侧三角形中间的小圆点"></a>左侧三角形中间的小圆点</h3><p>这个小圆点同样需要用css3实现，相比之下，它的实现略简单，设置背景为白色、宽高均为<code>0.5em</code>、上下边距均为<code>0.5em</code>、圆角半径是<code>0.25em</code>的矩形。这需要合理的坐标计算和尺寸计算。我们同样选择了通过<code>em</code>这个单位来计算。</p>
+<pre><code>a:after &#123;
+    background: white;
+    width: 0.5em;
+    height: 0.5em;
+    top: 0.5em;
+    left: -0.125em;
+    border-radius: 0.25em;
+&#125;
+</code></pre><p>把这些内容凑在一起，会发现横向的距离会有些不合适，那我们再做一点微调：</p>
+<pre><code>a &#123;
+    padding: 0px 10px;
+    margin-left: 1em;
+&#125;
+</code></pre><p>这样看起来样子比较协调了。</p>
+<h3 id="鼠标悬停效果"><a href="#鼠标悬停效果" class="headerlink" title="鼠标悬停效果"></a>鼠标悬停效果</h3><p>最后，加入<code>:hover</code>效果：</p>
+<pre><code>a:hover &#123;
+    background: gray;
+    color: white;
+&#125;
+
+a:hover:before &#123;
+    border-right-color: gray;
+&#125;
+</code></pre><p>这样，就大功告成了！<br>demo: <a href="https://jiongks.name/demos/css3-tag/">https://jiongks.name/demos/css3-tag/</a></p>
+
+</div>
+
+<p align="right">
+  <small>
+    <a href="https://github.com/Jinjiang/jinjiang.github.io/edit/dev/source/_posts/css3-tag-buttons.md" target="_blank">
+      向本文提出修改或勘误建议
+    </a>
+  </small>
+</p>
+
+
+
+<div id="comments">
+  <h2>早期评论</h2>
+  <ul>
+  
+    <li id="comment-14" style="margin-left: 0em;">
+      <p>
+        <strong>
+        towry
+        
+        </strong>
+        <small>2012/03/30 05:55:28</small></p>
+      又一个typecho
+    </li>
+  
+    <li id="comment-15" style="margin-left: 0em;">
+      <p>
+        <strong>
+        <a href="http://www.jojogirl.cn" target="_blank" title="吖吖">吖吖</a>
+        
+        </strong>
+        <small>2012/03/30 05:58:44</small></p>
+      字，确实好大  =。=#
+    </li>
+  
+    <li id="comment-16" style="margin-left: 0em;">
+      <p>
+        <strong>
+        <a href="http://www.f2es.com" target="_blank" title="小豪">小豪</a>
+        
+        </strong>
+        <small>2012/03/30 06:13:58</small></p>
+      这么大的字，我喜欢
+    </li>
+  
+    <li id="comment-17" style="margin-left: 0em;">
+      <p>
+        <strong>
+        <a href="http://yanqw.com" target="_blank" title="黑猫君">黑猫君</a>
+        
+        </strong>
+        <small>2012/03/30 06:15:37</small></p>
+      typecho众表支持，主题很清爽~
+    </li>
+  
+    <li id="comment-18" style="margin-left: 0em;">
+      <p>
+        <strong>
+        <a href="http://www.woiweb.net" target="_blank" title="woiweb">woiweb</a>
+        
+        </strong>
+        <small>2012/03/30 06:17:21</small></p>
+      挺有意思，省下了图片
+    </li>
+  
+    <li id="comment-19" style="margin-left: 0em;">
+      <p>
+        <strong>
+        <a href="http://boy.im" target="_blank" title="qiqiboy">qiqiboy</a>
+        
+        </strong>
+        <small>2012/03/30 06:30:52</small></p>
+      学习了，另外提醒下是transparent，拼错了
+    </li>
+  
+  </ul>
+</div>
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+
+<div id="gitalk-container"></div>
+
+<script>
+  const gitalk = new Gitalk({
+    clientID: 'c99e23053fc1bba6a58c',
+    clientSecret: '64efe1cd1438e77ae2bf8eba92b51c90d0cc2b9f',
+    repo: 'jinjiang.github.io',
+    owner: 'jinjiang',
+    admin: ['jinjiang'],
+    id: location.pathname,      // Ensure uniqueness and length less than 50
+    distractionFreeMode: false  // Facebook-like distraction free mode
+  })
+
+  gitalk.render('gitalk-container')
+</script>
+</div>
+
+    <div id="footer">
+      <a href="/">囧克斯</a>
+      
+      |
+      <a href="/atom.xml" title="rss_feed">RSS</a>
+      
+      |
+      我是百度统计
+      <script src="https://hm.baidu.com/h.js?a0a2372d4b7621d0bfe71f33c58a4bd8"></script>
+      |
+      我会翻脸 <a href="#" onclick="document.body.classList.toggle('dark-mode'), event.preventDefault()" style="font-size: 1.25em;">🌚🌝</a>
+    </div>
+  </div>
+
+  
+<script src="/js/script.js"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <!-- proud for contributing Vue.js -->
+  <meta charset="utf-8">
+  <meta name="format-detection" content="telephone=no" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-touch-fullscreen" content="yes" />
+
+  
+  <title>
+    
+    [译]CSS命名神马的真心难 -
+    
+    囧克斯
+  </title>
+
+  
+<link rel="stylesheet" href="/css/pure.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+
+  
+  <link rel="alternate" href="/atom.xml" title="囧克斯" type="application/atom+xml">
+  
+  
+  <link rel="icon" href="/favicon.ico">
+  
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+<body>
+  <script>(() => { if ((new Date().getHours() + 6) % 24 < 12) document.body.classList.add('dark-mode') })()</script>
+
+  <div class="dark-mode-helper"></div>
+
+  <div id="wrapper">
+
+    <div id="header">
+      <h1>
+        <a href="/" title="囧克斯">
+          囧克斯
+        </a>
+      </h1>
+      <p class="description">
+        这里是勾三股四的家
+      </p>
+    </div>
+
+    <div id="nav" class="pure-menu pure-menu-open pure-menu-horizontal">
+      <ul>
+        
+        <li>
+          <a href="/all-demos/">
+            线上
+          </a>
+        </li>
+        
+        <li>
+          <a href="/all-slides/">
+            线下
+          </a>
+        </li>
+        
+        <li>
+          <a href="/about/">
+            关于
+          </a>
+        </li>
+        
+        <li><a href="/archives">归档</li>
+      </ul>
+    </div>
+
+    <div id="main"><div class="content">
+  <h2>
+    [译]CSS命名神马的真心难
+  </h2>
+  <p><mark>译自：<a target="_blank" rel="noopener" href="http://seesparkbox.com/foundry/naming_css_stuff_is_really_hard">Naming CSS Stuff Is Really Hard</a></mark></p>
+<p>找到的这篇文章算是对我之前写的 <a href="/blog/html-or-id-or-class/">《标签？ID？还是CLASS？》</a> 的再深入。我当时写那篇文章的时候，就有朋友提出了“非语义化”的 class 命名的问题，我当时确实觉得很纠结，简单的想法是“框架性质的表象 class 我没异议……框架的实质是通过降低灵活性达成更广泛的共识，我们个人不要再创造这样的样式就好了”，但没有想到特别好的“套路”，更多的是在实际情况中再分辨。看过这篇文章，我似乎找到了更好的答案。同时顺着文中提到的 <a target="_blank" rel="noopener" href="http://nicolasgallagher.com/about-html-semantics-front-end-architecture/">Nicolas 那篇文章</a>看下去，也对 OOCSS、BEM 之类的提法有了更多的认同感。特译给大家参考。<a id="more"></a></p>
+<hr>
+<p>这并不是一篇有关 CSS 架构的文章，也并不是一篇有关命名规范的文章，而关乎我们如何定位元素，关乎命名本身，关乎我们如何把元素及其相关的一段样式连接起来。</p>
+<p>10 个开发者里有 9 个都同意：在撰写 CSS 中命名什么的部分是最难的了。因为我们无法预知未来。一个 class 名可以在今天完美的应景，但是明天设计发生改变了，可能就不适用了。所以我们需要提炼应景的标记和样式。嗷~</p>
+<p>如何面对这一状况呢？那便是让命名尽量显得不太会改的样子。</p>
+<p>我们通常会根据三类情况给定一个 class 名：</p>
+<ul>
+<li>功能性 class 名</li>
+<li>内容性 class 名</li>
+<li>展示性 class 名</li>
+</ul>
+<p>这几类 class 名是趋向于稳定特质的。如果我们遵循这些命名原则，就会显得更明智，而且我们的 CSS 会更好的适应未来的改变。</p>
+<h3 id="功能性-class-名"><a href="#功能性-class-名" class="headerlink" title="功能性 class 名"></a>功能性 class 名</h3><pre><code>&lt;button class=&quot;positive-button&quot;&gt;Send Message&lt;/button&gt;
+</code></pre><p>功能性 class 名例如 <code>positive-button</code>、<code>important-text</code> 或 <code>selected-tab</code>。这些元素的样式是基于其功能或含义的。所以其 class 名、样式及这样引用样式的理由，都是强连接的。因此 class 名和样式是相关的。</p>
+<p>因为有这些强连接，所以样式是几乎不会被改变的。如果你真的要改变一个 <code>positive-button</code> 的样子，那这个改变也是每个肯定语气的按钮都要改变的。如果你的设计师的想法是改变“肯定语气的按钮”，而不是设置菜单里“增加用户”的按钮，那么这件事就很轻松且易于维护。你考虑的不是哪个独立的页面，而是整个系统。</p>
+<p>功能性的 class 名很棒。只要有这个可能，这应该就是你想要撰写样式的方式。但是功能性的 class 名不是所有情况都适用的。</p>
+<p>设计并不一定都有逻辑性。当我们讨论按钮的时候，给出一个功能性的 class 名是很容易的。大部分情况下其功能和样式也紧密相关。但是我们撰写的其它 99% 的样式都不太容易给出这样的例子。有的时候这个块区域需要一个内阴影，因为这样看起来很漂亮；有的时候图标需要在 hover 的时候长大一点因为这样很 cute；有的时候文本需要是橙色的，好吧，因为它就是橙色的。一个网站不是每个视觉的部分背后都有功能性的理由，这无可厚非。</p>
+<p>所以开发者该怎么应对呢？我们站在了这个十字路口。如果我们不能想出一个合适的功能性 class 名，那么我们不妨基于内容、或者展现给它起个名字。它们也各自暗示着不同的可维护性。</p>
+<h3 id="内容性-class-名"><a href="#内容性-class-名" class="headerlink" title="内容性 class 名"></a>内容性 class 名</h3><pre><code>&lt;button class=&quot;submit-button&quot;&gt;Send Message&lt;/button&gt;
+</code></pre><p>基于内容的 class 名是描述它们包含的内容的 class 名。如果你曾经见到过类似 <code>submit-button</code>、<code>intro-text</code> 或 <code>profile-photo</code> 的 class 名，那些名字就是基于内容起的。</p>
+<p>这些 class 名感觉很干净。它们让你的内容 (HTML) 和样式 (CSS) 之间保持简洁的分离。理论上，这可以让你完全改版网站的样式和感官而无需触碰到 HTML。<a target="_blank" rel="noopener" href="https://www.csszengarden.com/">CSS Zen Garden</a> 就是这样的。</p>
+<p>现在我们回到最初的问题：“这样做的好处是什么？”</p>
+<p>我从来没有被要求改版一个网站而不触碰 HTML。变化是存在各种可能的。当然一些 HTML 可以作为后台系统的集成成果固定下来，但是随着你对 HTML 的失控，这时你还是需要写一些非理想化的 hacky CSS 来应付设计的变化。想想看，CSS Zen Garden 更多的是一个 CSS 技术演示而不是一个可维护的 CSS 的例子。没有必要一味追求在改版的时候只改 CSS。</p>
+<p>当你开发一个小网站的时候，内容性的 class 名非常好用。而随着你的网站不断成长，它就感觉越来越不合适了。它们并不易于样式重用。如果你的 <code>login-button</code> 和 <code>submit-button</code> 看起来一样该怎么处理呢？在你的 CSS 架构里该如何展示这些东西？为保持展现样式块，你不得不写一堆用逗号分隔开的选择器，或者通过预处理器展开。这些组织方式对于大型的项目来说都比较困难。</p>
+<p><em>除非有更好的方式重用样式块……</em></p>
+<h3 id="展示性-class-名"><a href="#展示性-class-名" class="headerlink" title="展示性 class 名"></a>展示性 class 名</h3><pre><code>&lt;button class=&quot;green-button&quot;&gt;Send Message&lt;/button&gt;
+</code></pre><p>展示性 class 名用诸如 <code>green-button</code>、<code>big-text</code> 或 <code>squiggle-border</code> 的方式描述一个元素。其名字本身就是对样式的描述。</p>
+<p>这些 class 是有助于代码复用的。它们不关心是否用在产品标题上还是名户名或页头。它们只知道这会让文字变大加粗。同时这样的方式还有一个好处是可以优雅的扩展。如你开发一个新组件的时候，你可以把现成的样式贴在你的新标签上。你无须担心在已有的架构中产生并适配新的样式，因为你使用的都是已有的样式。</p>
+<p>展示性 class 名也非常易于自我描述。一个开发者在审查代码的时候，<code>round-image</code> 会比 <code>profile-photo</code> 更多的推断出这个元素的样子。</p>
+<p>会有争议认为展示性 class 增加了维护成本。因为它模糊了标记和展现之间的界限，很多设计的改变都将会导致 HTML 的改变。如果你预见到了这方面的问题，那么请谨慎的使用。</p>
+<h3 id="……但这不是语义化的！"><a href="#……但这不是语义化的！" class="headerlink" title="……但这不是语义化的！"></a>……但这不是语义化的！</h3><p>展示性 class 的名声并不好。尽管很多人回避它们因为它们“不是语义化的”，但这里是存在误区的，也<a target="_blank" rel="noopener" href="http://nicolasgallagher.com/about-html-semantics-front-end-architecture/">被 Nicolas Gallagher 质疑</a>。重要的是区分“语义化的 HTML”和“语义化的 class”。Nicolas 说的非常好：</p>
+<blockquote>
+<p>撰写“语义化的 HTML”的原则是现代化、专业化的前端开发的基础。大部分的语义化都关乎现有的或预期的内容的本质……<br>……不过并不是所有的语义化都需要源自内容的。Class 名可以是“非语义化的”。不管使用什么名字，它们都有意义，都有目的。Class 名的语义化是不同于那些 HTML 元素的。</p>
+</blockquote>
+<p>如我写的这些，“非语义化”这个词下面是有红色波浪线的。非语义化的 class 名并不是问题。每个 class 名都有背后的意义。在你写 class 名时，不必刻意追求它是最“语义上适合的” class 名，而要创建为开发者和未来的你提供尽量多信息的 class 名。</p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>功能性 class 名通常是你的最佳选择。当你能够使用它们的时候就尽量使用。如果你无法提取出完全功能性的名字，可以考虑你的项目的本质及其发展。原则上，内容性 class 名更适合小型站点；而展示性 class 名更适合大型站点。</p>
+<p>开发者会很在意这种用法。没有人希望一个项目变得难以维护，但是每个人都有不同的 想法通过 class 名来应对这些特殊情况。这时不妨思考一下我们使用的不同类型 class 名的本质，问问自己这样做是否更好的帮助你的项目达成目标。</p>
+
+</div>
+
+<p align="right">
+  <small>
+    <a href="https://github.com/Jinjiang/jinjiang.github.io/edit/dev/source/_posts/naming-css-stuff-is-really-hard.md" target="_blank">
+      向本文提出修改或勘误建议
+    </a>
+  </small>
+</p>
+
+
+
+<div id="comments">
+  <h2>早期评论</h2>
+  <ul>
+  
+    <li id="comment-65945" style="margin-left: 0em;">
+      <p>
+        <strong>
+        梁小米
+        
+        </strong>
+        <small>2014/09/28 01:08:58</small></p>
+      亲爱的，body的font-size能不能改成100%？电脑上字好大，不美观呢~（位于st<x>yle.css的25行）<br/>
+<br/>
+我可是为了阅读方便，手动在浏览器上改掉了。？（然后打开一个新文章，又废了）
+    </li>
+  
+    <li id="comment-68643" style="margin-left: 2em;">
+      <p>
+        <strong>
+        <a href="http://jiongks.name/" target="_blank" title="囧克斯">囧克斯</a>
+        
+        </strong>
+        <small>2014/10/15 05:48:11</small></p>
+      <a href="#comment-65945">@梁小米</a><br/>
+谢谢您的建议，之前也有同学提出来字太大，我从调小了一点，不知现在看着怎么样。谢谢了：）
+    </li>
+  
+    <li id="comment-74691" style="margin-left: 0em;">
+      <p>
+        <strong>
+        <a href="http://thisiswoablogwp.sinaapp.com/?p=165" target="_blank" title="译自：Naming CSS Stuff Is Really Hard | SimBoo的博客">译自：Naming CSS Stuff Is Really Hard | SimBoo的博客</a>
+        
+        </strong>
+        <small>2014/11/15 01:16:45</small></p>
+      [...]摘自：http://jiongks.name/blog/naming-css-stuff-is-really-hard/[...]
+    </li>
+  
+    <li id="comment-110750" style="margin-left: 0em;">
+      <p>
+        <strong>
+        <a href="http://yunkus.com" target="_blank" title="云库网">云库网</a>
+        
+        </strong>
+        <small>2015/11/02 02:17:43</small></p>
+      字体有点大，css命名还是标准加习惯为好
+    </li>
+  
+    <li id="comment-112362" style="margin-left: 0em;">
+      <p>
+        <strong>
+        <a href="http://iSung.github.io" target="_blank" title="Sung">Sung</a>
+        
+        </strong>
+        <small>2016/05/03 03:52:45</small></p>
+      写得很好 不过字体太大了 希望能够更改下。
+    </li>
+  
+    <li id="comment-112469" style="margin-left: 0em;">
+      <p>
+        <strong>
+        <a href="http://null" target="_blank" title="迷雾卡夫卡">迷雾卡夫卡</a>
+        
+        </strong>
+        <small>2016/05/13 01:29:16</small></p>
+      其实，我觉得展示性的class一样可以略去。我们可以把这些通用样式，抽出来放入common.css中，然后通过继承的方式传给两个完全一样的button。这样展示性的class依然存在，只不过它们只存在于common.scss(也许是common.less)，不会污染到html！
+    </li>
+  
+    <li id="comment-116099" style="margin-left: 0em;">
+      <p>
+        <strong>
+        <a href="http://fuchao2012.github.io" target="_blank" title="fuchao">fuchao</a>
+        
+        </strong>
+        <small>2017/05/04 03:24:10</small></p>
+      cmd+shift+-<br/>
+<br/>
+命名的问题对 team来讲更加重要了，我们在同一项目中遵循统一标准，比如 bootstrap 的时候，更多用正则语法，也就是“非语义”的展示命名，在 vue/angular 项目中更多使用功能性配合 scope 控制范围，放置重复，同时倒是引入了一部分重复和浪费。
+    </li>
+  
+  </ul>
+</div>
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+
+<div id="gitalk-container"></div>
+
+<script>
+  const gitalk = new Gitalk({
+    clientID: 'c99e23053fc1bba6a58c',
+    clientSecret: '64efe1cd1438e77ae2bf8eba92b51c90d0cc2b9f',
+    repo: 'jinjiang.github.io',
+    owner: 'jinjiang',
+    admin: ['jinjiang'],
+    id: location.pathname,      // Ensure uniqueness and length less than 50
+    distractionFreeMode: false  // Facebook-like distraction free mode
+  })
+
+  gitalk.render('gitalk-container')
+</script>
+</div>
+
+    <div id="footer">
+      <a href="/">囧克斯</a>
+      
+      |
+      <a href="/atom.xml" title="rss_feed">RSS</a>
+      
+      |
+      我是百度统计
+      <script src="https://hm.baidu.com/h.js?a0a2372d4b7621d0bfe71f33c58a4bd8"></script>
+      |
+      我会翻脸 <a href="#" onclick="document.body.classList.toggle('dark-mode'), event.preventDefault()" style="font-size: 1.25em;">🌚🌝</a>
+    </div>
+  </div>
+
+  
+<script src="/js/script.js"></script>
+
+</body>
+
+</html>

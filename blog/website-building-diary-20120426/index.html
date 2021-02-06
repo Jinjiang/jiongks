@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <!-- proud for contributing Vue.js -->
+  <meta charset="utf-8">
+  <meta name="format-detection" content="telephone=no" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-touch-fullscreen" content="yes" />
+
+  
+  <title>
+    
+    网站装修笔记20120426 -
+    
+    囧克斯
+  </title>
+
+  
+<link rel="stylesheet" href="/css/pure.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+
+  
+  <link rel="alternate" href="/atom.xml" title="囧克斯" type="application/atom+xml">
+  
+  
+  <link rel="icon" href="/favicon.ico">
+  
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+<body>
+  <script>(() => { if ((new Date().getHours() + 6) % 24 < 12) document.body.classList.add('dark-mode') })()</script>
+
+  <div class="dark-mode-helper"></div>
+
+  <div id="wrapper">
+
+    <div id="header">
+      <h1>
+        <a href="/" title="囧克斯">
+          囧克斯
+        </a>
+      </h1>
+      <p class="description">
+        这里是勾三股四的家
+      </p>
+    </div>
+
+    <div id="nav" class="pure-menu pure-menu-open pure-menu-horizontal">
+      <ul>
+        
+        <li>
+          <a href="/all-demos/">
+            线上
+          </a>
+        </li>
+        
+        <li>
+          <a href="/all-slides/">
+            线下
+          </a>
+        </li>
+        
+        <li>
+          <a href="/about/">
+            关于
+          </a>
+        </li>
+        
+        <li><a href="/archives">归档</li>
+      </ul>
+    </div>
+
+    <div id="main"><div class="content">
+  <h2>
+    网站装修笔记20120426
+  </h2>
+  <p>按照严计划，给我的网站加上了投票功能。他已经出现在了网站的侧边栏中。当然在<a href="/blog/website-building-diary-20120406/">某些media queries</a>条件下，这些内容不在侧边，而在网页的最下面。</p>
+<p>这从没有花太多时间在编码上。我直接引入了三方的问卷调查工具：<a target="_blank" rel="noopener" href="http://wufoo.com/">Wufoo</a>。等于嵌入了一个iframe。我会定期更换这里的投票内容，有些投票可能是为了我更了解大家，更好的优化我的网站为大家服务的，我会根据大家的反馈默默做出改变；而方便公开的统计数据和分析结果，我也会公布在这里跟大家分享。</p>
+<p>第一期的投票内容比较“肤浅” 囧</p>
+<p><img src="/uploads/2012/04/4080396881.png" alt="您觉得现在囧克斯的皮肤好看吗？"></p>
+<p>在添加投票功能的时候，我注意到Typecho的一个不足，就是在创建新的侧边栏面板的时候，不免需要修改主题模板的sidebar.php文件，因为Typecho本身并没有给侧边栏预留插件接口，所以不可以生成自定义的侧边栏面板。我觉得改进的方式可以是这样的：</p>
+<ol>
+<li>创建新的配置项，注明要显示的侧边栏面板和排序；</li>
+<li>同时封装面板的html结构，不允许自定义面板结构，只允许自定义内容；</li>
+<li>然后在Plugin一边加入自定义面板的接口。</li>
+</ol>
+<p>这样主题模板和插件就进一步解耦，开发者就可以在不改动主题模板的情况下调整侧边栏的内容了。</p>
+<p>一点个人心得，不知Typecho是否愿意接纳这个意见。</p>
+<p>以上</p>
+
+</div>
+
+<p align="right">
+  <small>
+    <a href="https://github.com/Jinjiang/jinjiang.github.io/edit/dev/source/_posts/website-building-diary-20120426.md" target="_blank">
+      向本文提出修改或勘误建议
+    </a>
+  </small>
+</p>
+
+
+
+<div id="comments">
+  <h2>早期评论</h2>
+  <ul>
+  
+    <li id="comment-30" style="margin-left: 0em;">
+      <p>
+        <strong>
+        helix
+        
+        </strong>
+        <small>2012/04/26 03:03:46</small></p>
+      有点瘦啊？比下面的最新文章瘦多了。队伍都站不齐了。
+    </li>
+  
+    <li id="comment-31" style="margin-left: 0em;">
+      <p>
+        <strong>
+        <a href="http://www.luili.net" target="_blank" title="暮春">暮春</a>
+        
+        </strong>
+        <small>2012/05/03 01:43:14</small></p>
+      请问你是不是更改过sae版typecho上的Storage，我看到你的图片都是有年份和月份的，与普通版的一样，不知是如何做到的？这样一来无论是从虚拟主机到sae还是从sae到虚拟主机都会方便很多啊！近期正打算迁移到sae。。。
+    </li>
+  
+    <li id="comment-32" style="margin-left: 2em;">
+      <p>
+        <strong>
+        <a href="http://jiongks.name/" target="_blank" title="囧克斯">囧克斯</a>
+        
+        </strong>
+        <small>2012/05/03 03:08:00</small></p>
+      这个typecho是从sae应用商店直接安装的版本，已经针对sae storage做了调整
+    </li>
+  
+    <li id="comment-33" style="margin-left: 4em;">
+      <p>
+        <strong>
+        <a href="http://www.luili.net" target="_blank" title="暮春">暮春</a>
+        
+        </strong>
+        <small>2012/05/05 01:16:26</small></p>
+      是调整官方出的sae上的Storage插件吗？求方法。。。
+    </li>
+  
+    <li id="comment-34" style="margin-left: 0em;">
+      <p>
+        <strong>
+        蚂蚱
+        
+        </strong>
+        <small>2012/05/06 11:09:15</small></p>
+      这个插件兜兜在进行中~~应该不是嵌入这种方式
+    </li>
+  
+    <li id="comment-6498" style="margin-left: 0em;">
+      <p>
+        <strong>
+        <a href="http://hit9.github.com" target="_blank" title="hit9">hit9</a>
+        
+        </strong>
+        <small>2012/09/14 04:04:39</small></p>
+      typecho的啊.
+    </li>
+  
+  </ul>
+</div>
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+
+<div id="gitalk-container"></div>
+
+<script>
+  const gitalk = new Gitalk({
+    clientID: 'c99e23053fc1bba6a58c',
+    clientSecret: '64efe1cd1438e77ae2bf8eba92b51c90d0cc2b9f',
+    repo: 'jinjiang.github.io',
+    owner: 'jinjiang',
+    admin: ['jinjiang'],
+    id: location.pathname,      // Ensure uniqueness and length less than 50
+    distractionFreeMode: false  // Facebook-like distraction free mode
+  })
+
+  gitalk.render('gitalk-container')
+</script>
+</div>
+
+    <div id="footer">
+      <a href="/">囧克斯</a>
+      
+      |
+      <a href="/atom.xml" title="rss_feed">RSS</a>
+      
+      |
+      我是百度统计
+      <script src="https://hm.baidu.com/h.js?a0a2372d4b7621d0bfe71f33c58a4bd8"></script>
+      |
+      我会翻脸 <a href="#" onclick="document.body.classList.toggle('dark-mode'), event.preventDefault()" style="font-size: 1.25em;">🌚🌝</a>
+    </div>
+  </div>
+
+  
+<script src="/js/script.js"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <!-- proud for contributing Vue.js -->
+  <meta charset="utf-8">
+  <meta name="format-detection" content="telephone=no" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-touch-fullscreen" content="yes" />
+
+  
+  <title>
+    
+    tag: ZeroClipboard -
+    
+    囧克斯
+  </title>
+
+  
+<link rel="stylesheet" href="/css/pure.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+
+  
+  <link rel="alternate" href="/atom.xml" title="囧克斯" type="application/atom+xml">
+  
+  
+  <link rel="icon" href="/favicon.ico">
+  
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+<body>
+  <script>(() => { if ((new Date().getHours() + 6) % 24 < 12) document.body.classList.add('dark-mode') })()</script>
+
+  <div class="dark-mode-helper"></div>
+
+  <div id="wrapper">
+
+    <div id="header">
+      <h1>
+        <a href="/" title="囧克斯">
+          囧克斯
+        </a>
+      </h1>
+      <p class="description">
+        这里是勾三股四的家
+      </p>
+    </div>
+
+    <div id="nav" class="pure-menu pure-menu-open pure-menu-horizontal">
+      <ul>
+        
+        <li>
+          <a href="/all-demos/">
+            线上
+          </a>
+        </li>
+        
+        <li>
+          <a href="/all-slides/">
+            线下
+          </a>
+        </li>
+        
+        <li>
+          <a href="/about/">
+            关于
+          </a>
+        </li>
+        
+        <li><a href="/archives">归档</li>
+      </ul>
+    </div>
+
+    <div id="main">
+<div class="content">
+  <h2>
+    <a href="/blog/zeroclipboard-intro/">
+      ZeroClipboard 学习笔记
+    </a>
+  </h2>
+  
+  <p>如题，周末抽空学习了一下。</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/jonrohan/ZeroClipboard/">ZeroClipboard</a>是在桌面电脑的浏览器上，通过flash技术实现“复制到剪切板”功能的一个程序。它的好处是可以兼容所有浏览器，完成剪切板的操作。</p>
+<p>我们在使用的时候主要就用到两个文件：一个是js文件<code>ZeroClipboard.js</code>，用来引用在网页中；另一个则是swf文件<code>ZeroClipboard.swf</code>，它无需我们在代码里引用，而是被之前的那个<code>ZeroClipboard.js</code>二次调用的。</p>
+<p>ZeroClipboard的工作原理大概是，在网页的“复制”按钮上层遮罩一个透明的flash，这个flash在被点击之后，会调用其的剪切板处理功能，完成对特定文本的复制。这里有几件事需要我们来完成：</p>
+<ol>
+<li>创建一个透明的flash</li>
+<li>将这个flash浮在按钮上层</li>
+<li>确定要复制的文本是什么</li>
+<li>监听这个透明flash的鼠标点击事件</li>
+<li>该flash被点击之后，完成剪切板处理</li>
+</ol>
+<p>对于这几件事，ZeroClipboard分别提供了不同的api，来完成整个需求。</p>
+  <p class="more">
+    <a href="/blog/zeroclipboard-intro/">
+      阅读剩余部分...
+    </a>
+  </p>
+  
+</div>
+
+
+
+</div>
+
+    <div id="footer">
+      <a href="/">囧克斯</a>
+      
+      |
+      <a href="/atom.xml" title="rss_feed">RSS</a>
+      
+      |
+      我是百度统计
+      <script src="https://hm.baidu.com/h.js?a0a2372d4b7621d0bfe71f33c58a4bd8"></script>
+      |
+      我会翻脸 <a href="#" onclick="document.body.classList.toggle('dark-mode'), event.preventDefault()" style="font-size: 1.25em;">🌚🌝</a>
+    </div>
+  </div>
+
+  
+<script src="/js/script.js"></script>
+
+</body>
+
+</html>

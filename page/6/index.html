@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <!-- proud for contributing Vue.js -->
+  <meta charset="utf-8">
+  <meta name="format-detection" content="telephone=no" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-touch-fullscreen" content="yes" />
+
+  
+  <title>
+    
+    囧克斯
+  </title>
+
+  
+<link rel="stylesheet" href="/css/pure.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+
+  
+  <link rel="alternate" href="/atom.xml" title="囧克斯" type="application/atom+xml">
+  
+  
+  <link rel="icon" href="/favicon.ico">
+  
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+<body>
+  <script>(() => { if ((new Date().getHours() + 6) % 24 < 12) document.body.classList.add('dark-mode') })()</script>
+
+  <div class="dark-mode-helper"></div>
+
+  <div id="wrapper">
+
+    <div id="header">
+      <h1>
+        <a href="/" title="囧克斯">
+          囧克斯
+        </a>
+      </h1>
+      <p class="description">
+        这里是勾三股四的家
+      </p>
+    </div>
+
+    <div id="nav" class="pure-menu pure-menu-open pure-menu-horizontal">
+      <ul>
+        
+        <li>
+          <a href="/all-demos/">
+            线上
+          </a>
+        </li>
+        
+        <li>
+          <a href="/all-slides/">
+            线下
+          </a>
+        </li>
+        
+        <li>
+          <a href="/about/">
+            关于
+          </a>
+        </li>
+        
+        <li><a href="/archives">归档</li>
+      </ul>
+    </div>
+
+    <div id="main">
+<div class="content">
+  <h2>
+    <a href="/blog/jslint-docs-zh-cn/">
+      [译]JSLint 文档
+    </a>
+  </h2>
+  
+  <p><mark>译自：<a target="_blank" rel="noopener" href="https://www.jslint.com/lint.html">https://www.jslint.com/lint.html</a></mark></p>
+<h3 id="什么是JSLint？"><a href="#什么是JSLint？" class="headerlink" title="什么是JSLint？"></a>什么是<code>JSLint</code>？</h3><p><code>JSLint</code> 是一个用来查找各种 JavaScript 程序中的问题的 JavaScript 程序。它是一个代码之类工具。</p>
+<p>在<a target="_blank" rel="noopener" href="http://cm.bell-labs.com/cm/cs/who/dmr/chist.html">早些年</a>的 <a target="_blank" rel="noopener" href="http://en.wikipedia.org/wiki/C_programming_language">C 语言</a>中，有些程序的常见错误是主流的编译器无法抓住的。所以出现了一个名叫 <a target="_blank" rel="noopener" href="http://en.wikipedia.org/wiki/Lint_programming_tool"><code>lint</code></a> 的附带程序，可以通过搜索源文件寻找错误。</p>
+<p>随着语言的成熟，其定义的健壮性足以消除一些不安因素，编译器也在问题警告方面越做越好，<code>lint</code> 也不再需要了。</p>
+<p><a target="_blank" rel="noopener" href="http://javascript.crockford.com/">JavaScript</a> 是一个年轻的语言。它原本只是用在网页上完成一些无需劳驾 Java 的小任务。但 JavaScript 是一个强大得惊人的语言，现在它已经在大项目中派上用场了。当项目变得复杂之后，之前从易用角度出发的语言特性就带来了一些麻烦。这是一个为 JavaScript 而生的 <code>lint</code> 呼之欲出：它就是 <code>JSLint</code>，一个检查 JavaScript 语法、判断 JavaScript 语法有效性的工具。</p>
+<p><code>JSLint</code> 会拿来一段 JavaScript 源代码并对其进行检索。一旦发现问题，它就会返回一则消息，用来描述这个问题以及源代码中的大概位置。发现的问题不一定是，但通常是语法上的错误。<code>JSLint</code> 通过一些代码规范来杜绝结构性的问题。这并不证明你的程序是正确的，只是提供另一种发现问题的眼光。</p>
+<p><code>JSLint</code> 定义了一个专业的 JavaScript 的子集，它比 <a target="_blank" rel="noopener" href="https://www.ecma-international.org/publications/standards/Ecma-262.htm">ECMAScript 标准第三版</a>的定义更严格，和 <a target="_blank" rel="noopener" href="http://javascript.crockford.com/code.html">JavaScript 编码规范</a>中的建议相对应。</p>
+<p>JavaScript 是一个粗中有细的语言，它比你想象中的更好。<code>JSLint</code> 帮助你回避很多问题，在这个更好的语言中撰写程序。<code>JSLint</code> 会拒绝一些浏览器支持的程序，因为浏览器并不关心代码的质量。你应该接受 <code>JSLint</code> 的所有建议。</p>
+<p><code>JSLint</code> 在 JavaScript 源代码、HTML 源代码、CSS 源代码或 <a target="_blank" rel="noopener" href="https://www.json.org/">JSON</a> 文本中都可以运行。
+  <p class="more">
+    <a href="/blog/jslint-docs-zh-cn/">
+      阅读剩余部分...
+    </a>
+  </p>
+  
+</div>
+
+<div class="content">
+  <h2>
+    <a href="/blog/my-6th-year-with-maxthon/">
+      烟火——写给蛇年的傲游和我
+    </a>
+  </h2>
+  
+  <blockquote>
+<p>世界上没有怯懦的高楼<br><br>没有细水长流的烟火</p>
+<p>——1976《烟火》</p>
+</blockquote>
+<p>看完春晚正准备要睡觉，看到祥子一条微博：<q>八千块的烟火换来一小时的快乐，多少的代价可以换来一生的幸福。</q>于是我就这样陷入了沉思。</p>
+<p>祥子我恨你……</p>
+<p>此时此刻，估计整个城市，乃至全中国的“一小时的快乐”，都已经告一段落了。这对我来说，也意味着，去年的成绩、收获、经验教训，也停留在这里了；新年的奋斗史，从这一刻，就要开始书写了。</p>
+<p>每到过年的时候，也是让我猛一抬头，想起自己和过去的老师同学又多一整年不见的时候，想起自己在傲游又多待了一年的时候，想起自己和一年前相比又度过了一年美好时光的时候。</p>
+<p><img src="http://ww3.sinaimg.cn/large/660d0cdfjw1e1agx3b46nj.jpg" alt=""></p>
+<p>来傲游第六年了，去年这个时候的<a target="_blank" rel="noopener" href="http://bulaoge.net/topic.blg?dmn=g3g4&amp;tid=2324366">五周年纪念的情形</a>仿佛还历历在目。我也在此兑现自己一年前的承诺，给自己在傲游的第六年留个“快照”。</p>
+<p>现在小学时期的稳定性记录已经被打破了，人生会不会从此变得没有追求了呢？呵呵</p>
+<p>在我眼里，这一年，自己和公司都发生了很多变化。公司的办公区又一次扩张了，从“两居室小户型”演变成“两套大房子”了；高管走了一批、也来了一批；有些部门拆散了，有些部门合并了，有些部门洗牌了……无非都为的是个活字。我自己呢，团队角色和工作要求也发生了不小的变化，无非为的是能继续走下去。其实这些都不算什么伟大的志向。所以，尽管过程轰轰烈烈，结果其实很惨淡。</p>
+<p>这和我刚来公司时的感受已经截然不同了。刚来傲游的时候，觉得像天堂一样，哪儿都好，各种优越感，每天无忧无虑，技术交流的时候、同学聚会的时候、校园招聘等各种时候，一说自己是傲游的，大家都好待见你；现如今，觉得公司哪儿都有问题，哪儿都做得不好，哪儿都有改进空间。上周一个好朋友的电脑重装系统了，跟我说他把<code>Program Files/Maxthon</code>整个文件夹都备份了，问我怎么恢复收藏——聊到最后我们两个都很震惊：他震惊自己最信任的傲游浏览器把他的收藏搞丢了，我震惊他不知道我们有傲游账户和在线收藏。</p>
+<p>烟火固然美丽，但也稍纵即逝。</p>
+<p>去年年初的时候看到过一句话：“即使如日中天的Apple，也一定会有股票下跌的那一天” (如今它已经跌了)。一家公司再好，一份工作再适合你，也会有不如意的地方。其实问题总是会有的，如果每次面对问题的时候都选择逃避，这个问题不会自动消失，反而会永远缠着你。</p>
+<p>我觉得去年一年，是我让自己从理想乐观回归现实的一年。从某种角度将，它让我看清傲游是一个有很多问题的公司，同时这些问题也是大家需要很大的勇气去承认、面对和解决的——这其实对于我，以及每一个傲游人来说，其实非常重要。它比我们去年赚了多少钱、发展了多少用户、打开了多大的市场这些成绩，都更重要。</p>
+<p><img src="http://ww4.sinaimg.cn/large/80e3e3d0jw1dyt4cxkk85j.jpg" alt=""></p>
+<p>所以，做事不能只看眼前成绩，不然什么也做不成。面对问题，不能逃避，只有勇敢面对，久而久之，养成习惯，就可以战胜一切！</p>
+<p>过去的六年，对我来说，就当是一场烟火表演吧。璀璨、辉煌、这一切的一切，都无法奠定你未来的坦途。幸福的人生，需要的不是一场价值连城的烟火表演，也不是每年一度的烟火表演，而是一个持续的状态，一步一个脚印的存在感和成就感。</p>
+<p>是时候面对久违的挑战了。</p>
+
+  
+</div>
+
+<div class="content">
+  <h2>
+    <a href="/blog/recent-photography-works/">
+      小秀个人的全年摄影作品 (共15张)
+    </a>
+  </h2>
+  
+  <p>今年年初家里买了台微单相机，外加一台iPhone，我也算是个曾经摸了摸镜头的人。相比起周遭的摄影发烧友，我觉得自己真的很业余，以至于我自己说出摄影作品这个词的时候都有点心虚：不就是拍了几张照片么。还整的跟是回事儿似的。</p>
+<p>不久之前刚在自己微博上晒了几张自己拍照片时的个人恶趣味，算娱乐一下吧。下面几张是我真的认真挑选过的，如果诸位摄影达人看到觉得拍得太烂，还求轻拍 ^_^</p>
+<p><img src="/uploads/2013/01/3406089111.jpg" alt="车水马龙"><br>车水马龙
+  <p class="more">
+    <a href="/blog/recent-photography-works/">
+      阅读剩余部分...
+    </a>
+  </p>
+  
+</div>
+
+<div class="content">
+  <h2>
+    <a href="/blog/review-terrible-2012/">
+      2012年终毫无正能量的总结
+    </a>
+  </h2>
+  
+  <p>“丰功伟绩”、“甜言蜜语”就不在这里恶心大家了，如果有人问我你幸福吗，我会说我很幸福，以及关于我怎么幸福的长篇大论。但我不会把下面的话也说出来。</p>
+<p>乱七八糟的2012年就这样糊里糊涂的过去了。</p>
+<p>今年发生了不少冠冕堂皇的大事儿，但好像没什么实质性的收获。可能此时此刻的我心思还是在事业上多一些，但无奈力不从心。作为一个有家有老婆的人，不能加班，不能熬夜，工作上几乎没了弹性，想冲冲不起来，有劲儿不能一口气使出来；另外我们的休闲娱乐需求也很旺盛，下馆子看电视电影到处旅游总是好的，可它们基本上填满了我的业余时间，没有充足的时间用心学习这种感觉比什么都糟糕。这些事儿其实也不是我改变不了，更多的是自己也不忍心改变吧。</p>
+<p>我觉得这是我觉得2012糊里糊涂的主要原因。</p>
+<p>第二点原因是我觉得自己变懒了也变邋遢了。搬了家这么久也结婚了这么久，很多早就想请客的人也一直没请到。每到周末就跟自己怕麻烦的心妥协了。洗碗洗衣服倒洗脚水擦地吃早餐之类的事情也越来越不积极了，我最近反思了一下，可能是太想把烂摊子都寄托给老婆来收拾了，家里的脏活累活总要有人做，己所不欲勿施于人，以后还是身先士卒吧。</p>
+<p>在工作上，我比较欣慰的是自己有机会也有勇气接触更广泛的技术领域，让自己的知识面更广，更充实，但达到比较理想的状态是需要时间的。为了能够掌握更广泛的开发技能，我正在重读很多计算机的基本课程。在上学的时候它像是我毕业路上的敌人，我在乎的只是战胜那些题目；如今重读，它们更像是我的朋友，为我弥补一块块盲区，让我面对困难的时候更加自信。真的有点二次启蒙的感觉，我突然觉得这才是真正的编程。我希望在新的一年我可以处于一种低调踏实追求卓越的心态，不要像今年这样疯疯癫癫的，说得多做得少。</p>
+<p>公司这一年的形势很微妙，我觉得全公司现在最纠结的地方在于，我们想做个典型的带有鲜明中国特色的公司，还是一个超凡脱俗的洋气公司。说白了就是一群屌丝和另一群高富帅白富美凑在一起想搞个团队活动，大家一起商量是去吃西餐呢还是吃大排档呢。正在犹豫之时，眼瞅着周围的人眼疾手快，把西餐厅的位子订光了，把大排档也挤了个水泄不通，顿时就都傻眼了，可还是没有相互妥协的迹象。咳，只说这么多了…</p>
+<p>别的都还行。</p>
+<p>2013不能比今年更烂了。</p>
+
+  
+</div>
+
+<div class="content">
+  <h2>
+    <a href="/blog/831-last-shot-music-concert/">
+      【图】八三夭《最后一击》演唱会
+    </a>
+  </h2>
+  
+  <p>翻翻自己的个人曲库，发现华语的好音乐越来越少了。从2011年开始尤为明显</p>
+<p><img src="/uploads/2012/12/327178183.jpg" /></p>
+<p>早期的音乐很多是“歌红人不红”，因为好歌很多，有机会认住的人就那么几个，现在反过来了……这是一个选秀的年代，新人辈出，一个好声音，让人一个夏天认识了五六十个歌手，可唱的都是老歌。也许八三夭还算不上什么大红大紫的乐团，但是他们的创作和通过演唱会展现出的舞台魅力真是不得了，我觉得这是这个时代的悲哀。</p>
+<p>还有个悲哀，是我第一次听他们的演唱会，可他们却是“最后一击”了。貌似他们来年需要服兵役。
+  <p class="more">
+    <a href="/blog/831-last-shot-music-concert/">
+      阅读剩余部分...
+    </a>
+  </p>
+  
+</div>
+
+<div class="content">
+  <h2>
+    <a href="/blog/html-or-id-or-class/">
+      标签？ID？还是CLASS？
+    </a>
+  </h2>
+  
+  <p>想谈一下几个基本的HTML问题，都是围绕着应该怎样使用HTML。</p>
+<h3 id="1-多用有语义的标签，少用div和span，避免使用没有class的div和span。"><a href="#1-多用有语义的标签，少用div和span，避免使用没有class的div和span。" class="headerlink" title="1. 多用有语义的标签，少用div和span，避免使用没有class的div和span。"></a>1. 多用有语义的标签，少用div和span，避免使用没有class的div和span。</h3><p>设想一下HTML的世界最初只有div和span这两个标签，其实网页依然可以写得出来。更多标签的出现，其实是为了替代利用率高但不好书写的 <code>&lt;div class=&quot;&#123;tagname&#125;&quot;&gt;</code> 和 <code>&lt;span class=&quot;&#123;tagname&#125;&quot;&gt;</code> 来的。</p>
+<p>想再接着多说一句的是，在HTML5里越来越多常见的div class组合或div id组合被直接命名为了新的标签。理由也是相同的，像header/footer/aside/nav/section/article都是我之前经常使用的class或id。我甚至觉得w3c创造新html标签的工作很简单，定期统计一下最常用的class和id，然后取前几名作为新的标签名就行了。</p>
+<p>上周还有人在微博上感慨那个“史上最牛的HTML代码”：</p>
+<pre><code>&lt;div class=&quot;mod&quot;&gt;
+    &lt;div class=&quot;hd&quot;&gt;&lt;/div&gt;
+    &lt;div class=&quot;bd&quot;&gt;&lt;/div&gt;
+&lt;/div&gt;
+</code></pre><p>再过几年它真的也许会消失的。</p>
+<p>反过来思考也可以，尽量使用有语义的标签名，实在想不出来合适的标签名了，再用div然后起个class或id。这样的思路也不错。</p>
+<h3 id="2-不要滥用class而回避id，该出手时就出手。"><a href="#2-不要滥用class而回避id，该出手时就出手。" class="headerlink" title="2. 不要滥用class而回避id，该出手时就出手。"></a>2. 不要滥用class而回避id，该出手时就出手。</h3><p>和问题1同理，设想一下HTML的世界最初只有class没有id，其实网页依然可以写得出来，语义依然表达得出来。无非就是会出现很多特殊的class呗。因此，我们也很好理解，id的出现，就是可以和class一起协作，使某些语义即使没有现成的标签可以表示它，但依然可以把一般性和唯一性完美的结合在一起。</p>
+<p>这里驳斥一个观点：“尽量都使用class，因为控制样式的时候class的优先级是同级的，id的优先级更高，它的出现会破坏样式优先级的平衡”。首先我觉得这是一个假命题，所谓的“平衡”是不存在的，也没有必要去刻意维护，通过id来表示的内容一定是相对特殊的，优先级自然高一些，这样的优先级设计是如此的自然。我能够接受的全部是class的适用范围仅是一些底层的css基础样式，如oocss里的基础样式，或很多网站都会有common.css文件或general.css文件，里面的东西尽量用class没问题。</p>
+<p>另一个更重要的理由是，在HTML5里，除了id和class这两个特性可以控制样式之外，还可以通过特性选择器来定义样式，类似E[attr=”…”]的写法。我们会发现可以控制样式的方式越来越灵活，选择越来越多。这是Web发展的必然趋势。当其他人已经在用id/class/data-*/tagname对样式展开多重维度攻势的时候，我们实在没有必要把自己还关在class的世界里。</p>
+<h3 id="3-尽量给每个表示布局的class或id换一个站在内容角度的合理的名字。"><a href="#3-尽量给每个表示布局的class或id换一个站在内容角度的合理的名字。" class="headerlink" title="3. 尽量给每个表示布局的class或id换一个站在内容角度的合理的名字。"></a>3. 尽量给每个表示布局的class或id换一个站在内容角度的合理的名字。</h3><p>比如两列布局的左右侧多半是正文和辅助信息的关系，那么就不建议用class=”left”和class=”right”而是倾向于class=”main-content”和class=”sidebar”，或者直接用article和aside。</p>
+<p>在自适应Web设计(responsive web design)如火如荼的今天，页面上的某个元素处在网页什么位置更像是个变量，所以通过位置来定义一个元素显然是会承受很多额外的维护成本和扩展成本。当改变发生的那一天，你发现自己的HTML代码变得文不对题。曾经的left跑到最上面去了，right变成了底部通栏，这都是很正常的变化。</p>
+<p>实在没什么语义的，比如为了给IE加圆角而增设的标签，或清除浮动用的额外的标签，再或者是基础样式的，和具体内容无关的，再用div加表象的class来描述。</p>
+<h3 id="4-尽量避免表示纯样式的class或id。"><a href="#4-尽量避免表示纯样式的class或id。" class="headerlink" title="4. 尽量避免表示纯样式的class或id。"></a>4. 尽量避免表示纯样式的class或id。</h3><p>比如class=”f14 red”。印象中网上有很多拙劣的例子，也有很多深刻批判这种用法的文章，我想说的是，如果你非要这样改样式，那不如直接写内联style来得直观。</p>
+<h3 id="最后想说的是……"><a href="#最后想说的是……" class="headerlink" title="最后想说的是……"></a>最后想说的是……</h3><p>互联网是一个快速发展的领域，<a target="_blank" rel="noopener" href="http://it.sohu.com/20110824/n317169919.shtml">它的快速发展甚至让人们忘却了很多传统领域的停滞不前</a>。在这样的领域里工作，勇敢尝试，关注新技术，把握新趋势是如此的重要。不要拒绝新事物，不要被不思进取的人拖累，不要对大千世界失去好奇心和求知欲，方可永葆青春。</p>
+
+  
+</div>
+
+<div class="content">
+  <h2>
+    <a href="/blog/micro-innovation-is-not-the-real-innovation/">
+      微创新=伪创新
+    </a>
+  </h2>
+  
+  <p>先说一个跟创新无关的事儿：<br>最近有个刷火车票的插件非常流行，名字我不想提了。朋友发链接给我的时候，我打开一看，吓了一跳，网站风格几乎和傲游2006年的官网一模一样……</p>
+<p>傲游2006年的官网<br><img src="/uploads/2012/09/1293548526.png" alt="傲游2006年的官网" /></p>
+<p>这是今天看到的网页<br><img src="/uploads/2012/09/4227819619.png" alt="这是今天看到的网页" /></p>
+<p>这跟创新毫无关系，但和创新的一个反面话题有关——抄袭。虽然公司的设计和创意被别人照搬过去对我这种在傲游有些年头的人已经不是什么新鲜事了，但是在今年的新网站，还能够抄回2006年，好设计在国内死绝了吗？</p>
+<p>我感觉在我们周围的互联网行业中，创新能力正在急剧群体退化。不论是设计、产品还是技术层面。1.封闭的互联网给山寨版的国外网站带来了<strong>巨大需求</strong>；2.再加上产权保护不给力，让抄袭变成了“<strong>0成本</strong>”。所以抄袭者顺风顺水，不甘心抄的人走起路来就变得相对困难。</p>
+<p>另外，我不太认同微创新这个说法，原因很简单，<strong>如果微小的不同之处也可以看做是创新，那什么又是真正的抄袭呢？</strong>我们今天认为的抄袭，哪个会像做蜡像一样真的做个一模一样的东西出来呢？所以没什么争议，抄了就是抄了。如果微创新被鼓励，就等于抄袭被鼓励。</p>
+<p>设计：“直接把傲游的官网样式抓下来用吧”<br>产品：“我们做的东西很简单，就做成跟xxxx一样”，“然后我们再加个xxx，就行了”</p>
+<p>我担心在这样的游戏规则之下，人的创新意识和创新能力会在不知不觉中退化。前段时间参加了互联网大会，本来是去给我们CEO捧场的，只听了其中几个专场。直观的感觉是：大家都在讨论别人，上来就说Facebook今年怎么样，Apple今年怎么样，Google今年怎么样，说得不亦乐乎，好像Facebook、Apple、Google是他们自家的公司；一说到自己，就一两句话结束了。听到最后，觉得讲得最有水平的，同时也是中国互联网最有前途的行业，其实是搞数据分析的，因为他们的工作就是名正言顺的研究别人。</p>
+<p>隔天凌晨，我又见证了苹果iPhone5等一些列产品的发布会。对比甚是明显：</p>
+<ul>
+<li><strong>白天的互联网大会上，国内的某些大公司会怎么“做”产品是没悬念的，但大家都在好奇他们接下来会“做”什么产品；</strong></li>
+<li><strong>晚上的苹果发布会，他们在做什么产品是没悬念的，但大家都在好奇他们接下来会把这款产品做成什么样。</strong></li>
+</ul>
+<p>我想这就是对国内互联网怪现象的最好总结了……</p>
+<p>看过听过经历过后，我更坚定了的是，要拥有一颗强大的内心，面对抄袭，不能妥协，坚持创新的思考和行动。</p>
+
+  
+</div>
+
+<div class="content">
+  <h2>
+    <a href="/blog/html5dw-2012/">
+      HTML5峰会归来
+    </a>
+  </h2>
+  
+  <p>这次 <a target="_blank" rel="noopener" href="https://weibo.com/html5dw">@HTML5梦工场</a> 的活动真是太棒了！我们了解企业，了解同行，了解技术，了解趋势，吃喝玩乐，雅俗共赏，天南海北共聚一堂，还有什么活动能跟这样的 <a target="_blank" rel="noopener" href="http://2012.html5dw.com/">#html5峰会#</a> 相媲美呢？！虽然2天脚都站酸了，但真心觉得值！</p>
+<h3 id="了解企业"><a href="#了解企业" class="headerlink" title="了解企业"></a>了解企业</h3><p>这次峰会上，诸多企业都在会场搭建了属于自己的展台：有浏览器，有应用平台、有技术图书出版社，这样不够，后台技术来了，电视来了，物联网来了，广告服务来了，这样还不够，更夸张的是眼镜和糕点也来了。其实仔细想想，中间这部分领域是早晚要和HTML5打交道的，而后面这部分呢，也几乎是每一个前端工程师生活的一部分(你看，干这行的视力都不太好，还经常以庆祝xxx为借口买蛋糕吃)。我们了解形形色色的行业和企业，体验工程师生活的每一部分。</p>
+<p>当然说到企业展台，这也包括我的老东家傲游。今年公司启动了全平台的浏览器研发项目，除了已经有的PC、安卓版本，还陆续发布了Mac、iPad、iPhone版本。所以这次的展台内容很丰富，有些朋友甚至来到展台前把所有的设备都试用一遍，才意尤未尽的离开，这让我们这两天“辛苦站台”的同事们倍感欣慰。</p>
+<p><img src="/uploads/2012/08/1544819964.jpg" alt="傲游浏览器的展台"></p>
+<h3 id="了解同行"><a href="#了解同行" class="headerlink" title="了解同行"></a>了解同行</h3><p>我想说第二天的HTML5作品展真棒！一口气看58份优秀作品，结识58组前端精英，感受大家的创意和热情！这次给我印象深刻的，有一个是用Canvas写毛笔字的，可以根据书写的速度模拟出毛笔的力道来，非常神奇；还有一个作品用到了最新的摄像头媒介接口，做出了类似Kinect的游戏体验，他们的作者自豪的说：“我们的目标就是秒杀Kinect！”；另外我非常有幸结识到了HTML5图形库<a target="_blank" rel="noopener" href="http://www.ichartjs.cn">ichartjs</a>的作者，我觉得他的作品像一阵及时雨，刚好填补了图表制作这个HTML5非常大的领域空白。除此之外的其它作品也都各有千秋，看得出他们呕心沥血的投入和付出。</p>
+<p><img src="/uploads/2012/08/186888587.png" alt="H5Slides"></p>
+<p>我也有机会展示了自己参与的一个开源项目：就是<a target="_blank" rel="noopener" href="http://h5Slides.com">H5Slides</a>，我们专门为了这次的峰会搭建了一个供大家试用和体验的网站。不少开发者也对我们的作品产生了浓厚的兴趣。还有些人在网上看到过，现场认出我来了，哈哈好害羞滴说！</p>
+  <p class="more">
+    <a href="/blog/html5dw-2012/">
+      阅读剩余部分...
+    </a>
+  </p>
+  
+</div>
+
+<div class="content">
+  <h2>
+    <a href="/blog/bookmarklet-read-anything/">
+      分享bookmarklet一则：随意阅读
+    </a>
+  </h2>
+  
+  <p>这款bookmarklet是我对主流阅读模式智能识别规则的一种吐槽。</p>
+<p>当然，首先，阅读模式本身是一项非常棒的功能！他可以增强文章的阅读体验，统一不同页面的视觉风格。可以让人专注在文章内容中。等等。<br>而我要吐槽的点，是这个所谓的“智能判断文章内容”的算法。</p>
+<h3 id="“智能分析”的阅读器"><a href="#“智能分析”的阅读器" class="headerlink" title="“智能分析”的阅读器"></a>“智能分析”的阅读器</h3><p>阅读模式的核心任务之一，就是能够找出我们在各种凌乱广告、装饰物、页眉页脚之中的正文内容。在找内容这件事上，大家不约而同的使用了智能分析的路数。<a target="_blank" rel="noopener" href="https://code.google.com/p/arc90labs-readability/source/browse/trunk/js/readability.js">这里</a>是早期开源的Readability脚本库的核心代码，我们可以看到其中包含着大量用来识别某dom结点是否是正文根结点的算法公示。而这套算法，又是从大量已存在的网页中归纳而来的。</p>
+<p><img src="/uploads/2012/08/3234165205.png" alt="Readability"></p>
+<h4 id="阻力"><a href="#阻力" class="headerlink" title="阻力"></a>阻力</h4><p>既然是归纳的结果，而现如今已存在的网页已经数以亿计五花八门了，那不可避免的会存在判断误差。我们希望把内容识别的准确率提到最高，但会遇到一个问题：就是广告主、站长都有各自的小算盘，他们时刻准备着违背这些智能，降低判别的准确率，不让它正常工作，以谋取自己更高的收益或二次点击率。因此，这一智能的识别规则无法完全公开(Readability随后停止了开放源代码，我猜也有这方面的考量)。</p>
+<h4 id="how-to-enable"><a href="#how-to-enable" class="headerlink" title="how to enable?"></a>how to enable?</h4><p>可黑盒的智能规则又导致了另外一个问题：智能识别如果出现判断误差，对于那些希望支持阅读模式的网站，又无奈于找不到这些计算规则去适配。于是我们又会看到类似“<a target="_blank" rel="noopener" href="https://www.google.com/search?q=how-to-enable-safari-reader">how to enable safari reader</a>”这样的问题满天飞。</p>
+<p><img src="/uploads/2012/08/938520538.png" alt="Google搜索截图：如何激活阅读模式"></p>
+<p>最后阅读模式的识别规则、支持者、反对者扭打在了一起。</p>
+  <p class="more">
+    <a href="/blog/bookmarklet-read-anything/">
+      阅读剩余部分...
+    </a>
+  </p>
+  
+</div>
+
+<div class="content">
+  <h2>
+    <a href="/blog/badminton-and-vicious-circle/">
+      国际羽联和中国队之间的恶性循环
+    </a>
+  </h2>
+  
+  <p>直观的感觉是这次“冷”敦奥运会上，国际上对中国集体发难。这样的感觉起码有这些因素作祟：第一，自从北京奥运会中国在家门口历史上首次拿到金牌第一，国际媒体就开始越来越关注中国；第二，以前我们都陶醉在某些洗脑工具中，听不到国外的声音；第三，称赞中国的声音不够劲爆，我们的舆论也有选择性的把更多偏激的言论带回了国内；第四，新媒体全面占领传统媒体，消息更快速，也更不准确；第五，我们喜欢“拿来”，却不喜欢回馈。</p>
+<p><img src="/uploads/2012/08/1497762744.jpg" alt="144261153.jpg" /><br>图片来自和讯新闻</p>
+<p>话说这次奥运会4对羽毛球选手被判消极比赛取消资格一事，绝对是国际羽联对中国长期以来忍无可忍的一次报复。毫无疑问中国现在在羽毛球这个项目上太过强大，尤其是女双，强大到对手连打败你的信心都没有了。这样的话选手的成绩在淘汰赛制中变得偶然性很大：第一轮就碰中国，名次肯定倒数，晚点碰中国，甚至可以拿奖牌。</p>
+<p>我猜国际羽联把羽毛球由纯淘汰赛改成循环赛加淘汰赛，这也直接导致了这一出闹剧的出现。其实规则的改变就是给那些名次不好的人更多机会，给中国队更多危险。<strong>但我不认为这是一种良性的改变</strong>。</p>
+  <p class="more">
+    <a href="/blog/badminton-and-vicious-circle/">
+      阅读剩余部分...
+    </a>
+  </p>
+  
+</div>
+
+
+
+<ol class="page-navigator">
+  <a class="extend prev" rel="prev" href="/page/5/">«</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><span class="page-number current">6</span><a class="page-number" href="/page/7/">7</a><a class="page-number" href="/page/8/">8</a><a class="page-number" href="/page/9/">9</a><a class="page-number" href="/page/10/">10</a><a class="page-number" href="/page/11/">11</a><a class="page-number" href="/page/12/">12</a><a class="page-number" href="/page/13/">13</a><a class="page-number" href="/page/14/">14</a><a class="page-number" href="/page/15/">15</a><a class="page-number" href="/page/16/">16</a><a class="page-number" href="/page/17/">17</a><a class="page-number" href="/page/18/">18</a><a class="page-number" href="/page/19/">19</a><a class="page-number" href="/page/20/">20</a><a class="extend next" rel="next" href="/page/7/">»</a>
+</ol>
+
+</div>
+
+    <div id="footer">
+      <a href="/">囧克斯</a>
+      
+      |
+      <a href="/atom.xml" title="rss_feed">RSS</a>
+      
+      |
+      我是百度统计
+      <script src="https://hm.baidu.com/h.js?a0a2372d4b7621d0bfe71f33c58a4bd8"></script>
+      |
+      我会翻脸 <a href="#" onclick="document.body.classList.toggle('dark-mode'), event.preventDefault()" style="font-size: 1.25em;">🌚🌝</a>
+    </div>
+  </div>
+
+  
+<script src="/js/script.js"></script>
+
+</body>
+
+</html>

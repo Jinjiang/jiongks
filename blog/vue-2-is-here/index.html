@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <!-- proud for contributing Vue.js -->
+  <meta charset="utf-8">
+  <meta name="format-detection" content="telephone=no" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-touch-fullscreen" content="yes" />
+
+  
+  <title>
+    
+    Vue 2.0 来了！ -
+    
+    囧克斯
+  </title>
+
+  
+<link rel="stylesheet" href="/css/pure.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+
+  
+  <link rel="alternate" href="/atom.xml" title="囧克斯" type="application/atom+xml">
+  
+  
+  <link rel="icon" href="/favicon.ico">
+  
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+<body>
+  <script>(() => { if ((new Date().getHours() + 6) % 24 < 12) document.body.classList.add('dark-mode') })()</script>
+
+  <div class="dark-mode-helper"></div>
+
+  <div id="wrapper">
+
+    <div id="header">
+      <h1>
+        <a href="/" title="囧克斯">
+          囧克斯
+        </a>
+      </h1>
+      <p class="description">
+        这里是勾三股四的家
+      </p>
+    </div>
+
+    <div id="nav" class="pure-menu pure-menu-open pure-menu-horizontal">
+      <ul>
+        
+        <li>
+          <a href="/all-demos/">
+            线上
+          </a>
+        </li>
+        
+        <li>
+          <a href="/all-slides/">
+            线下
+          </a>
+        </li>
+        
+        <li>
+          <a href="/about/">
+            关于
+          </a>
+        </li>
+        
+        <li><a href="/archives">归档</li>
+      </ul>
+    </div>
+
+    <div id="main"><div class="content">
+  <h2>
+    Vue 2.0 来了！
+  </h2>
+  <p>终于发布了！</p>
+<p>原文：<a target="_blank" rel="noopener" href="https://medium.com/the-vue-point/vue-2-0-is-here-ef1f26acf4b8#.6r9xjmu6x">https://medium.com/the-vue-point/vue-2-0-is-here-ef1f26acf4b8#.6r9xjmu6x</a></p>
+<p>今天我非常兴奋的官宣 Vue.js 2.0 的发布：Ghost in the Shell。历经 8 个 alpha 版本、8 个 beta 版本和 8 个 rc 版本 (矮油好巧！)，Vue.js 2.0 已经为生产环境准备好了！我们的官方教程 <a target="_blank" rel="noopener" href="https://vuejs.org/guide/">vuejs.org/guide</a> 也已经全面更新。</p>
+<p>2.0 的工作自今年 4 月启动以来，<a target="_blank" rel="noopener" href="https://github.com/orgs/vuejs/people">核心团队</a>为 API 设计、bugfix、文档、类型声明做出了很重要的贡献，社区中的同学们也反馈了很多有价值的 API 建议——在此为每一位参与者致以大大的感谢！</p>
+<a id="more"></a>
+<h3 id="2-0-有哪些新东西"><a href="#2-0-有哪些新东西" class="headerlink" title="2.0 有哪些新东西"></a>2.0 有哪些新东西</h3><h4 id="性能"><a href="#性能" class="headerlink" title="性能"></a>性能</h4><p><img src="https://d262ilb51hltx0.cloudfront.net/max/1600/1*Lu6OJiraJYShl4aBppoh3w.png" alt="基于第三方 benchmark，数值越低越好"></p>
+<p>基于<a target="_blank" rel="noopener" href="http://stefankrause.net/js-frameworks-benchmark4/webdriver-ts/table.html">第三方 benchmark</a>，数值越低越好</p>
+<p>2.0 用一个 fork 自 <a target="_blank" rel="noopener" href="https://github.com/snabbdom/snabbdom">snabbdom</a> 的轻量 Virtual DOM 实现对渲染层进行了重写。在其上层，Vue 的模板编译器能够在编译时做一些智能的优化处理，例如分析并提炼出静态子树以避免界面重绘时不必要的比对。新的渲染层较之 v1 带来了巨大的性能提升，也让 Vue 2.0 成为了最快速的框架之一。除此之外，它把你在优化方面需要做的努力降到了最低，因为 Vue 的响应系统能够在巨大而且复杂的组件树中精准的判断其中需要被重绘的那部分。</p>
+<p><img src="https://d262ilb51hltx0.cloudfront.net/max/1600/1*xV2_bx4eWC9RXiBZjeAMrw.png" alt=""></p>
+<p>还有个值得一提的地方，就是 2.0 的 runtime-only 包大小 min+gzip 过后只有 16kb，即便把 <em>vue-router</em> 和 <em>vuex</em> 都包含进去也只有 26kb，和 v1 核心的包大小相当！</p>
+<h4 id="渲染函数"><a href="#渲染函数" class="headerlink" title="渲染函数"></a>渲染函数</h4><p>尽管渲染层全面更新，Vue 2.0 兼容了绝大部分的 1.0 模板语法，仅废弃掉了其中的一小部分。这些模板在背后被编译成了 Virtual DOM 渲染函数，但是如果用户需要更复杂的 JavaScript，也可以选择在其中直接撰写渲染函数。同时我们为喜欢 JSX 的同学提供了<a target="_blank" rel="noopener" href="https://github.com/vuejs/babel-plugin-transform-vue-jsx">支持选项</a></p>
+<p>渲染函数使得这种基于组件的开发模式变得异常强大，并打开了各种可能性——比如现在新的 transition 系统就是完全基于组件的，内部由渲染函数实现。</p>
+<h4 id="服务端渲染"><a href="#服务端渲染" class="headerlink" title="服务端渲染"></a>服务端渲染</h4><p>Vue 2.0 支持服务端渲染 (SSR)，并且是<a target="_blank" rel="noopener" href="https://github.com/vuejs/vue/tree/dev/packages/vue-server-renderer#rendererrendertostreamvm">流式的</a>，可以做<a target="_blank" rel="noopener" href="https://github.com/vuejs/vue/tree/dev/packages/vue-server-renderer#component-caching">组件级的缓存</a>，这使得极速渲染成为可能。同时，<em>vue-router</em> 和 <em>vuex</em> 2.0 也都支持了可以通用路由和客户端状态“hydration”的服务端渲染。你可以通过 <a target="_blank" rel="noopener" href="https://github.com/vuejs/vue-hackernews-2.0/">vue-hackernews-2.0 的 demo app</a> 了解到它们是如何协同工作的。</p>
+<h3 id="辅助库"><a href="#辅助库" class="headerlink" title="辅助库"></a>辅助库</h3><p>官方支持的库和工具——<em>vue-router</em>、<em>vuex</em>、<em>vue-loader</em> 和 <em>vueify</em>——都已经升级并支持 2.0 了。<strong>vue-cli 现在已经默认生成 2.0 的脚手架了。</strong></p>
+<p>特别之处在于，<em>vue-router</em> 和 <em>vuex</em> 在它们的 2.0 版本中都已经有了很多改进：</p>
+<p><strong>vue-router</strong></p>
+<ul>
+<li>支持多命名的 <code>&lt;router-view&gt;</code></li>
+<li>通过 <code>&lt;router-link&gt;</code> 组件改进了导航功能</li>
+<li>简化了导航的 hooks API</li>
+<li>可定制的滚动行为控制</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/vuejs/vue-router/tree/dev/examples">更多复杂示例</a></li>
+</ul>
+<p><strong>vuex</strong></p>
+<ul>
+<li>简化了组件内的用法</li>
+<li>通过改进 modules API 提供更好的代码组织方式</li>
+<li>可聚合的异步 actions</li>
+</ul>
+<p>它们各自的 2.0 文档里有更多的细节：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://router.vuejs.org/">https://router.vuejs.org/</a></li>
+<li><a target="_blank" rel="noopener" href="https://vuex.vuejs.org/">https://vuex.vuejs.org/</a></li>
+</ul>
+<h4 id="社区项目"><a href="#社区项目" class="headerlink" title="社区项目"></a>社区项目</h4><p>中国最大的在线订餐平台饿了么的<a target="_blank" rel="noopener" href="https://github.com/ElemeFE/">团队</a>已经基于 Vue 2.0 构建了<a target="_blank" rel="noopener" href="https://github.com/ElemeFE/element">一套完整的桌面 UI 组件库</a>。不过还没有英文文档，但是他们正在为此而努力！</p>
+<p>很多其他社区的项目也都在为 2.0 做兼容——请移步到 <a target="_blank" rel="noopener" href="https://github.com/vuejs/awesome-vue">awesome-vue</a> 搜索关键字“2.0”。</p>
+<h3 id="从-1-0-迁移"><a href="#从-1-0-迁移" class="headerlink" title="从 1.0 迁移"></a>从 1.0 迁移</h3><p>如果你是一个 Vue 的新同学，现在就可以“无脑”使用 Vue 2.0 了。最大的问题其实是目前 1.0 的用户如何迁移到新的版本。</p>
+<p><img src="https://d262ilb51hltx0.cloudfront.net/max/1600/1*157Ly5X6gx0C2CIvsMaNog.png" alt=""></p>
+<p>为了帮助大家完成迁移，团队已经在配合 <a target="_blank" rel="noopener" href="https://github.com/vuejs/vue-migration-helper">CLI 迁移辅助工具</a>制作<a target="_blank" rel="noopener" href="https://vuejs.org/guide/migration.html">非常详实的迁移教程</a>。这个工具不一定捕获每一处被废弃的东西，但相信能帮你开个好头。</p>
+<h3 id="One-More-Thing……"><a href="#One-More-Thing……" class="headerlink" title="One More Thing……"></a>One More Thing……</h3><p>中国最大的电商公司阿里巴巴的工程师们已经发起了一个叫做 <a target="_blank" rel="noopener" href="https://github.com/alibaba/weex">Weex</a> 的项目，通过 Vue-inspired 语法在移动端渲染 native UI 组件。但是很快，“Vue-inspired” 将会成为 “Vue-powered”——我们已经启动了官方合作，让 Vue 2.0 真正成为 Weex 的 JavaScript 运行时框架。这让用户能够撰写横跨 Web、iOS 和 Android 的通用 Vue 组件！我们的合作才刚刚开始，这将会是 2.0 发布后未来我们专注的重点，请大家拭目以待！</p>
+<p>Vue 从一个不起眼的 side project 开始如今已经有了长足的发展。今天它已经是<a target="_blank" rel="noopener" href="https://www.patreon.com/evanyou">社区资助的</a>，<a target="_blank" rel="noopener" href="https://www.quora.com/How-popular-is-VueJS-in-the-industry/answer/Evan-You-3?__snid3__=365957938&amp;__nsrc__=2&amp;__filter__">被实际广泛认可的</a>，并且根据 <a target="_blank" rel="noopener" href="http://stats.js.org/">stats.js.org</a> 统计在所有 JavaScript 库中增势最强劲的一个。我们相信 2.0 会走得更远。这是 Vue 自启动以来最大的一次更新，我们期待大家用 Vue 创造出更多好产品！</p>
+
+</div>
+
+<p align="right">
+  <small>
+    <a href="https://github.com/Jinjiang/jinjiang.github.io/edit/dev/source/_posts/vue-2-is-here.md" target="_blank">
+      向本文提出修改或勘误建议
+    </a>
+  </small>
+</p>
+
+
+
+<div id="comments">
+  <h2>早期评论</h2>
+  <ul>
+  
+    <li id="comment-113299" style="margin-left: 0em;">
+      <p>
+        <strong>
+        Quay
+        
+        </strong>
+        <small>2016/10/01 03:29:22</small></p>
+      又要重新开启学习Vue的旅程。
+    </li>
+  
+    <li id="comment-113301" style="margin-left: 0em;">
+      <p>
+        <strong>
+        <a href="http://www.ijser.cn" target="_blank" title="ijse">ijse</a>
+        
+        </strong>
+        <small>2016/10/01 06:59:12</small></p>
+      赞~~
+    </li>
+  
+    <li id="comment-113302" style="margin-left: 0em;">
+      <p>
+        <strong>
+        暮尘
+        
+        </strong>
+        <small>2016/10/01 07:58:37</small></p>
+      还让不让人好好过国庆节了  不说了，去看Vue的文档去了
+    </li>
+  
+    <li id="comment-113304" style="margin-left: 0em;">
+      <p>
+        <strong>
+        <a href="http://wwwatch.in" target="_blank" title="什么片子值得看">什么片子值得看</a>
+        
+        </strong>
+        <small>2016/10/01 10:24:41</small></p>
+      很棒，1.0还没学，看来可以直接上2.0了，只是2.0发布后似乎原来官网上的中文内容都被移除了，不知道以后会不会有
+    </li>
+  
+    <li id="comment-113339" style="margin-left: 0em;">
+      <p>
+        <strong>
+        bob
+        
+        </strong>
+        <small>2016/10/03 10:17:49</small></p>
+      vue非常优雅，很爱啊！
+    </li>
+  
+    <li id="comment-113751" style="margin-left: 0em;">
+      <p>
+        <strong>
+        snowfox
+        
+        </strong>
+        <small>2016/10/29 02:56:38</small></p>
+      今天看了vue1.0的源码发现源码上面只使用了一个全局变量keepAlive来保存当前组件的是否进入缓存，就是说源码上面就不支持对单页面进行缓存，就是说要不就是所有页面都进行缓存要不就都不进行(子组件例外)，所以我只好在源码的bind和build里面添加了几句话增加了单页面缓存功能，希望勾股哥在2.0能完善单页面缓存功能。
+    </li>
+  
+    <li id="comment-114010" style="margin-left: 0em;">
+      <p>
+        <strong>
+        <a href="http://www.mrfront.com/" target="_blank" title="前端先生">前端先生</a>
+        
+        </strong>
+        <small>2016/11/10 07:21:48</small></p>
+      看来要重新开始Vue的学习旅程了！
+    </li>
+  
+    <li id="comment-114517" style="margin-left: 0em;">
+      <p>
+        <strong>
+        <a href="http://http:///www.flypie.cn" target="_blank" title="小飞侠">小飞侠</a>
+        
+        </strong>
+        <small>2016/12/22 12:33:47</small></p>
+      vue2.0很赞
+    </li>
+  
+    <li id="comment-114674" style="margin-left: 0em;">
+      <p>
+        <strong>
+        <a href="http://www.465400.net/riji/2017-hesuidang.html" target="_blank" title="贺岁档电影">贺岁档电影</a>
+        
+        </strong>
+        <small>2016/12/27 06:00:22</small></p>
+      表示支持一下
+    </li>
+  
+    <li id="comment-114948" style="margin-left: 0em;">
+      <p>
+        <strong>
+        272
+        
+        </strong>
+        <small>2017/02/04 11:42:09</small></p>
+      可以把vue.js2.0的源码出个视频或文字解说版本吗？
+    </li>
+  
+  </ul>
+</div>
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+
+<div id="gitalk-container"></div>
+
+<script>
+  const gitalk = new Gitalk({
+    clientID: 'c99e23053fc1bba6a58c',
+    clientSecret: '64efe1cd1438e77ae2bf8eba92b51c90d0cc2b9f',
+    repo: 'jinjiang.github.io',
+    owner: 'jinjiang',
+    admin: ['jinjiang'],
+    id: location.pathname,      // Ensure uniqueness and length less than 50
+    distractionFreeMode: false  // Facebook-like distraction free mode
+  })
+
+  gitalk.render('gitalk-container')
+</script>
+</div>
+
+    <div id="footer">
+      <a href="/">囧克斯</a>
+      
+      |
+      <a href="/atom.xml" title="rss_feed">RSS</a>
+      
+      |
+      我是百度统计
+      <script src="https://hm.baidu.com/h.js?a0a2372d4b7621d0bfe71f33c58a4bd8"></script>
+      |
+      我会翻脸 <a href="#" onclick="document.body.classList.toggle('dark-mode'), event.preventDefault()" style="font-size: 1.25em;">🌚🌝</a>
+    </div>
+  </div>
+
+  
+<script src="/js/script.js"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <!-- proud for contributing Vue.js -->
+  <meta charset="utf-8">
+  <meta name="format-detection" content="telephone=no" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-touch-fullscreen" content="yes" />
+
+  
+  <title>
+    
+    用Sass重新整理自己的博客主题样式 -
+    
+    囧克斯
+  </title>
+
+  
+<link rel="stylesheet" href="/css/pure.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+
+  
+  <link rel="alternate" href="/atom.xml" title="囧克斯" type="application/atom+xml">
+  
+  
+  <link rel="icon" href="/favicon.ico">
+  
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+<body>
+  <script>(() => { if ((new Date().getHours() + 6) % 24 < 12) document.body.classList.add('dark-mode') })()</script>
+
+  <div class="dark-mode-helper"></div>
+
+  <div id="wrapper">
+
+    <div id="header">
+      <h1>
+        <a href="/" title="囧克斯">
+          囧克斯
+        </a>
+      </h1>
+      <p class="description">
+        这里是勾三股四的家
+      </p>
+    </div>
+
+    <div id="nav" class="pure-menu pure-menu-open pure-menu-horizontal">
+      <ul>
+        
+        <li>
+          <a href="/all-demos/">
+            线上
+          </a>
+        </li>
+        
+        <li>
+          <a href="/all-slides/">
+            线下
+          </a>
+        </li>
+        
+        <li>
+          <a href="/about/">
+            关于
+          </a>
+        </li>
+        
+        <li><a href="/archives">归档</li>
+      </ul>
+    </div>
+
+    <div id="main"><div class="content">
+  <h2>
+    用Sass重新整理自己的博客主题样式
+  </h2>
+  <p><img src="http://sass-lang.com/images/sass.gif" alt="Sass"></p>
+<p>远远关注<a target="_blank" rel="noopener" href="http://sass-lang.com">Sass</a>很久了，今天终于鼓起勇气写了<a target="_blank" rel="noopener" href="https://github.com/Jinjiang/jinjiang.github.io/blob/dev/data/themes/iambig-3d/style.sass">我的第一个Sass文件</a></p>
+<h3 id="Sass简介"><a href="#Sass简介" class="headerlink" title="Sass简介"></a>Sass简介</h3><p>一种CSS的预处理程序，基于Ruby运行。安装过程和相关的准备工作非常简单：</p>
+<ol start="0">
+<li>当然首先要安装<a target="_blank" rel="noopener" href="https://www.ruby-lang.org/">Ruby</a></li>
+<li><code>gem install ruby</code>，必要的环境下需要在命令前加上<code>sudo</code></li>
+<li>进入我的博客主题文件夹，运行<code>sass-convert style.css style.sass</code>，把我的css文件先转换成sass文件</li>
+<li>运行<code>sass --watch style.sass:style.css</code>，使得程序自动把<code>style.sass</code>文件接下来的任何改动自动同步转换到<code>style.css</code></li>
+</ol>
+<p>这时，新的Sass文件就创建完毕了！^_^ 去碎觉……</p>
+<p>呵呵，开个玩笑。其实这样的Sass文件虽然格式上没有任何问题，但和直接撰写CSS几乎没区别。而Sass除了可以让我们少写几个花括号和分号之外，其实还有很多实用的特性是我们真正需要的。</p>
+<p>无论如何，现在的这个Sass文件是一个整理的基础，接下来，我们就来一步一步整理这个文件，同时也一步一步熟悉Sass的特性。</p>
+<a id="more"></a>
+<h3 id="Variables-变量与计算"><a href="#Variables-变量与计算" class="headerlink" title="Variables: 变量与计算"></a>Variables: 变量与计算</h3><p>我把CSS文件中通用的字体、颜色等等属性值归纳了出来，并找到其中的相关性，比如文本框的边框颜色始终比链接的文字颜色亮一些，即：</p>
+<pre><code>a &#123;
+  color: #0c0;
+&#125;
+
+input:not([type]),
+input[type=&quot;text&quot;],
+input[type=&quot;password&quot;] &#123;
+  border: 2px lime solid;
+&#125;
+</code></pre><p>在Sass中将其改写为：</p>
+<pre><code>$color-link: #0c0
+
+a
+  color: $color-link
+
+input:not([type]),
+input[type=&quot;text&quot;],
+input[type=&quot;password&quot;]
+  border: 2px lighten($color-link, 10%) solid
+</code></pre><p>即可，输出的结果不变。</p>
+<h3 id="Nesting：选择器嵌套"><a href="#Nesting：选择器嵌套" class="headerlink" title="Nesting：选择器嵌套"></a>Nesting：选择器嵌套</h3><p>把嵌套着的选择器添加不同的缩进，同时把重复表达的外层选择器去掉。如：</p>
+<pre><code>h2 &#123;
+  margin: 0.75em 0;
+  padding: 0.25em 0.5em;
+  background-color: rgba(0, 204, 0, 0.4);
+  color: #339933;
+&#125;
+
+h2 strong &#123;
+  color: white;
+&#125;
+
+h2 a &#123;
+  color: #009900;
+&#125;
+
+h2 a:hover &#123;
+  background: yellow;
+  color: black;
+&#125;
+</code></pre><p>可以转换为：</p>
+<pre><code>h2
+  margin: 0.75em 0
+  padding: 0.25em 0.5em
+  background-color: rgba($color-link, 0.4) // 链接颜色，透明度40%
+  color: desaturate($color-link, 50%) // 链接颜色，饱和度减少50%
+
+  strong
+    color: white
+
+  a
+    color: darken($color-link, 10%) // 链接颜色，变暗10%
+
+    &amp;:hover
+      background: $color-mark // 特殊标记的颜色
+      color: black
+</code></pre><h3 id="Mixin：将可重用的CSS属性值混入不同的CSS规则当中"><a href="#Mixin：将可重用的CSS属性值混入不同的CSS规则当中" class="headerlink" title="Mixin：将可重用的CSS属性值混入不同的CSS规则当中"></a>Mixin：将可重用的CSS属性值混入不同的CSS规则当中</h3><p>这个特性是我花最多时间整理的，整理过后发现整个文件结构真的清晰很多。</p>
+<h4 id="提取出成套的样式"><a href="#提取出成套的样式" class="headerlink" title="提取出成套的样式"></a>提取出成套的样式</h4><p>比如我的博客主题中，3D的标题和按钮就是两套集成度重用性都很高的样式，我创建了<code>@mixin title-3d</code>和<code>@mixin button-3d</code>两个大的属性集合：</p>
+<pre><code>@mixin title-3d
+  ...
+  &amp;::before,
+  &amp;::after
+    ...
+  ...
+
+@mixin button-3d
+  ...
+  &amp;::before,
+  &amp;::after
+    ...
+  &amp;:hover::before
+    ...
+  &amp;:hover::after
+    ...
+  ...
+</code></pre><p>随后我把这些属性集合应用到了标题和按钮上：</p>
+<pre><code>h2
+  @include title-3d
+
+button,
+input[type=&quot;button&quot;],
+input[type=&quot;submit&quot;],
+.button-3d
+  @include button-3d
+</code></pre><h4 id="继续归纳和抽象"><a href="#继续归纳和抽象" class="headerlink" title="继续归纳和抽象"></a>继续归纳和抽象</h4><p>整理完上面这两个大的集合之后，我发现，其实3d的标题和按钮样式上其实也有很多想通的地方，于是我进一步抽象出了一些3d模型的通用集合：</p>
+<pre><code>@mixin short-transform
+  -webkit-transition: -webkit-transform 0.3s
+
+@mixin transform-origin-0
+  -webkit-transform-origin: 50% 50%
+@mixin transform-origin-1
+  left: 0
+  top: 0
+  -webkit-transform-origin: 0% 0%
+@mixin transform-origin-2
+  right: 0
+  top: 0
+  -webkit-transform-origin: 100% 0%
+@mixin transform-origin-3
+  right: 0
+  bottom: 0
+  -webkit-transform-origin: 100% 100%
+@mixin transform-origin-4
+  left: 0
+  bottom: 0
+  -webkit-transform-origin: 0% 100%
+
+@mixin init-3d
+  @include short-transform
+  @include transform-origin-0
+  -webkit-transform-style: preserve-3d
+
+@mixin p-element
+  position: absolute
+  content: &quot;&quot;
+</code></pre><p>然后到之前的集合把这些通用集合抽象出来：</p>
+<pre><code>@mixin title-3d
+  @include init-3d
+  ...
+
+  &amp;::after,
+  &amp;::before
+    @include p-element
+    @include short-transform
+    background-color: lighten($color-text, 30%)
+
+  &amp;::before
+    height: 100%
+    width: $button-3d-height*2
+    @include transform-origin-1
+    ...
+
+  &amp;::after
+    height: 100%
+    width: $button-3d-height*2
+    @include transform-origin-2
+    ...
+</code></pre><h4 id="统一封装不同浏览器的CSS前缀"><a href="#统一封装不同浏览器的CSS前缀" class="headerlink" title="统一封装不同浏览器的CSS前缀"></a>统一封装不同浏览器的CSS前缀</h4><pre><code>@mixin box-sizing($sizing: border-box)
+  -moz-box-sizing: $sizing
+  box-sizing: $sizing
+
+@mixin transform($value...)
+  -webkit-transform: $value
+  transform: $value
+
+@mixin transform-origin($value)
+  -webkit-transform-origin: $value
+  transform-origin: $value
+
+@mixin transform-3d($value: preserve-3d)
+  -webkit-transform-style: $value
+  transform-style: $value
+
+@mixin transform-perspective($value: 350px)
+  -webkit-perspective: $value
+  perspective: $value
+
+@mixin transition($value...)
+  -webkit-transition: $value
+  transition: $value
+
+@mixin transition-transform($duration: 0.3s)
+  -webkit-transition: -webkit-transform $duration
+  transition: transform $duration
+
+...
+</code></pre><h3 id="Extend：选择器的继承"><a href="#Extend：选择器的继承" class="headerlink" title="Extend：选择器的继承"></a>Extend：选择器的继承</h3><p>其实这个特性和mixin很多时候可以二选一使用，比如这里的<code>.button-3d</code>选择器可以不必和<code>button</code>、<code>input[type=&quot;button&quot;]</code>、<code>input[type=&quot;submit&quot;]</code>写在一起，可以写成：</p>
+<pre><code>.button-3d
+  ...
+
+button,
+input[type=&quot;button&quot;],
+input[type=&quot;submit&quot;]
+  @extend .button-3d
+</code></pre><p>不过我这里这样写的必要性不太大，所以就没有实际的例子可以分享了。</p>
+<h3 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h3><p>最终<a target="_blank" rel="noopener" href="https://github.com/Jinjiang/jinjiang.github.io/blob/dev/data/themes/iambig-3d/style.sass">我的第一个Sass文件</a>就这样整理完毕了。(p.s.当然这个文件未来可能还是会有改动，届时可能会和本篇文章描述的内容不符)</p>
+<p>经过上面这几轮代码的整理，这个Sass文件才真的很Sass了。回顾这次整理的过程，先后用到了变量、运算、嵌套、重用属性等Sass的特性，简单明了，而且<code>sass --watch</code>命令、<code>sass-convert</code>命令可以方便的对文件进行监听和格式转换。我几乎在感觉不到学习成本的情况下提高了开发效率。这里也推荐大家试试看。</p>
+
+</div>
+
+<p align="right">
+  <small>
+    <a href="https://github.com/Jinjiang/jinjiang.github.io/edit/dev/source/_posts/write-my-theme-with-sass.md" target="_blank">
+      向本文提出修改或勘误建议
+    </a>
+  </small>
+</p>
+
+
+
+<div id="comments">
+  <h2>早期评论</h2>
+  <ul>
+  
+    <li id="comment-12130" style="margin-left: 0em;">
+      <p>
+        <strong>
+        修远兮
+        
+        </strong>
+        <small>2013/06/05 06:51:23</small></p>
+      一直没用过了，回头也试试～～
+    </li>
+  
+    <li id="comment-12131" style="margin-left: 0em;">
+      <p>
+        <strong>
+        <a href="http://oklai.name/" target="_blank" title="Ethan Lai">Ethan Lai</a>
+        
+        </strong>
+        <small>2013/06/05 09:12:59</small></p>
+      Sass/LESS让写css也有编程式的体验，非常棒。<br/>
+随便做个广告，大家要是觉得命令行麻烦，推荐使用这个工具帮你自动编译: http://koala-app.com/index-zh.html
+    </li>
+  
+    <li id="comment-12132" style="margin-left: 2em;">
+      <p>
+        <strong>
+        <a href="http://jiongks.name/" target="_blank" title="囧克斯">囧克斯</a>
+        
+        </strong>
+        <small>2013/06/05 10:39:38</small></p>
+      <a href="#comment-12131">@Ethan Lai</a><br/>
+支持！我昨天刚跟部门同事分享了你的这个工具哦~
+    </li>
+  
+    <li id="comment-12237" style="margin-left: 0em;">
+      <p>
+        <strong>
+        9527
+        
+        </strong>
+        <small>2013/06/12 11:31:44</small></p>
+      感觉除了在包含与一些CSS3的书写上有些优势，和直接写CSS差别不是很大，前期工程花费要更大。
+    </li>
+  
+    <li id="comment-12515" style="margin-left: 0em;">
+      <p>
+        <strong>
+        <a href="http://www.w3cplus.com" target="_blank" title="大漠">大漠</a>
+        
+        </strong>
+        <small>2013/07/30 01:31:10</small></p>
+      没想到锦江兄也玩SASS，讲解的很详细，学习了。我最近也在学习SASS：http://www.w3cplus.com/sassguide/
+    </li>
+  
+  </ul>
+</div>
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+
+<div id="gitalk-container"></div>
+
+<script>
+  const gitalk = new Gitalk({
+    clientID: 'c99e23053fc1bba6a58c',
+    clientSecret: '64efe1cd1438e77ae2bf8eba92b51c90d0cc2b9f',
+    repo: 'jinjiang.github.io',
+    owner: 'jinjiang',
+    admin: ['jinjiang'],
+    id: location.pathname,      // Ensure uniqueness and length less than 50
+    distractionFreeMode: false  // Facebook-like distraction free mode
+  })
+
+  gitalk.render('gitalk-container')
+</script>
+</div>
+
+    <div id="footer">
+      <a href="/">囧克斯</a>
+      
+      |
+      <a href="/atom.xml" title="rss_feed">RSS</a>
+      
+      |
+      我是百度统计
+      <script src="https://hm.baidu.com/h.js?a0a2372d4b7621d0bfe71f33c58a4bd8"></script>
+      |
+      我会翻脸 <a href="#" onclick="document.body.classList.toggle('dark-mode'), event.preventDefault()" style="font-size: 1.25em;">🌚🌝</a>
+    </div>
+  </div>
+
+  
+<script src="/js/script.js"></script>
+
+</body>
+
+</html>

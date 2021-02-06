@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <!-- proud for contributing Vue.js -->
+  <meta charset="utf-8">
+  <meta name="format-detection" content="telephone=no" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-touch-fullscreen" content="yes" />
+
+  
+  <title>
+    
+    囧克斯
+  </title>
+
+  
+<link rel="stylesheet" href="/css/pure.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+
+  
+  <link rel="alternate" href="/atom.xml" title="囧克斯" type="application/atom+xml">
+  
+  
+  <link rel="icon" href="/favicon.ico">
+  
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+<body>
+  <script>(() => { if ((new Date().getHours() + 6) % 24 < 12) document.body.classList.add('dark-mode') })()</script>
+
+  <div class="dark-mode-helper"></div>
+
+  <div id="wrapper">
+
+    <div id="header">
+      <h1>
+        <a href="/" title="囧克斯">
+          囧克斯
+        </a>
+      </h1>
+      <p class="description">
+        这里是勾三股四的家
+      </p>
+    </div>
+
+    <div id="nav" class="pure-menu pure-menu-open pure-menu-horizontal">
+      <ul>
+        
+        <li>
+          <a href="/all-demos/">
+            线上
+          </a>
+        </li>
+        
+        <li>
+          <a href="/all-slides/">
+            线下
+          </a>
+        </li>
+        
+        <li>
+          <a href="/about/">
+            关于
+          </a>
+        </li>
+        
+        <li><a href="/archives">归档</li>
+      </ul>
+    </div>
+
+    <div id="main">
+<div class="content">
+  <h2>
+    <a href="/blog/git-commit/">
+      [译]如何撰写 Git 提交信息
+    </a>
+  </h2>
+  
+  <p><mark>译自：<a target="_blank" rel="noopener" href="https://chris.beams.io/posts/git-commit/">https://chris.beams.io/posts/git-commit/</a></mark></p>
+<hr>
+<p><img src="https://imgs.xkcd.com/comics/git_commit.png" alt=""></p>
+<h3 id="介绍：为什么好的提交信息非常重要"><a href="#介绍：为什么好的提交信息非常重要" class="headerlink" title="介绍：为什么好的提交信息非常重要"></a>介绍：为什么好的提交信息非常重要</h3><p>如果你浏览任何 Git 仓库的日志，你可能会发现那些提交信息多少有些<a target="_blank" rel="noopener" href="http://dict.cn/mess">混乱</a>。比如，看看这些我早年提交给 Spring 的<a target="_blank" rel="noopener" href="https://github.com/spring-projects/spring-framework/commits/e5f4b49?author=cbeams">精品</a>：</p>
+<pre><code>$ git log --oneline -5 --author cbeams --before &quot;Fri Mar 26 2009&quot;
+
+e5f4b49 Re-adding ConfigurationPostProcessorTests after its brief removal in r814. @Ignore-ing the testCglibClassesAreLoadedJustInTimeForEnhancement() method as it turns out this was one of the culprits in the recent build breakage. The classloader hacking causes subtle downstream effects, breaking unrelated tests. The test method is still useful, but should only be run on a manual basis to ensure CGLIB is not prematurely classloaded, and should not be run as part of the automated build.
+2db0f12 fixed two build-breaking issues: + reverted ClassMetadataReadingVisitor to revision 794 + eliminated ConfigurationPostProcessorTests until further investigation determines why it causes downstream tests to fail (such as the seemingly unrelated ClassPathXmlApplicationContextTests)
+147709f Tweaks to package-info.java files
+22b25e0 Consolidated Util and MutableAnnotationUtils classes into existing AsmUtils
+7f96f57 polishing
+</code></pre><p><a target="_blank" rel="noopener" href="http://dict.cn/Yikes">呀</a>，比较一下这个仓库<a target="_blank" rel="noopener" href="https://github.com/spring-projects/spring-framework/commits/5ba3db?author=philwebb">最近的提交</a>：</p>
+<pre><code>$ git log --oneline -5 --author pwebb --before &quot;Sat Aug 30 2014&quot;
+
+5ba3db6 Fix failing CompositePropertySourceTests
+84564a0 Rework @PropertySource early parsing logic
+e142fd1 Add tests for ImportSelector meta-data
+887815f Update docbook dependency and generate epub
+ac8326d Polish mockito usage
+</code></pre><p>你更喜欢读哪个呢？</p>
+  <p class="more">
+    <a href="/blog/git-commit/">
+      阅读剩余部分...
+    </a>
+  </p>
+  
+</div>
+
+<div class="content">
+  <h2>
+    <a href="/blog/principles-for-c-programming/">
+      [译]C 程序的原则
+    </a>
+  </h2>
+  
+  <p><mark>译自：<a target="_blank" rel="noopener" href="https://drewdevault.com/2017/03/15/How-I-learned-to-stop-worrying-and-love-C.html">Principles for C programming</a></mark></p>
+<p>按照 Doug Gwyn 的话说：“Unix 不会阻止你做愚蠢的事情，因为那会同样阻止你做聪明的事情”。C 是一个非常强大的工具，但使用它的时候需要非常小心和<a target="_blank" rel="noopener" href="http://dict.cn/discipline">自律</a>。学习这些纪律是绝对值得的，因为 C 是所有程序语言中最优秀的。一个自律的 C 程序员将会……</p>
+<p><strong>喜欢可维护性</strong>。不要在不必要的地方自作聪明。取而代之的是，找出最简单最易懂的满足需求的方案。诸如性能之类考量是放在第二位的。你应该为你的代码做一个性能预算，并自在的支配它。</p>
+<p>随着你对这门语言越来越<a target="_blank" rel="noopener" href="http://dict.cn/proficient">了解</a>，掌握了越来越多能够从中获益的特性，你也应该学会什么时候不能使用它们。相比用到了很多新奇的方式去解决问题，易于<a target="_blank" rel="noopener" href="http://dict.cn/novice">新手</a>理解是更重要的。最好是让一个新手理解你的代码并从中有所收获。像你<a target="_blank" rel="noopener" href="http://dict.cn/circa">大概</a>去年就在维护它一样去撰写代码。</p>
+<p><strong>避免使用魔法</strong>。不要使用宏 (macros)——尽管用它定义常量是没问题的。不要使用 typedef 来隐藏指针或回避撰写“结构”。避免撰写复杂的抽象。保持你的构建系统简单透明。不要因为一个愚蠢的 hacky 的<a target="_blank" rel="noopener" href="http://dict.cn/crap">废物</a>解决问题的方式酷炫就使用它。你的代码在行为<a target="_blank" rel="noopener" href="http://dict.cn/underlying">之下</a>应该是明显的，甚至不需要上下文。</p>
+<p>C 最大的优势之一就是透明和简单。这应该被信奉，而不是被<a target="_blank" rel="noopener" href="http://dict.cn/subverted">颠覆</a>。但是 C 的优良传统是给你足够的空间施展自己，所以你可以为了一些魔术般的目的使用它。但最好还是不要这样，做个<a target="_blank" rel="noopener" href="http://dict.cn/muggle">麻瓜</a>挺好的。</p>
+<p><strong>辨识并回避危险的模式</strong>。不要使用固定尺寸的 buffers (有人指出这种说法并不是完全正确。我之前打草稿的时候提到了这些，但还是删掉了)——始终计算你需要分配的空间。阅读你使用的函数的 man 手册并掌握他的成功有出错模式。立刻把不安全的用户输入转换为<a target="_blank" rel="noopener" href="http://dict.cn/sanitized">干净</a>的 C 结构。如果你之后会把这些数据展现给用户，那么尽可能把 C 结构保持到最后。要学会在使用例如 strcat 的敏感函数时多加留意。</p>
+<p>撰写 C 有的时候像握着一把枪。枪是很重要的工具，但是和枪有关的事故都是非常糟糕的。你对待枪要非常小心：不要用枪指着任何你喜爱的东西，要有好的用枪<a target="_blank" rel="noopener" href="http://dict.cn/discipline">纪律</a>，把它当作始终上膛一样谨慎。而就像枪善于拿来打孔一样，C 也善于用来撰写内核。</p>
+<p><strong>用心组织代码。</strong>永远不要把代码写到 header 里。永远不要使用 <code>inline</code> 关键字。把独立的东西分开写成不同的文件。<a target="_blank" rel="noopener" href="http://dict.cn/liberally">大量</a>使用静态方法组织你的逻辑。用一套编码规范让一切都有足够的<a target="_blank" rel="noopener" href="http://dict.cn/breathing%20room">空间</a>且易于阅读。当目的<a target="_blank" rel="noopener" href="http://dict.cn/self-evident">显而易见</a>的情况下使用单字符变量名，反之则使用<a target="_blank" rel="noopener" href="http://dict.cn/descriptive">描述性</a>的变量名。</p>
+<p>我喜欢把我的代码组织成目录，每个目录实现一组函数，每个函数有属于自己的文件。这些文件通常会包含很多静态函数，但是它们全部用于组织这个文件所要实现的行为。写一个 header 允许这个模块被外部访问。并使用 Linux 内核编码规范，<a target="_blank" rel="noopener" href="http://dict.cn/god%20dammit">该死</a>。</p>
+<p><strong>只使用标准的特性</strong>。不要把平台假设为 Linux。不要把编译器假设为 gcc。不要把 libc 假设为 glibc。不要把架构假设为 x86 的。不要把核心工具假设为 GNU。不要定义 <code>_GNU_SOURCE</code>。</p>
+<p>如果你一定要使用平台相关的特性，为这样的特性描述一个接口，然后撰写各自平台相关的支持代码。在任何<a target="_blank" rel="noopener" href="http://dict.cn/circumstances">情况</a>下都不要使用 gcc 扩展或 glibc 扩展。GNU 是<a target="_blank" rel="noopener" href="http://dict.cn/blight">枯萎的</a>，不要让它<a target="_blank" rel="noopener" href="http://dict.cn/infect">传染</a>到你的代码。</p>
+<p><strong>使用<a target="_blank" rel="noopener" href="http://dict.cn/discipline">严谨</a>的工作流</strong>。也要有严谨的版本控制方法。撰写提交记录的时候要<a target="_blank" rel="noopener" href="http://dict.cn/thoughtful">用心</a>——在第一行简短解释变动，然后在扩展提交记录中加上改变它的<a target="_blank" rel="noopener" href="http://dict.cn/justification">理由</a>。在 feature 分支上工作要明确定义目标，不要包含和这个目标不相关的改动。不要害怕在 rebase 时编辑你的分支的历史，它会让你的改动展示得更清晰。</p>
+<p>当你稍后不得不回退你的代码时，你将会感激你之前详尽撰写的提交记录。其他人和你的代码互动时也同样会心存感激。当你看到一些愚蠢的代码时，也可以知道这个<a target="_blank" rel="noopener" href="http://dict.cn/bastard">白痴</a>当时是怎么想的，尤其是当这个<a target="_blank" rel="noopener" href="http://dict.cn/bastard">白痴</a>是你自己的时候。</p>
+<p><strong>严格测试和<a target="_blank" rel="noopener" href="http://dict.cn/review">回顾</a></strong>。找出你的改动可能会经过的代码路径。测试每条路径的行为是正确的。给它不正确的输入。给它“永远不可能发生”的输入。对<a target="_blank" rel="noopener" href="http://dict.cn/error-prone">有错误倾向</a>的模式格外小心。寻找可以简化代码的地方并让过程变得更清晰。</p>
+<p>接下来，把你的改动交给另外一个人进行<a target="_blank" rel="noopener" href="http://dict.cn/review">回顾</a>。这个人应该运用相同的程序并签署你的改动。而且<a target="_blank" rel="noopener" href="http://dict.cn/review">回顾</a>要<a target="_blank" rel="noopener" href="http://dict.cn/discipline">严格</a>，标准始终如一。<a target="_blank" rel="noopener" href="http://dict.cn/review">回顾</a>的时候应该想着，如果由于这些代码出了问题，自己会<a target="_blank" rel="noopener" href="http://dict.cn/be%20your%20ass%20on%20the%20line">感到耻辱</a>。</p>
+<p><strong>从错误中学习</strong>。首先，修复 bug。然后，修复实际的 bug：你的流程允许里这个错误的发生。拉<a target="_blank" rel="noopener" href="http://dict.cn/review">回顾</a>你代码的人讨论——这是你们共同的过错。严格的检查撰写、<a target="_blank" rel="noopener" href="http://dict.cn/review">回顾</a>和部署这些代码的流程，找出<a target="_blank" rel="noopener" href="http://dict.cn/root%20cause">根源</a>所在。</p>
+<p>解决方案可以简单，比如把 strcat 加入到你的触发“认真回顾”<a target="_blank" rel="noopener" href="http://dict.cn/reflex">条件反射</a>的函数列表。它可以通过电脑进行静态分析，帮你检测到这个问题。可能这些代码需要<a target="_blank" rel="noopener" href="http://dict.cn/refactored">重构</a>，这样找出问题变得简单容易。疏于避免未来的<a target="_blank" rel="noopener" href="http://dict.cn/fuck-up">错误</a>才是真的<a target="_blank" rel="noopener" href="http://dict.cn/fuck-up">大错</a>。</p>
+<hr>
+<p>重要的是记住规则就是用来打破的。可能有些情况下，不被鼓励的行为是有用的，被鼓励的行为是应该<a target="_blank" rel="noopener" href="http://dict.cn/disregarded">被忽视的</a>。你应该<a target="_blank" rel="noopener" href="http://dict.cn/strive">力争</a>把这些情况当作例外而不是<a target="_blank" rel="noopener" href="http://dict.cn/norm">常态</a>，并当它们发生时仔细的<a target="_blank" rel="noopener" href="http://dict.cn/justify">证明</a>它们。</p>
+<p>C 是狗屎。我爱它，并希望更多的人可以学到我做事的方式。祝好运！</p>
+
+  
+</div>
+
+<div class="content">
+  <h2>
+    <a href="/blog/vue-2-is-here/">
+      Vue 2.0 来了！
+    </a>
+  </h2>
+  
+  <p>终于发布了！</p>
+<p>原文：<a target="_blank" rel="noopener" href="https://medium.com/the-vue-point/vue-2-0-is-here-ef1f26acf4b8#.6r9xjmu6x">https://medium.com/the-vue-point/vue-2-0-is-here-ef1f26acf4b8#.6r9xjmu6x</a></p>
+<p>今天我非常兴奋的官宣 Vue.js 2.0 的发布：Ghost in the Shell。历经 8 个 alpha 版本、8 个 beta 版本和 8 个 rc 版本 (矮油好巧！)，Vue.js 2.0 已经为生产环境准备好了！我们的官方教程 <a target="_blank" rel="noopener" href="https://vuejs.org/guide/">vuejs.org/guide</a> 也已经全面更新。</p>
+<p>2.0 的工作自今年 4 月启动以来，<a target="_blank" rel="noopener" href="https://github.com/orgs/vuejs/people">核心团队</a>为 API 设计、bugfix、文档、类型声明做出了很重要的贡献，社区中的同学们也反馈了很多有价值的 API 建议——在此为每一位参与者致以大大的感谢！</p>
+  <p class="more">
+    <a href="/blog/vue-2-is-here/">
+      阅读剩余部分...
+    </a>
+  </p>
+  
+</div>
+
+<div class="content">
+  <h2>
+    <a href="/blog/weex-open-source-4-months/">
+      Weex 近 4 个月的开源之路
+    </a>
+  </h2>
+  
+  <p><mark>本文早些时候发表在 weexteam 的博客 <a target="_blank" rel="noopener" href="https://github.com/weexteam/article/issues/73">https://github.com/weexteam/article/issues/73</a></mark></p>
+<p>仅从我个人角度跟大家分享一下自己参与 Weex 开源这几个月以来的感受，中间可能会有写观点是偏颇的或者片面的，希望大家指正，另外不论怎样，这些都是我心里真实的想法和感受。</p>
+<p><a target="_blank" rel="noopener" href="https://camo.githubusercontent.com/d0c177d907349f637ff7128ff4cf3ca51ec892da/687474703a2f2f696d67312e746263646e2e636e2f4c312f3436312f312f63643261353863303665336637363332386239623930666432383932623233386631646665326466"><img src="https://camo.githubusercontent.com/d0c177d907349f637ff7128ff4cf3ca51ec892da/687474703a2f2f696d67312e746263646e2e636e2f4c312f3436312f312f63643261353863303665336637363332386239623930666432383932623233386631646665326466" alt="image"></a></p>
+<h3 id="为什么选择开源"><a href="#为什么选择开源" class="headerlink" title="为什么选择开源"></a>为什么选择开源</h3><p>有两个关键字：加速、共赢</p>
+<p>我们提出来要开源的时候，在网上被很多人质疑过。有人质疑说这是个“KPI项目”，作者折腾完要“弃坑”了，所以就把它开源了；也有人质疑它的成色，也有人质疑“电商”的标签，是不是只有你们阿里用得到，别人都不太用得到。</p>
+<p>我觉得开源最大的意义在于找到志同道合的人做出更伟大的事情，如果我们只是为了“弃坑”，那显然在4个月之前我们的工作就完成了，也不会有接下来的研发迭代、宣传、开发者服务和社区经营——最起码我自己从 Weex 还没有开源甚至还没有这个名字的时候就参与其中，一直参与到现在。我喜欢这个项目，也愿意接受这个项目带给我的各种刺激和挑战，他一直让我不断进步，有满满的收获。</p>
+<p>话说回来，我确实看到很多社区的开源项目，自己厂的、友商的、个人的，确实有“弃坑”的意味，感觉源代码丢到 github 就没事了。我觉得这种开源不是没有价值，但价值是约等于 0 的。这段时间关注奥运会，也一下子想起奥林匹克之父顾拜旦老人家的一句名言：“生活的本质不在于索取，而在于奋斗！”我觉得这句话在开源社区更是如此。把代码开源出去然后撒手不管等着别人来捡，这实际上是索取，是没有意义的。关注开源项目的开发者表面上是索取，但是开发者提交的每一个 pull request、每一条 issue、甚至每一句评论和吐槽，也是在为项目做贡献。作为开源项目的参与者或作者，一定要在这方面有一个健康的心态，才能真正做出好的项目。</p>
+<p>我还记得自己 2010 年参加 WebRebuild 交流会的时候，<a target="_blank" rel="noopener" href="http://www.slideshare.net/josephj/webrebuild">蒋定宇 的分享</a> 让我印象深刻，他其中一句话我到今天还记得：</p>
+<blockquote>
+<p>“最好的 solution 是讨论出来的”</p>
+</blockquote>
+<p>所以如果想做出优秀的开源项目，除了摆正自己的心态，还要有一颗和别人 (甚至竞争对手和讨厌你的人) 一起共赢的心。尽可能团结一切可以团结的力量。让这个项目变得更好！</p>
+<h3 id="筹备过程：从心态到模式的全面转变"><a href="#筹备过程：从心态到模式的全面转变" class="headerlink" title="筹备过程：从心态到模式的全面转变"></a>筹备过程：从心态到模式的全面转变</h3><p>团队内部从去年双十一之后宣布开源计划，到从4月份 QCon 开始邀请开发者陆续参与进来，再到6月底正式全面开源，一共经历了大概了大半年的时间。团队是把 Weex 开源这件事情当做一个工程来认真对待的，这里可以跟大家分享一些我们背后做的准备工作：</p>
+<h4 id="例行公事：脱敏、回避公司账号"><a href="#例行公事：脱敏、回避公司账号" class="headerlink" title="例行公事：脱敏、回避公司账号"></a>例行公事：脱敏、回避公司账号</h4><p>这是集团很早就定下来的规矩，我理解这件事情更大程度上是“怕出事”，不要不小心把不该公开的信息公开出去导致集团不必要的商业损失。我觉得这理所当然，同时这只是个最低要求。</p>
+<p>当然集团今天对待开源已经不是“怕出事”这么简单了，我自己能够感觉到，集团新成立的开源委员会，除了通过这个流程帮助开发者打消不必要的顾虑之外，更多的希望我们能够通过开源的方式让一件事加速和共赢。这是我参与 Weex 开源过程中明显感受到和之前不一样的地方。</p>
+<h4 id="开放的工作环境和工作流程：issues、异步沟通的习惯、熟悉远程沟通的模式"><a href="#开放的工作环境和工作流程：issues、异步沟通的习惯、熟悉远程沟通的模式" class="headerlink" title="开放的工作环境和工作流程：issues、异步沟通的习惯、熟悉远程沟通的模式"></a>开放的工作环境和工作流程：issues、异步沟通的习惯、熟悉远程沟通的模式</h4><p>除了上面的“硬性”准备工作之外，对 Weex 团队更大的挑战在于工作方式的转变。在阿里有句土话，“能电话不邮件”，讲求的是密切沟通、快速响应，阿里的很多团队也是因此具有其他团队不曾想象的做事决心和执行力。在开源社区，面对海量的开发者一起参与，还要做好开发者服务，这种工作方式是不合适的。我们需要大量依赖线上的、异步的、远程的、开放的工作模式。</p>
+<p>在团队内部，我们有意识的把所有的工作讨论和任务安排，能公开出来的，就全部公开在 github issue 里。随着团队成员的增多，我们的团队有杭州、北京、广州的，大家分散办公，然后在线上沟通，把不需要当面或同步沟通的工作大方的区分出来。表面上看，异步沟通增加了团队的沟通成本，但实际上，异步沟通让能够参与进来的人变多了，而且不仅限于杭州的某一个办公区或会议室的人，彼此也可以更自在灵活的安排自己的工作和行程。这给了项目组很多想象和发挥的空间。</p>
+<p><a target="_blank" rel="noopener" href="https://camo.githubusercontent.com/9e1cf594b80c7fd28077c85fee4d8d68715d9b7a/687474703a2f2f696d67342e746263646e2e636e2f4c312f3436312f312f37616433356434303934613538633062376236306533613862643939303166373761343562323037"><img src="https://camo.githubusercontent.com/9e1cf594b80c7fd28077c85fee4d8d68715d9b7a/687474703a2f2f696d67342e746263646e2e636e2f4c312f3436312f312f37616433356434303934613538633062376236306533613862643939303166373761343562323037" alt="image"></a></p>
+<p>甚至不只是 Weex 这个项目，我希望集团层面都可以更多的尝试远程协作和异步沟通，这是一种有魔力的体验。</p>
+<h4 id="培养兴趣和认同感，把开源当做马拉松，分配好体能，不能一蹴而就"><a href="#培养兴趣和认同感，把开源当做马拉松，分配好体能，不能一蹴而就" class="headerlink" title="培养兴趣和认同感，把开源当做马拉松，分配好体能，不能一蹴而就"></a>培养兴趣和认同感，把开源当做马拉松，分配好体能，不能一蹴而就</h4><p>在筹备期间，我有幸和集团的几位开源的前辈聊到过我们的开源设想，印象最深刻的一个问题就是：</p>
+<blockquote>
+<p>“你是否确定，如果有一天你的 KPI 里没有这个项目了，甚至你有一天不在阿里工作了，你会发自内心的去投入和维护它吗？”</p>
+</blockquote>
+<p>我听完觉得前辈把话说到我们心坎儿里了。项目组核心团队里的每一个人，是把 Weex 简单当一份工作，还是发自内心的认同，做出来的东西我相信是完全不一样的。你会全职参与到一个项目里，还是兼职，有的时候兼职的效果更好，更健康。尤其是当我们从长计议的时候，对这几方面更加有感触。我们有大量的已经开源的项目，更新频度是大于半年的。这样的项目出发点都是很好的，但是结果很可惜。</p>
+<p>我们在后期组建团队让更多人参与进来的时候特别思考了这个问题，今天在集团内部，Weex 的很多东西都是业务的同学在帮忙打理的。从项目组的角度，工作压力得到了分担和缓解；从个人的角度，在支持业务的同时，能够把一些比较解耦的工作拿来业余时间独自承担，松散的参与一些技术讨论，有自己的收获。这是两全其美的事情。</p>
+<p>另外团队的既定工作安排是非饱和的，我们鼓励团员主动寻找值得参与和付出的地方，把项目的方方面面打理好，毕竟项目是完全对外的嘛，要“出去见人”总得把自己“打扮的漂漂亮亮的”。这是每个人都会有的心态。坦白讲这方面我们还不算做得特别好。所以有很多工作要继续做，也有很多空间给到团队。</p>
+<h4 id="欢迎把分散的工作内容到不同的团队和个人"><a href="#欢迎把分散的工作内容到不同的团队和个人" class="headerlink" title="欢迎把分散的工作内容到不同的团队和个人"></a>欢迎把分散的工作内容到不同的团队和个人</h4><p>我们主动联系了很多和 Weex 有共同志向或相关联的团队和事业部，大家在不同的角度能够看到更多不同层次的问题，也有各自擅长的领域和空间。我们希望在 Weex 项目组之外，把一个围绕着 Weex 的生态建立起来，他会让 Weex 变得更丰富饱满，更有意义，更有价值。</p>
+<p>今天在阿里，Weex 杭州的团队已经只是参与 Weex 的所有人中一小部分了，不同的业务方，不同的技术层次上，都有不同的小伙伴在参与。</p>
+<p><a target="_blank" rel="noopener" href="https://camo.githubusercontent.com/d70e804ab573c38736dd62cbf5c1a6b0531ce78d/687474703a2f2f696d67332e746263646e2e636e2f4c312f3436312f312f38333536393464356539613230303030376462643933303166663031383262333362353539303863"><img src="https://camo.githubusercontent.com/d70e804ab573c38736dd62cbf5c1a6b0531ce78d/687474703a2f2f696d67332e746263646e2e636e2f4c312f3436312f312f38333536393464356539613230303030376462643933303166663031383262333362353539303863" alt="image"></a></p>
+<h4 id="团队选择-6-30-正式开源"><a href="#团队选择-6-30-正式开源" class="headerlink" title="团队选择 6-30 正式开源"></a>团队选择 6-30 正式开源</h4><p>经过两个多月的筹备，我们于6月30日晚把项目正式开源了，我们在微博上做了个<a target="_blank" rel="noopener" href="http://weibo.com/5897827106/DCFtruTbc">简单的宣传</a>，但实际上团队当时内部压力是蛮大的，大家都很辛苦，所以我们搞了个小的 party，煞有介事的搬来一个“重大决策按钮”，很有仪式感的让大家一起把这个按钮按下去，把项目开源出来，尽量把这个过程搞得轻松愉悦一点。</p>
+<p>开源之前大概就是这样，团队紧接着要面对的，是开源之后的漫长之路。</p>
+<h3 id="开源之后：更好的服务开发者"><a href="#开源之后：更好的服务开发者" class="headerlink" title="开源之后：更好的服务开发者"></a>开源之后：更好的服务开发者</h3><p>我总结的开源社区经营就是一个“帽子戏法”的过程，就像开淘宝店是一样的，有三顶帽子你需要轮流得把他带到自己头上：</p>
+<p>如果你要开店，那么你首先需要备货，拥有用户满意的商品；然后找入口买流量，让别人看到你的商品；用户发现你的商品之后，你要有很好的承接和售后服务；等到商品卖出去了，用户肯定会给你沟通、评价和建议，这会作为你拥有更好商品的筹码。每个环节之间都是紧密联系的，哪个做得不够平衡都会很痛苦。</p>
+<p><a target="_blank" rel="noopener" href="https://camo.githubusercontent.com/c82a13386a0388932fdfd918d3477e00829ee370/687474703a2f2f696d67322e746263646e2e636e2f4c312f3436312f312f35373434396133323338313262643239306261303564646638343534393231623136306565376336"><img src="https://camo.githubusercontent.com/c82a13386a0388932fdfd918d3477e00829ee370/687474703a2f2f696d67322e746263646e2e636e2f4c312f3436312f312f35373434396133323338313262643239306261303564646638343534393231623136306565376336" alt="image"></a></p>
+<p>做开源项目也是一样，首先你要做出好的技术产品；然后通过各种技术宣讲机会介绍给别人；当开发者来到项目的首页或 github 仓库时，要做好服务，帮助开发者解答参与过程中的疑惑；然后在这个过程中收集到用户的反馈和意见再做产品的迭代改进。</p>
+<p><a target="_blank" rel="noopener" href="https://camo.githubusercontent.com/3fdfcb3e7eb0c1c5553e08859eda5a61bb83f633/687474703a2f2f696d67312e746263646e2e636e2f4c312f3436312f312f33366335306634326533306230363665653334636638633466633733663966646233616261636362"><img src="https://camo.githubusercontent.com/3fdfcb3e7eb0c1c5553e08859eda5a61bb83f633/687474703a2f2f696d67312e746263646e2e636e2f4c312f3436312f312f33366335306634326533306230363665653334636638633466633733663966646233616261636362" alt="image"></a></p>
+<h4 id="利用-QCon-等机会推广宣传"><a href="#利用-QCon-等机会推广宣传" class="headerlink" title="利用 QCon 等机会推广宣传"></a>利用 QCon 等机会推广宣传</h4><p>包括4月份我们参与的 QCon 北京在内，团队先后参加了大大小小的很多场技术交流分享活动，同时在线上我们也在陆续写一些介绍 Weex 的技术文章，在宣传 Weex 的技术设想和理念的同时，也鼓励开发者更多的参与进来。</p>
+<h4 id="解答问题时遇到的问题"><a href="#解答问题时遇到的问题" class="headerlink" title="解答问题时遇到的问题"></a>解答问题时遇到的问题</h4><p>现在回想起来，最早接触开发者的时候，团队对自己还是太过自信了，心想我们一起研发并且准备了这么久，开发者过来看过一定觉得很厉害。没想到遇到了大家的各种挑战。而且被问到最多的问题是完全没有想到的：</p>
+<blockquote>
+<p>“怎么让程序跑起来？”</p>
+</blockquote>
+<p>然后就发现了一堆问题：比如 Windows 环境下的命令行问题、路径分隔符问题、Node 版本问题、Android 环境翻墙的问题、npm/cocoapods 镜像的问题、NDK 的问题、x86 模拟器的问题等等……</p>
+<p>这里面有些是团队自己知道的，只是觉得太顺理成章了，没觉得应该写清楚，结果就让开发者们误解了；有些确实是自己的工作环境很单一，而社区里开发者们的工作环境是千差万别的；还有些是交代得不够清楚，明明知道也写了，但是没能让开发者很好的充分理解。</p>
+<p>后来我才留意到技术社区里一个流传很久的笑话：</p>
+<blockquote>
+<p>“所有的开源软件都有一个特点：根据官方文档的步骤是跑不起来的。”</p>
+</blockquote>
+<p>原来 Landing Page、README 和 文档这么重要，这给了团队当头一棒，大家认为最简单的问题都折腾得很狼狈。看起来搞开源真的“不是你一片赤诚就能够面对的”</p>
+<h4 id="经历了从-issue-邮件爆仓到-QQ-群再到-gitter-的过程"><a href="#经历了从-issue-邮件爆仓到-QQ-群再到-gitter-的过程" class="headerlink" title="经历了从 issue 邮件爆仓到 QQ 群再到 gitter 的过程"></a>经历了从 issue 邮件爆仓到 QQ 群再到 gitter 的过程</h4><p>最早期我们和开发者所有的沟通基本都是通过 github issues 来进行的，这也蛮正常的，看人家开源项目都在 issues 上讨论的火热，好有气氛好羡慕，巴不得有人在我们自己的 issues 上多聊个两句，哪怕是闲聊，总比冷冷清清无人问津的好。</p>
+<p>后来发现完全不是我们想象的那样，我们真的是想多了，实际情况是各种 issue 洪水猛兽版袭来，大家的 github 账号默认都是可以收到每个 issue 的邮件提醒的，然后瞬间邮箱就被炸瘫痪了，正常的研发迭代也被应付这些 issue 变得支离破碎。</p>
+<p>后来我们发现其实 issue 其实并不都适合处理所有的问题，有些使用上的小问题，在 issue 上几个来回讨论清楚，一个小时甚至一上午就这样过去了。而且问题多了之后，把 issues 上正常的工作内容讨论和安排都给淹没了。</p>
+<p>这个时候就有非常热心的开发者帮我们建立了 QQ 群、微信群等社区，这种沟通方式更直接简单，回合更快，开发者遇到一个编译不通过的问题，问题抛出来在线等个几分钟就有人帮忙回应了。这样 github issues 的压力暂时得到了缓解。</p>
+<p>后来经过几个同学的调研，我们最终把疑难杂症的解答和及时的线上讨论放到了 gitter 上，把需要跟进的事项、发现的 bug、值得追踪探讨的话题留在了 github issues 里。这样差不多是今天团队和社区开发者们协作的最终方式了。</p>
+<h4 id="根据开发者参与程度分场景提供不一样的支持"><a href="#根据开发者参与程度分场景提供不一样的支持" class="headerlink" title="根据开发者参与程度分场景提供不一样的支持"></a>根据开发者参与程度分场景提供不一样的支持</h4><p>我们根据开发者的参与度划分了几个维度：随便看看、试一试、用起来、交流互动、参与贡献。背后的需求和服务方式应该是不一样的</p>
+<ul>
+<li>如果开发者只是想先来了解个概念，我们要做的就是做个漂漂亮亮的欢迎页、还有 README，把主要功能、特点和适用范围交代清楚</li>
+<li>如果开发者看过之后觉得有兴趣尝试一下，我们要准备的是入门教程、预览工具、代码示例和 cli 入口集成工具</li>
+<li>如果开发者尝试过之后觉得不错，准备在实际工作中使用 Weex，那么我们要提供的东西就更复杂，包括详实的参考文档、丰富的工程示例、必备的所有工程工具集、还有常见问题的整理等等，更重要的是，要有稳定的版本。</li>
+<li>如果开发者自己用过之后，还乐于和众多其他 Weex 的开发者交流互动，我们要提供的就是 github、gitter 这样的平台，方便大家一起管理事物、及时解答和探讨各种问题，必要的情况下，我们会主动和我们的用户建立联系，了解更多大家平时不一定愿意主动说出来的观点和细节。</li>
+<li>最后，对于有能力和意愿为 Weex 做出更大贡献的开发者，我们需要提供更完整和演进的开发规范、技术约定和质量保障机制，让大家更低成本的参与贡献，同时还可以保障基本的代码质量和工程质量。</li>
+</ul>
+<h4 id="文章和讨论逐步沉淀"><a href="#文章和讨论逐步沉淀" class="headerlink" title="文章和讨论逐步沉淀"></a>文章和讨论逐步沉淀</h4><p>随着 Weex 社区参与者的增多，我们也不需要鼓励大家有事没事写个 issue 打肿脸充胖子了，而是比较自然而合理的做各种事情。我们看到两个很好的势头：</p>
+<p>一个是开发者在 issues 里参与了很多基于 proposal 的新功能讨论，之前团队在迭代新功能的时候是自行设计排期研发实现的，逐渐的，我们把整个技术设计的过程也透明出来并且有意识的在这个阶段放慢节奏，让这个功能经过足够充分的讨论之后，再付诸实现；</p>
+<p>另一个是很多开发者开始在集团内网和 github articles 下写了越来越多对 Weex 的理解和相关讨论，很多文章团队自己看完都私下表示开发者们写得比我自己写得都好 [偷笑]，这也让团队的每一个人更受鼓舞，也更愿意跟社区分享自己的想法和真知灼见。</p>
+<p>这两方面不论哪一方面，对 Weex 社区来说都是很好的迹象，也都一定程度鼓舞了 Weex 团队本身做得更好！</p>
+<h4 id="有秩序分版本迭代和-release，因为有了上述的影响，最近的迭代也加快了节奏"><a href="#有秩序分版本迭代和-release，因为有了上述的影响，最近的迭代也加快了节奏" class="headerlink" title="有秩序分版本迭代和 release，因为有了上述的影响，最近的迭代也加快了节奏"></a>有秩序分版本迭代和 release，因为有了上述的影响，最近的迭代也加快了节奏</h4><p>就像开源之后第一段提到的，Weex 团队除了宣传和服务开发者之外，还在保持有条不紊的版本迭代。去年 Weex 初期启动的时候，是一个7人左右的团队，通过不那么标准的 Scrum 的敏捷方式快速迭代。双十一过后，团队的规模扩大了，同时也有了非常专业的项目经理为团队保驾护航。我们基本保持着每个月一次迭代，每两个迭代发布一个版本的节奏，所以我们于5月份发布了0.5版本，7月份发布了0.6版本。</p>
+<p>从0.7版本开始，随着团队默契度的提升，再加上整个社区逐步成型，也通过 proposal 讨论等机会给了团队很多回馈，我们加快了迭代频率，现在每个月都会完成一个新的版本，所以本月初我们发布了0.7版本。目前0.8版本也已经启动，正在紧锣密鼓的迭代过程中。</p>
+<p>同时今年的双十一也要邻近了，团队针对今年双十一提出了更高的目标，具体内容这里不详细提及了，先卖个关子，请大家拭目以待。</p>
+<h3 id="未来的努力方向"><a href="#未来的努力方向" class="headerlink" title="未来的努力方向"></a>未来的努力方向</h3><p>今天，Weex 在近4个月的开源之路后，累计了5000+个star，并且保持着比较高的迭代速度和社区活跃度。我们在欣喜的同时，更多的是感恩，觉得自己应该对得起大家的这份关注和信任，继续做出更好的产品给大家。除了之前提到的各方面细节和感触，将来我们还有很多地方值得改进</p>
+<ol>
+<li>首先是把文档和网站做得更好，经过项目初期的摸爬滚打之后，我们对文档和网站本身也有了新的认识，同时我们有了更多的精力在这方面，所以未来我们会重新梳理我们的文档和网站，希望以一个更好的面膜提供给广大开发者</li>
+<li>促进交流：除了 github issues 和 gitter，我们希望随着开发者诉求和参与程度的增加不断引入效果更好效率更高的交流和协作方式，比如 Playground 网站、Marketplace 之类的设想目前已经提上了日程</li>
+<li>更透明：除了 proposal 的讨论透明化之外，我们会把整个团队的 Roadmap 也透明化，同时拿出更加民主的决策机制，让所有的开发者一同参与核心团队的决策和迭代计划</li>
+<li>我们希望毫无保留的把我们的心得经验教训全部分享给希望在开源社区有所作为的朋友们，带动更多的开源实践，不论是阿里内部的，还是整个开源社区范围内的</li>
+</ol>
+<h3 id="最后的展望"><a href="#最后的展望" class="headerlink" title="最后的展望"></a>最后的展望</h3><p>借近期参加开源中国源创汇和JSConf的活动，也给了我一个机会从开源经历的角度重新审视了一些自己和团队做的事情。同时 Weex 在 github 的 star 也即将迈过 6000 大关，有一些感触，分享给大家。未来我们会继续努力，用自己的实际行动。</p>
+
+  
+</div>
+
+<div class="content">
+  <h2>
+    <a href="/blog/weex-multi-instance-runtime/">
+      Weex 在 JS Runtime 内的多实例管理
+    </a>
+  </h2>
+  
+  <p><mark>本文早些时候发表在 weexteam 的博客 <a target="_blank" rel="noopener" href="https://github.com/weexteam/article/issues/71">https://github.com/weexteam/article/issues/71</a></mark></p>
+<p>Weex 的技术架构和传统的客户端渲染机制相比有一个显著的差别，就是引入了 JavaScript，通过 JS Runtime 完成一些动态性的运算，再把运算结果和外界进行通信，完成界面渲染等相关操作指令。而客户端面对多个甚至可能同时共存的 Weex 页面时，并没有为每个 Weex 页面提供各自独立的 JS Runtime，相反我们只有一个 JS Runtime，这意味着所有的 Weex 页面共享同一份 JS Runtime，共用全局环境、变量、内存、和外界通信的接口等等。这篇文章会循序渐进的介绍 Weex JS Runtime 这部分的内容，大概的章节设计是这样的：</p>
+<ol>
+<li>为什么需要多实例</li>
+<li>多实例管理面临的挑战</li>
+<li>解决问题的思路</li>
+<li>几个特殊处理的地方</li>
+<li>总结</li>
+</ol>
+<h3 id="为什么在-JS-Runtime-内部手动管理多实例？"><a href="#为什么在-JS-Runtime-内部手动管理多实例？" class="headerlink" title="为什么在 JS Runtime 内部手动管理多实例？"></a>为什么在 JS Runtime 内部手动管理多实例？</h3><p>如果只用一个词来回答，那就是“性能”</p>
+<p>如果要用一段话来回答：手机上的资源是很宝贵的，包括CPU、内存、电量等等，而 Weex 团队从设计初期就决定以页面为单位对产品实现进行划分，一个完整的应用是多个相互独立解耦的页面通过一定的路由规则和链接跳转互联起来组合而成。所以为每个页面都单独提供一份 JS Runtime 代价还是比较昂贵的，这会引起大量的资源开销，手机发烫，反应迟钝，甚至应用或操作系统的崩溃。尤其是在国内一些中低端机型上面，反应尤其明显。</p>
+<p>从另外一个角度讲，我们通过同一个 JS Runtime，可以更直接方便的做一些运行时的资源共享，比如 JS Framework 的初始化过程，只需要应用启动的时候执行一次就可以了，不必每个页面被打开的时候才进行。目前 JS Framework 的启动过程一般会在几百毫秒不等，相当于每个页面打开的时候，这几百毫秒都被节省下来了。</p>
+<h3 id="多实例管理的-JS-Runtime-需要额外关注哪些问题？"><a href="#多实例管理的-JS-Runtime-需要额外关注哪些问题？" class="headerlink" title="多实例管理的 JS Runtime 需要额外关注哪些问题？"></a>多实例管理的 JS Runtime 需要额外关注哪些问题？</h3><p>首先不同的 Weex 页面肯定需要执行各自的 JavaScript 运算，完成各自的 native 指令收发。所以如何避免多个 Weex 页面在同一个 JS Runtime 里相互“打架”就变得至关重要。</p>
+<p>这里的“打架”有以下几个细节：</p>
+<ul>
+<li>数据和状态的记录，能够正确的完成并且不会被其它页面的运算所干扰或截获</li>
+<li>和 native 之间的收发指令或通信，能够准确的调度不同的 native 端页面</li>
+<li>对系统资源的利用，遇到大运算量的页面时，其它页面有机会快速得到响应</li>
+</ul>
+<p>除了“打架”的问题之外，传统 HTML5 页面里，每个 JS Runtime 的生命周期是对应页面本身的生命周期的，相对是个短效的实例，而且一旦页面被关闭，对应这个页面的 JS Runtime 就可以大方的 kill 掉，没有任何后顾之忧；而 Weex 的 JS Runtime 需要在应用被开启之后至始至终存在并不间断工作，所以长期运转的内存管理也变成了一个不得不正视的问题。</p>
+<h3 id="Weex-解决上述问题的过程"><a href="#Weex-解决上述问题的过程" class="headerlink" title="Weex 解决上述问题的过程"></a>Weex 解决上述问题的过程</h3><ul>
+<li>首先，我们会为每个新打开的 Weex 页面创建一个唯一的 instance id</li>
+<li>其次，JS Runtime 里所有的 native 通信接口，不管是发送还是接收，全部需要传递 instance id 作为第一个参数，这样 JS Runtime 和 native 端都可以快速准确的识别并分发给每个 Weex 页面，比如：<ul>
+<li><code>createInstance(id, code, config, data)</code>：创建一个新的 Weex 页面，通过一整段 Weex JS Bundle 的代码，在 JS Runtime 开辟一块新的空间用来存储、记录和运算</li>
+<li><code>sendTasks(id, tasks)</code>：从 JS Runtime 发送指令到 native 端</li>
+<li><code>receiveTasks(id, tasks)</code>：从 native 端发送指令到 JS Runtime</li>
+</ul>
+</li>
+<li>然后，我们根据不同的 instance id 在 JS Runtime 里进行独立的运算和数据、状态记录。这里我们通过 JavaScript 里的闭包原理把不同实例的运算和数据状态管理隔离在了不同的闭包里，达到相互不“打架”的目的。</li>
+</ul>
+<h4 id="初级形态"><a href="#初级形态" class="headerlink" title="初级形态"></a>初级形态</h4><p>形如：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// old version of Weex JS Runtime</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">createInstance</span>(<span class="params">id, code</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> customComponents = &#123;&#125;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">function</span> <span class="title">define</span>(<span class="params">name, definition</span>) </span>&#123;</span><br><span class="line">    <span class="comment">// todo: register a weex component in this Weex instance</span></span><br><span class="line">    ...</span><br><span class="line">    customComponents[name] = definition</span><br><span class="line">    ...</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="function"><span class="keyword">function</span> <span class="title">bootstrap</span>(<span class="params">name</span>) </span>&#123;</span><br><span class="line">    <span class="comment">// todo: start to render this Weex instance from a certain named component</span></span><br><span class="line">    ...</span><br><span class="line">    sendTasks(id, [...])</span><br><span class="line">    ...</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// run</span></span><br><span class="line">  <span class="built_in">eval</span>(code)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>我们在闭包中设置了这么几个东西，保障隔离效果：</p>
+<ol>
+<li><code>define</code>: 用来自定义一个复合组件</li>
+<li><code>bootstrap</code>: 用来以某个复合组件为根结点渲染页面</li>
+</ol>
+<p>这样的话，假设有一个 Weex 页面，它的代码是这样的：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 伪代码，并不能实际运行</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// A Weex JS Bundle File</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// define a component named `foo`</span></span><br><span class="line">define(<span class="string">&#x27;foo&#x27;</span>, &#123;</span><br><span class="line">  type: <span class="string">&#x27;div&#x27;</span>,</span><br><span class="line">  children: [</span><br><span class="line">    &#123; <span class="attr">type</span>: <span class="string">&#x27;text&#x27;</span>, <span class="attr">attr</span>: &#123; <span class="attr">value</span>: <span class="string">&#x27;Hello World&#x27;</span> &#125;&#125;</span><br><span class="line">  ]</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"><span class="comment">// render the page with `foo` component</span></span><br><span class="line">bootstrap(<span class="string">&#x27;foo&#x27;</span>)</span><br></pre></td></tr></table></figure>
+<p>那么 Weex 页面里的 <code>define</code> 和 <code>bootstrap</code> 表面上是全局方法，实际上只会针对当前的 Weex instance 在一个更小的作用域下执行，而不会干扰或污染全局环境或其它 Weex 页面。</p>
+<p>这是我们最初的版本的形态。</p>
+<h4 id="配合更开放的前端包管理工具"><a href="#配合更开放的前端包管理工具" class="headerlink" title="配合更开放的前端包管理工具"></a>配合更开放的前端包管理工具</h4><p>随着 Weex JS Framework 代码的不断演进，功能也逐渐丰富起来，上层的 Weex 页面也写得越来越复杂，之前简单的 <code>define</code> + <code>bootstrap</code> 已经满足不了工程上的需求和设想了。这个时候我们需要引入前端资源包管理的概念，而且拥抱现有的各种成熟的包管理规范和工具。这其中包括 AMD、CMD、CommonJS、ES6 Modules 等等。这个时候 <code>define</code> 和 <code>bootstrap</code> 这两个名字就显得起得有点太大了，尤其是 <code>define</code>，和 AMD 里的语法重叠，所以和很多兼容 AMD 语法的打包工具都会产生冲突。所以我们逐步把这些方法转变成了带有 Weex 特殊前缀的方法：</p>
+<ol>
+<li><code>__weex_define__</code>: <code>define</code> 的别名，用来自定义一个复合组件</li>
+<li><code>__weex_bootstrap__</code>: <code>bootstrap</code> 的别名，用来以某个复合组件为根结点渲染页面</li>
+</ol>
+<p>同时我们可以借助各种打包工具把 Weex 页面拆成多个文件开发和维护，然后打包成一个文件完成发布和运行，以 webpack 为例，上述的例子会打包生成类似：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 伪代码，并不能实际运行</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/******/</span> (<span class="function"><span class="keyword">function</span>(<span class="params">modules</span>) </span>&#123; <span class="comment">// webpackBootstrap</span></span><br><span class="line"><span class="comment">/******/</span>  <span class="comment">// The module cache</span></span><br><span class="line"><span class="comment">/******/</span>  <span class="keyword">var</span> installedModules = &#123;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">/******/</span>  <span class="comment">// The require function</span></span><br><span class="line"><span class="comment">/******/</span>  <span class="function"><span class="keyword">function</span> <span class="title">__webpack_require__</span>(<span class="params">moduleId</span>) </span>&#123;</span><br><span class="line"></span><br><span class="line"><span class="comment">/******/</span>    <span class="comment">// Check if module is in cache</span></span><br><span class="line"><span class="comment">/******/</span>    <span class="keyword">if</span>(installedModules[moduleId])</span><br><span class="line"><span class="comment">/******/</span>      <span class="keyword">return</span> installedModules[moduleId].exports;</span><br><span class="line"></span><br><span class="line"><span class="comment">/******/</span>    <span class="comment">// Create a new module (and put it into the cache)</span></span><br><span class="line"><span class="comment">/******/</span>    <span class="keyword">var</span> <span class="built_in">module</span> = installedModules[moduleId] = &#123;</span><br><span class="line"><span class="comment">/******/</span>      <span class="built_in">exports</span>: &#123;&#125;,</span><br><span class="line"><span class="comment">/******/</span>      id: moduleId,</span><br><span class="line"><span class="comment">/******/</span>      loaded: <span class="literal">false</span></span><br><span class="line"><span class="comment">/******/</span>    &#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">/******/</span>    <span class="comment">// Execute the module function</span></span><br><span class="line"><span class="comment">/******/</span>    modules[moduleId].call(<span class="built_in">module</span>.exports, <span class="built_in">module</span>, <span class="built_in">module</span>.exports, __webpack_require__);</span><br><span class="line"></span><br><span class="line"><span class="comment">/******/</span>    <span class="comment">// Flag the module as loaded</span></span><br><span class="line"><span class="comment">/******/</span>    <span class="built_in">module</span>.loaded = <span class="literal">true</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">/******/</span>    <span class="comment">// Return the exports of the module</span></span><br><span class="line"><span class="comment">/******/</span>    <span class="keyword">return</span> <span class="built_in">module</span>.exports;</span><br><span class="line"><span class="comment">/******/</span>  &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">/******/</span>  <span class="comment">// expose the modules object (__webpack_modules__)</span></span><br><span class="line"><span class="comment">/******/</span>  __webpack_require__.m = modules;</span><br><span class="line"></span><br><span class="line"><span class="comment">/******/</span>  <span class="comment">// expose the module cache</span></span><br><span class="line"><span class="comment">/******/</span>  __webpack_require__.c = installedModules;</span><br><span class="line"></span><br><span class="line"><span class="comment">/******/</span>  <span class="comment">// __webpack_public_path__</span></span><br><span class="line"><span class="comment">/******/</span>  __webpack_require__.p = <span class="string">&quot;&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">/******/</span>  <span class="comment">// Load entry module and return exports</span></span><br><span class="line"><span class="comment">/******/</span>  <span class="keyword">return</span> __webpack_require__(<span class="number">0</span>);</span><br><span class="line"><span class="comment">/******/</span> &#125;)</span><br><span class="line"><span class="comment">/************************************************************************/</span></span><br><span class="line"><span class="comment">/******/</span> ([</span><br><span class="line"><span class="comment">/* 0 */</span></span><br><span class="line"><span class="comment">/***/</span> <span class="function"><span class="keyword">function</span>(<span class="params"><span class="built_in">module</span>, <span class="built_in">exports</span></span>) </span>&#123;</span><br><span class="line"></span><br><span class="line">  __weex_define__(<span class="string">&#x27;foo&#x27;</span>, &#123;</span><br><span class="line">    type: <span class="string">&#x27;div&#x27;</span>,</span><br><span class="line">    children: [</span><br><span class="line">      &#123; <span class="attr">type</span>: <span class="string">&#x27;text&#x27;</span>, <span class="attr">attr</span>: &#123; <span class="attr">value</span>: <span class="string">&#x27;Hello World&#x27;</span> &#125;&#125;</span><br><span class="line">    ]</span><br><span class="line">  &#125;)</span><br><span class="line"></span><br><span class="line">  __weex_bootstrap__(<span class="string">&#x27;foo&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">/***/</span> &#125;</span><br><span class="line"><span class="comment">/******/</span> ]);</span><br></pre></td></tr></table></figure>
+<p></div></p>
+<h4 id="从-eval-到-new-Function"><a href="#从-eval-到-new-Function" class="headerlink" title="从 eval 到 new Function"></a>从 <code>eval</code> 到 <code>new Function</code></h4><p>之后我们在最终执行 Weex JS Bundle 代码时，从略显简陋的 <code>eval</code> 命令改写成了 <code>new Function</code>，即：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// old version</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">define</span>(<span class="params"></span>) </span>&#123;...&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">bootstrap</span>(<span class="params"></span>) </span>&#123;...&#125;</span><br><span class="line"><span class="built_in">eval</span>(code)</span><br><span class="line"></span><br><span class="line"><span class="comment">// new version</span></span><br><span class="line"><span class="keyword">import</span> &#123; aaa, bbb &#125; <span class="keyword">from</span> <span class="string">&#x27;xxx&#x27;</span> <span class="comment">// place and name your methods as you like</span></span><br><span class="line"><span class="keyword">const</span> fn = <span class="keyword">new</span> <span class="built_in">Function</span>(<span class="string">&#x27;define&#x27;</span>, <span class="string">&#x27;bootstrap&#x27;</span>, code)</span><br><span class="line">fn(aaa, bbb)</span><br></pre></td></tr></table></figure>
+<p>用 <code>new Function</code> 的前几个参数定义了即将执行的 Weex JS Bundle 中“伪装”的几个全局变量或全局方法，然后运行的时候把那些背后的“伪装”传递进去，形式上更灵活，运行时更安全。</p>
+<p>同时也是因为闭包中需要准备的变量和方法也逐渐多起来了，<code>new Function</code> 的写法更便于清晰的管理和对应这些内容。</p>
+<h4 id="性能优化"><a href="#性能优化" class="headerlink" title="性能优化"></a>性能优化</h4><p>可能很多同学注意到了，不论是 <code>eval</code> 还是 <code>new Function</code> 其实效率都是不高的，为什么还要这样用呢？主要的原因还是因为我们需要动态的为每个 Weex 页面创造这样的闭包。后来在 native 端我们还想到了一些变通的优化办法，即在 native 端将 Weex JS Bundle 代码包装在一个闭包里，再丢给 JavaScript 去执行。所以，如果一个 Weex JS Bundle 大代码如下：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 伪代码，并不能实际运行</span></span><br><span class="line"></span><br><span class="line">__weex_define__(<span class="string">&#x27;foo&#x27;</span>, &#123;</span><br><span class="line">  type: <span class="string">&#x27;div&#x27;</span>,</span><br><span class="line">  children: [</span><br><span class="line">    &#123; <span class="attr">type</span>: <span class="string">&#x27;text&#x27;</span>, <span class="attr">attr</span>: &#123; <span class="attr">value</span>: <span class="string">&#x27;Hello World&#x27;</span> &#125;&#125;</span><br><span class="line">  ]</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line">__weex_bootstrap__(<span class="string">&#x27;foo&#x27;</span>)</span><br></pre></td></tr></table></figure>
+<p>而客户端现在要基于这个 Weex JS Bundle 创建一个页面，instance id 为 <code>x</code>，那么客户端会先为这段代码加上特殊的头和尾：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 伪代码，并不能实际运行</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 特殊的头部代码</span></span><br><span class="line">(<span class="function"><span class="keyword">function</span> (<span class="params"><span class="built_in">global</span></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> env = <span class="built_in">global</span>.prepareInstance(<span class="string">&#x27;x&#x27;</span>)</span><br><span class="line">  (<span class="function"><span class="keyword">function</span> (<span class="params">__weex_define__, __weex_bootstrap__</span>) </span>&#123;</span><br><span class="line"><span class="comment">// 特殊的头部代码</span></span><br><span class="line"></span><br><span class="line">__weex_define__(<span class="string">&#x27;foo&#x27;</span>, &#123;</span><br><span class="line">  type: <span class="string">&#x27;div&#x27;</span>,</span><br><span class="line">  children: [</span><br><span class="line">    &#123; <span class="attr">type</span>: <span class="string">&#x27;text&#x27;</span>, <span class="attr">attr</span>: &#123; <span class="attr">value</span>: <span class="string">&#x27;Hello World&#x27;</span> &#125;&#125;</span><br><span class="line">  ]</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line">__weex_bootstrap__(<span class="string">&#x27;foo&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 特殊的尾部代码</span></span><br><span class="line">  &#125;)(env.define, env.bootstrap)</span><br><span class="line">&#125;)(<span class="built_in">this</span>)</span><br><span class="line"><span class="comment">// 特殊的尾部代码</span></span><br></pre></td></tr></table></figure>
+<p>这样的话我们先通过 <code>prepareInstance(&#39;x&#39;)</code> 创建一个属于 <code>x</code> 这个 id 的方法，然后通过 <code>function (__weex_define__, __weex_bootstrap__)</code> 创造一个闭包，把 JS Bundle 的源代码放进去，效果和之前的实现是等价的，但是由于没有用到 <code>eval</code> 和 <code>new Function</code>，性能有了一定的提升，在我们实验室数据中，JavaScript 运算的时间缩短了 10%~25%。</p>
+<p>当然，由于在浏览器的环境下，我们没有机会在执行 JavaScript 之前对内容进行高性能的处理，所以 HTML5 Renderer 还没有办法通过这样的改造提升执行效率，在这方面我们还会继续探索。</p>
+<h4 id="其它多实例管理接口设计"><a href="#其它多实例管理接口设计" class="headerlink" title="其它多实例管理接口设计"></a>其它多实例管理接口设计</h4><p>包括上述提到的 <code>createInstance()</code> 接口在内，JS Runtime 还提供了以下几个和 native 通信的方式：</p>
+<p>首先是 native 配置的导入：</p>
+<ul>
+<li><code>registerComponents(components)</code></li>
+<li><code>registerModules(modules)</code></li>
+</ul>
+<p>这两个 API 用来让 JS Runtime 知道当前 Weex 支持哪些原生组件和原生的功能模块，及其相关的细节。</p>
+<p>其次是实例的生命周期管理：</p>
+<ul>
+<li><code>createInstance(id, code, ...)</code></li>
+<li><code>refreshInstance(id, data)</code></li>
+<li><code>destroyInstance(id)</code></li>
+</ul>
+<p>这三个 API 用来让 JS Runtime 知道每一个页面的创建和销毁的时机，特别的，我们还提供了一个 <code>refreshInstance</code> 的接口，可以便捷的更新这个 Weex 页面的“顶级”根组件的数据。</p>
+<p>最后，每个 Weex 页面在具体工作的时候会更频繁的使用到下面这两个 API</p>
+<ul>
+<li><code>sendTasks(id, tasks)</code>：从 JS Runtime 发送指令到 native 端</li>
+<li><code>receiveTasks(id, tasks)</code>：从 native 端发送指令到 JS Runtime</li>
+</ul>
+<p>这其中，<code>sendTasks</code> 中的指令会以 native 的功能模块进行分类和标识，比如 DOM 操作 (<code>dom</code> 模块)、弹框操作 (<code>modal</code> 模块) 等，每个功能模块又提供了多种方法可以调用，一个指令其实就是由指定的功能模块名、方法名以及参数决定的。比如一个 DOM 操作的指令 <code>sendTasks(id, [&#123; module: &#39;dom&#39;, method: &#39;removeElement&#39;, args: [elementRef]&#125;])</code>。</p>
+<p><code>receiveTasks</code> 中的指令一共有两种，一种是 <code>fireEvent</code>，相应客户端在某个 DOM 元素上触发的事件，比如 <code>fireEvent(titleElementRef, &#39;click&#39;, eventObject)</code>；而另一种则是 <code>callback</code>，即前面功能模块调用之后产生的回调，比如我们通过 <code>fetch</code> 接口向 native 端发送一个 HTTP 请求，并设置了一个回调函数，这个时候，我们会先在 JavaScript 端为这个回调函数生成一个 <code>callbackId</code>，比如字符串 <code>&quot;x&quot;</code>——其实我们实际上发送给 native 端的是这个 <code>callbackId</code>，当请求结束之后，native 需要把请求结果返还给 JS Runtime，为了能够前后对得上，这个回调最终会成为类似 <code>callback(callbackId, result)</code> 的格式。</p>
+<p>至此，我们就拥有了 7 个主要的接口，来完成 native 和 JS Runtime 之间的通信，同时可以做到多实例之间的隔离。</p>
+<h3 id="几个特殊处理的地方"><a href="#几个特殊处理的地方" class="headerlink" title="几个特殊处理的地方"></a>几个特殊处理的地方</h3><p>篇幅有限，所有问题不能一一展开，这里提几个我们比较有心得的地方</p>
+<h4 id="如何避免某个页面大数据量通信阻塞其它页面的通信"><a href="#如何避免某个页面大数据量通信阻塞其它页面的通信" class="headerlink" title="如何避免某个页面大数据量通信阻塞其它页面的通信"></a>如何避免某个页面大数据量通信阻塞其它页面的通信</h4><p>绝对的避免和杜绝是很难的，我们通过以下集中方式尝试缓解和回避这种现象出现，部分想法还在论证当中：</p>
+<ol>
+<li>持续优化 JS 代码的算法实现，这个是肯定要做的。</li>
+<li>如果一个页面的内容在运算到一半的时候，用户就关掉了这个页面，尽管不能像关闭一个浏览器标签时那样杀掉这个 JS Runtime，但是可以通过在 <code>sendTasks</code> 的时候返回一个特殊的值来提示 JS 代码可以省去后续的计算，让整个 JS 阻塞的状态立即恢复。</li>
+<li>部分用户交互可以跳过 JS 执行逻辑直接相应，比如为按钮监听点击事件，并在事件被触发的时候执行 <code>openURL</code> 这个打开网址的命令是个很长的链路，但如果我们支持 <code>&lt;a href&gt;</code> 这样的标签，用户点击链接的时候，页面可以不经过 JS 运算直接跳走，这样回避了 JS 阻塞带来的问题。</li>
+<li>通过用户体验上的一些技巧尽量回避界面一直无相应致使用户一直等待的体验，比如通过伪类规则让用户点击一个按钮的时候第一时间感受到“hover”效果等。</li>
+<li>可以考虑“双核” JS Runtime，永远有一个闲置的随时等待打开新页面的 JS Runtime，这样在页面切换的时候，新页面的加载和运算不会被旧页面阻塞。当然这样做存在对架构和资源的挑战。</li>
+</ol>
+<p>更多的思路和想法等待大家的挖掘和探讨。</p>
+<h4 id="安全、隐私和稳定性"><a href="#安全、隐私和稳定性" class="headerlink" title="安全、隐私和稳定性"></a>安全、隐私和稳定性</h4><p>其实现在在 Weex 页面里，不经过声明给一个变量赋值还是会产生全局环境的污染，我们短期只能通过宣导的方式，教育开发者避免使用全局变量——这在传统的 HTML5 和 JavaScript 开发中都是特别不推荐的做法。</p>
+<p>长期来看，我们可以提供一些发布前的语法检测工具，帮助开发者更好的驾驭自己的代码。</p>
+<p>从隐私性的角度，如果你的客户端是多个团队共同研发的，相互之间希望不被打扰，我们也可以考虑引入浏览器中比较广泛实践的“同源策略”，根据 JS Bundle URL 的域名区分对待。</p>
+<h4 id="更高更复杂的课题：支持多个-Framework-共存"><a href="#更高更复杂的课题：支持多个-Framework-共存" class="headerlink" title="更高更复杂的课题：支持多个 Framework 共存"></a>更高更复杂的课题：支持多个 Framework 共存</h4><p>让 Weex 能够支持多种 Framework 共存，既是满足多方业务团队不同技术栈和需求的一个重要决定，同时也是尊重前端社区固有的开放自由的精神，更是让 Weex 在快速更迭的前端技术栈中立于不败之地的基础。</p>
+<p>早期的 Weex 是重度依赖我们自身研发的 JS Framework 的，它基于 Vue 1.x 的数据监听机制，配合 Weex virtual-DOM APIs 进行数据绑定，并沿用了 mustache 的经典模板语法。现如今，Vue 2.0 迎来了很多颠覆式的革新和改进、React 也被越来越多的工程师所接受，Angular、Zepto/jQuery、VanillaJS 也都有众多的前端开发者在使用。所以我们在支持 native 端多实例指令分发的同时，也支持了多 JS Framework 本地部署并相互隔离，可以支持不同的 Weex 页面基于各自的 JS Framework 开发运行。</p>
+<p>首先我们约定，每个 Weex 页面的 JS Bundle 第一行需要出现一行特殊格式的注释，比如：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// &#123; &quot;framework&quot;: &quot;Vue&quot; &#125;</span></span><br><span class="line">...</span><br><span class="line">...</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<p>它能够识别当前 Weex 页面所对应的 JS Framework，比如这个例子是需要 Vue 来解析的。如果没有识别出合法的注释，则被认为对应到默认的 Weex JS Framework。</p>
+<p>然后把每个 Weex 页面及其对应的 JS Framework 名称的关联关系记录下来。</p>
+<p>最后把上面提到的 JS 和 native 通信的 <code>createInstance</code>, <code>refreshInstance</code>, <code>destroyInstance</code>, <code>sendTasks</code>, <code>receiveTasks</code> 等接口在每个 JS Framework 中都封装一遍，然后每次这些全局方法被调用的时候，JS 都可以根据记录下来的页面和 JS Framework 的对应关系找到相应的 JS Framework 封装的方法，并完成调用。</p>
+<p>这样每个 JS Framework，只要：1. 封装了这几个接口，2. 给自己的 JS Bundle 第一行写好特殊格式的注释，Weex 就可以正常的运行基于各种 JS Framework 的 页面了。</p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>这篇文章主要介绍了 Weex 在 JS Runtime 这个环节的一些现状，以及它的来龙去脉，同时介绍了一些心得经验和特别的地方。篇幅有限，有些东西描述的还是比较简略，感兴趣的同学可以移步我们的 github 了解更多细节，同时欢迎大家一起参与到我们的开源项目建设当中来！</p>
+<p>谢谢</p>
+
+  
+</div>
+
+<div class="content">
+  <h2>
+    <a href="/blog/spa-i-understand/">
+      我理解的 SPA
+    </a>
+  </h2>
+  
+  <p>如题，SPA (Single Page Application - 单页应用) 这个话题已经在 Weex 社区讨论了有一段时间，在传统的前端开发领域中大家也在长期探讨这个话题。这里谈谈我个人的理解和看法。</p>
+<h3 id="SPA-的背景"><a href="#SPA-的背景" class="headerlink" title="SPA 的背景"></a>SPA 的背景</h3><p>SPA 往往和 Router、页面间通信、页面间数据共享这些词汇联系在一起，不少同学直接问到这些词汇，实际上都是以 SPA 为前提的，因为脱离 SPA 的概念，这些词汇将失去它原有的意义，或者变成了完全不同的东西。</p>
+<p>那 SPA 不是理所当然、天经地义、不容挑战的吗？干嘛要脱离 SPA 的概念讨论这些问题？</p>
+<p>我觉得不是</p>
+<p>SPA 背后的命题是如何管理复杂的页面关系，最终构成一个产品的整体。传统的页面之间是通过简单粗暴的“页面跳转”和“浏览器前进/后退”建立联系的，SPA 提出的观念是在浏览器中模拟页面的跳转、切换和前进/后退，相关的很多周边命题也随之而生。</p>
+<p>(其实你不觉得这也是个”全家桶”么……)</p>
+<p>所以我们先把问题回归到如何管理复杂的页面关系</p>
+<h3 id="如何管理复杂的页面关系"><a href="#如何管理复杂的页面关系" class="headerlink" title="如何管理复杂的页面关系"></a>如何管理复杂的页面关系</h3><p>我觉得有以下几个子命题 —— <em>在这之前，我想先把接下来所有的讨论，从形态上收敛到手机应用，PC 端的暂时不涉及。</em></p>
+<h4 id="如何拆分页面"><a href="#如何拆分页面" class="headerlink" title="如何拆分页面"></a>如何拆分页面</h4><p>怎么把一个完整的产品以页面为维度进行拆分，这里是有学问的。</p>
+<p>其中最关键的一个认知问题就是页面的颗粒度是否就是整个手机屏幕同时可以呈现的所有内容？</p>
+<p>如果是，那么页面本身的结构就是简单的一维模型，即所有的页面都可以完全独立工作运行。</p>
+<p>如果不是，那么有可能某个页面是另外一个页面的一部分，两者之间有包含关系。这样的话页面结构就变成了多维的。</p>
+<p>在 PC 上，答案显然是后者，因为 PC 的屏幕比手机要大得多，所有页面都要整屏更换和依赖，显然是不合理的，但是在手机屏幕上，我们有机会简化为前者。</p>
+<h4 id="如何在工程上把不同的页面解耦"><a href="#如何在工程上把不同的页面解耦" class="headerlink" title="如何在工程上把不同的页面解耦"></a>如何在工程上把不同的页面解耦</h4><p>也可以从另外一个角度讲，不说怎么解耦，而是不同的页面之间保留了哪些耦合。</p>
+<p>这个地方的设计直接决定了大规模并行研发产品的可能性和实际的效率效果</p>
+<h4 id="独立页面之间是如何建立联系的"><a href="#独立页面之间是如何建立联系的" class="headerlink" title="独立页面之间是如何建立联系的"></a>独立页面之间是如何建立联系的</h4><ul>
+<li>如何跳转和切换：在手机上常见的跳转和切换就是 navigator 和 tabbar 两种模式，一种是产生历史记录的，有栈式结构的；另一种则是平级切换的，页面之间是并列关系</li>
+<li>如何传递信息：开发者是否有机会在一个页面调用到另外一个页面的方法或接口</li>
+<li>如何共享数据：用户在前一个页面提交了个人信息，如何体现在下一个页面上</li>
+</ul>
+<h3 id="看看-SPA-是怎么解决这些问题的"><a href="#看看-SPA-是怎么解决这些问题的" class="headerlink" title="看看 SPA 是怎么解决这些问题的"></a>看看 SPA 是怎么解决这些问题的</h3><ul>
+<li>拆分页面的方式：如最一开始所描述的，SPA 会在浏览器中模拟页面切换和跳转，因此他需要路由控制，而控制的方式就是把每个页面都定义一个 URL，当页面切换或跳转时，URL 就会发生相应的变化，同理我们直接打开不同 URL 的时候，浏览器可以准确定位到不同的页面。常见的 URL 区分方式包括不同的路径 (path)、不同的参数 (query) 和不同的锚点 (hash) 等。所以如果父页面中有子页面存在不同的状态，则 URL 设计应该在父页面的基础上追加不同的 path/query/hash 来达到定位子页面状态的目的。</li>
+<li>工程耦合度：首先 SPA 可以通过 URL 精准定位到不同的页面，就决定了它的路由规则是中心化约定的，当页面比较多了之后，为了避免冲突，每新建一个或一组页面都要有中心化注册的过程；另外每个页面中的代码从资源加载和管理的角度是中心化耦合的 (当然有具体优化的解法，比如按需加载等，这里不展开了)</li>
+<li>页面之间的联络方式<ul>
+<li>跳转和切换：主要是通过代理浏览器的跳转、前进、后退、替换等行为，然后自行在页面内完成相应的变化，几个明显的入口包括 <code>&lt;a&gt;</code> 链接、<code>location</code> 设置、历史管理 API等</li>
+<li>信息传递：典型的场景就是子页面和父页面之间同步变化，一般通过在 SPA 框架层面提供通信机制，而且通常是消息广播的模型</li>
+<li>数据共享：现在普遍被接受和认同的是基于 Flux 架构的设想，开辟一块全局共享的 Store，这样应用从 A 页面切换或跳转到 B 页面的时候，可以通过这块全局的 Store 来同步数据和状态</li>
+</ul>
+</li>
+<li>SPA 这样的方案的特点或局限<ul>
+<li>过渡体验：SPA 因为代理了所有页面切换和跳转的行为，所有整个页面之间过渡的过程是可以定制的，比如左滑右滑、淡入淡出等等，结合一些 CSS3 变换的效果，可以做得很酷炫，传统页面跳转是很难做出这种效果的</li>
+<li>首次加载：因为有中心化的路由管理等相关逻辑，同时 SPA 首页首次加载往往需要消耗更长的时间，如果用户的回头率不高的话，总体上这个其实是个劣势</li>
+<li>长效 JS Runtime：这意味着用户会长期开着同一个页面，JS 的内存控制是一个非常敏感的命题，一不小心写出个内存泄漏，整个应用就会越跑越慢直到存尽应亡</li>
+<li>需要手动处理 Security/Privacy 等问题：因为本质上所有的页面即便设计和研发商再独立，它也是运行在同一个浏览器页面中，没有绝对的信息和资源的隔离</li>
+</ul>
+</li>
+</ul>
+<h3 id="手机淘宝是怎么解决这些问题的"><a href="#手机淘宝是怎么解决这些问题的" class="headerlink" title="手机淘宝是怎么解决这些问题的"></a>手机淘宝是怎么解决这些问题的</h3><p>手机淘宝的工程传统是一种非常简单粗暴直接有效的理念 —— 可能你看下来会有这种感觉</p>
+<p>首先我们没有实践 SPA —— 准确的讲鲜有成功实践的 SPA 案例，但解决上述问题有一些自己细节上的思考</p>
+<ul>
+<li>拆分页面的方式：没有子页面的概念，父页面某个地方不同的状态均由子页面自行设计体现，不做中心化设计和管理</li>
+<li>工程耦合度：每个页面都是完全不同的浏览器实例，所以工程上是以页面为颗粒度完全解耦的，不同页面可以使用完全不同的前端框架、资源策略、内部通信方式等</li>
+<li>页面之间的联络方式<ul>
+<li>跳转和切换：就是浏览器的跳转，额外的我们会通过 SPM/SCM 参数在服务端直接统计出流量转化的关系，是纯天然无污染的，SPA 做这个事情就需要另外想办法了</li>
+<li>信息传递：因为没有父页面子页面的问题了，所以这种需求几乎是不存在的，如果真的有父子页面的关系存在，一般会是 <code>&lt;iframe&gt;</code> 可以使用 Web Messaging API 来进行通信，但总体上确实场景非常少</li>
+<li>数据共享：首先 Flux 的全局 Store 应该不太排的上用场，因为页面之间是完全隔离的，所以这里有三个套路：1 是通过 URL 传参数；2 是通过 W3C 的一系列本地持久化存储机制，包括 cache/localStorage/WebSQL/IndexedDB/appcache 等；3 可以通过 hybrid API 或服务器记录状态并进行中转。这里额外强调一下，1 和 3 是我们使用最多的方式，2 反而用得很少，因为对于手机淘宝这种体量的产品，本地空间很快就被塞爆了，所以业务上重度依赖这种技术不是很明智的选择</li>
+</ul>
+</li>
+<li>手机淘宝方案的特点或局限<ul>
+<li>native过渡效果：页面之间的过渡效果是不可定制的，这是一个局限</li>
+<li>资源重复加载：不会面临首次加载内容过多的问题，但是不同的页面资源会重复加载，当然就像 SPA 的方案一样，这里也有很多预加载或缓存的上层机制可以缓解这一矛盾</li>
+<li>短效 JS Runtime：比较省心，反正页面跳走之后旧页面的相关资源就彻底回收了</li>
+<li>天生 Security/Privacy：页面之间没有直接共享的系统资源，而且基于 W3C 的同源策略，所以也比较省心</li>
+</ul>
+</li>
+</ul>
+<p>所以大家会发现，我们为了更好的工程实践和大规模并行研发方面做了一定的取舍</p>
+<h3 id="Weex-打算怎么解决这些问题"><a href="#Weex-打算怎么解决这些问题" class="headerlink" title="Weex 打算怎么解决这些问题"></a>Weex 打算怎么解决这些问题</h3><p>经过上述分析和论述，我们也逐步滤清了 Weex 在这个复杂问题上的思路：如何解决 Weex 中路由管理的问题？如何在 Weex 上进行 SPA 实践？如何让 Weex 页面之间通信或共享数据？其实面对这么多看似复杂混乱的问题，只要从上述几个角度抓住重点问题，提出关键解法，就可以把复杂问题逐一解开。</p>
+<ul>
+<li>拆分页面的方式：提供 <code>&lt;web&gt;</code>/<code>&lt;embed&gt;</code> 这样的组件，可以管理子页面，但这里我们延续了手机淘宝对待子页面状态定位的看法，不做中心化的设计，每个页面可以自由定义识别规则 —— 当然这个规则范围就不包含 path 了 —— 因为这需要模拟页面的跳转和切换，所以只有 query 和 hash 可以识别</li>
+<li>工程耦合度：每个页面独立研发，完全解耦，同时可以利用 SPM/SCM 数据统计机制，和手机淘宝的工程实践经验保持一致</li>
+<li>页面之间的联络方式<ul>
+<li>跳转和切换：目前就两个入口 <code>&lt;a&gt;</code> 链接和 <code>openURL()</code> 方法，对于 <code>&lt;web&gt;</code>, <code>&lt;embed&gt;</code> 中产生的跳转和切换命令，我们目前还没有具体的设计和实现，将来可以提供类似 <code>a[target]</code> 的配置项，让页面跳转和切换的时候可以指定父页面或子页面作为目标</li>
+<li>信息传递：目前是没有办法传递的，未来可以设计一个类似 SPA 感觉的系统级的消息广播机制来满足业务上的需求</li>
+<li>数据共享：同样的我们推荐的也是手机淘宝的最佳实践：URL 参数传递、本地持久化存储、服务端中转；同时，由于 Weex 的 JS Runtime 是唯一的，这也就意味着我们未来是有机会在系统层面提供类似 Flux 架构中全局 Store 的东西供开发者使用，但是这里随之而来的隐患也是比较多的，而且一旦这个功能进入系统层面，所有的问题都会被无限放大，所以我们在这方面持谨慎态度。</li>
+</ul>
+</li>
+<li>该方案整体的特点或局限<ul>
+<li>过渡效果：我们不可能像 SPA 那样完全用 CSS3 变换来定制页面之间的过渡效果，但是有机会归纳抽象几种常见的效果，供业务方选择，这样页面之间的过渡效果不至于像传统的浏览器效果那么生硬</li>
+<li>资源重复加载：可以完全复用手机淘宝目前所有的最佳实践</li>
+<li>长效 JS Runtime、Security/Privacy 问题：这方面我们和 SPA 面临的问题是相同的，目前这方面的问题我们不算解决的特别好，有很多工作需要做。也是因为如此，我们上述的系统级 Flux 架构和全局 Store 的方案需要三思而行</li>
+</ul>
+</li>
+</ul>
+<h3 id="接下来的-Actions"><a href="#接下来的-Actions" class="headerlink" title="接下来的 Actions"></a>接下来的 Actions</h3><p>最后总结下来，如果大家认可我们上述的设想和取舍的话，Weex 在应用级别的工程实践上还欠缺这么几个地方：</p>
+<ol>
+<li>提供子页面精确定位识别的最佳实践和必要的工具库或辅助库</li>
+<li>提供类似 <code>a[target]</code> 的配置项，在页面跳转或切换时可以指定目标页面</li>
+<li>系统级的全局消息广播机制，做到跨页面信息传递</li>
+<li>抽象归纳几种常见的页面过渡效果，供上层业务选择和配置</li>
+<li>有效控制长效 JS Runtime 存在的各种问题</li>
+<li>最后的最后，非常谨慎的引入 Flux 架构中的全局 Store —— 其实系统级的 Store 和本地持久化存储只有一点点区别：就是 Store 是被进一步抽象且可以通过绑定机制自动触发视图更新的</li>
+</ol>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>这里首先谈了谈个人对 SPA 的认识，同时觉得 SPA 背后的命题本质上是“如何管理复杂的页面关系”。然后列出了几个关键的维度，包括如何拆分页面、如何管理耦合、如何跳转和切换页面、页面间如何通信和数据共享等等，并对比了 SPA 在这方面的表现，和手机淘宝传统的实践经验和取舍判断，最后按照相同的思维模型得出了 Weex 在这方面的选择，列出了接下来的 Actions。在整个过程中，我们可能还是会在细节问题上展开更具体的讨论，届时我们可以再伺机探讨。</p>
+<p>谢谢</p>
+
+  
+</div>
+
+<div class="content">
+  <h2>
+    <a href="/blog/flux-i-understand/">
+      我理解的 Flux 架构
+    </a>
+  </h2>
+  
+  <p><mark>本文早些时候发表在 云栖社区 <a target="_blank" rel="noopener" href="https://yq.aliyun.com/articles/59357">https://yq.aliyun.com/articles/59357</a></mark></p>
+<p>之前 review 业务代码的时候就一直想说写一篇自己对 Flux 的理解和看法，不知不觉也过去蛮久了，于是这周末打起精神写了这么一篇。</p>
+<p>这篇文章将谈一些我对 Flux 的理解和个人看法。如果您还不太了解什么是 Flux，请先移步<a target="_blank" rel="noopener" href="http://facebook.github.io/flux/docs/overview.html">这里</a>。</p>
+<p>另外文中没有特别大段的代码，以讨论架构设计和背后的道理为主，可能会显得有点枯燥，大家可以选个不太困的时候耐心读读看：）</p>
+<h3 id="Flux-中的几个基本概念"><a href="#Flux-中的几个基本概念" class="headerlink" title="Flux 中的几个基本概念"></a>Flux 中的几个基本概念</h3><p>这是 Flux 官方提供的一张说明图：</p>
+<p><img src="https://facebook.github.io/flux/img/overview/flux-simple-f8-diagram-with-client-action-1300w.png" alt=""></p>
+<p>图中有四个名词：</p>
+<ul>
+<li>View</li>
+<li>Store</li>
+<li>Action</li>
+<li>Dispatcher</li>
+</ul>
+<p>下面逐个以我的角度做个讲解：</p>
+<p>首先 View 是视图，是用户看得见摸得着的地方，同时也是产生主要用户交互的地方，这个概念在 MVC 和 MVVM 架构中都是有的，有些观点认为虽然这几种架构里都有 View，但是定义不太一致，有细微的差别，我自己觉得这种差异确实是存在的，但在一开始这并不妨碍我们理解 View 这个名词。</p>
+<p>然后是 Store，它对应我们传统意义上的 Data，和 MVC、MVVM 里的 Model 有一定对应关系。你问我它们为啥不直接叫 Data 算了，那这就是文化人和小老百姓表达方式的差别。当然了我只是想尽量降低理解成本，尝试用比较通俗的说法把问题说清楚。</p>
+<p>然后是 Action，这看上去是一个新概念，实际上我还是能找到一些帮助大家理解的名词，叫做 Event。就是一个结构化的信息，从一个地方传递到另一个地方，整个过程就是一个 Action/Event。</p>
+<p>最后是 Dispatcher，多说一句，我觉得正是因为有了 Dispatcher 才让前面三个名词变得有新鲜感。也是理解 Flux 的关键。言归正传，Dispatcher 算是从 Action 触发到导致 Store 改变的镇流器。比一般架构设计里直接在“Event”逻辑中修改“Data”更“正规”。所以土得掉渣的 Event 变成了 Action，土得掉渣的 Data 变成了 Store，土得掉渣的 View 仍然是土得掉渣的 View。</p>
+<h3 id="为什么多了-Dispatcher，这些-Store、View、Action-就变得神奇了呢？"><a href="#为什么多了-Dispatcher，这些-Store、View、Action-就变得神奇了呢？" class="headerlink" title="为什么多了 Dispatcher，这些 Store、View、Action 就变得神奇了呢？"></a>为什么多了 Dispatcher，这些 Store、View、Action 就变得神奇了呢？</h3><p>因为“正规”</p>
+<p>传统 MVC 被 Flux 团队吐槽最深的，表面上是 Controller 中心化不利于扩展，实际上是 Controller 需要处理大量复杂的 Event 导致。这里的 Event 可能来自各个方向是 Flux 吐槽的第二个点，所以不同的数据被不同方向的不同类型的 Event 修改，数据和数据之间可能还有联系，难免就会乱。</p>
+<p>所以和 Dispatcher 配合的 Store 只剩下了一个修改来源，和 Dispatcher 配合的 Action 只剩下了约定好的有限几种操作。一下子最混乱的地方变得异常“正规”了。架构复杂度自然就得到了有效的控制。</p>
+<p>另外还有一个蛮好理解的点是：Action 不仅仅把修改 Store 的方式约束了起来，同时还加大了 Store 操作的颗粒度，让琐碎的数据变更变得清晰有意义。</p>
+<p>另外，这两个地方抽象之后数据操作变得“无状态”了，所以可以根据 Action 的历史记录确定 Store 的状态。这个让很多撤销恢复管理等场景成为了可能。</p>
+<p>综上所述，在 Flux 架构中，数据修改的颗粒度变大，更有语义；上层数据操作的行为更抽象化，碎片化程度降低。</p>
+<h3 id="Flux-架构是-React-技术栈独占的吗？"><a href="#Flux-架构是-React-技术栈独占的吗？" class="headerlink" title="Flux 架构是 React 技术栈独占的吗？"></a>Flux 架构是 React 技术栈独占的吗？</h3><p>不是，只要在传统架构的基础上注重对数据操作和用户/客户端/服务器行为的抽象定义，Flux 架构中提到的各种好处大家都享受得到。</p>
+<p><img src="http://img4.tbcdn.cn/L1/461/1/2187620899fa5a0c5c2934c6ed83691f6bf95a7c" alt="image" title="image"></p>
+<p>我们就拿被 Flux 黑得最惨的那个“一大堆 V 和一大堆 M 只有一个 C”的例子好了，图中每个 View 找到不一样 Model 进行操作时，我们把这些操作抽象成 Action，然后通过中心化的逻辑找到相应的 Model 完成修改，其实就是 Flux 了。这里抽象出来的 Action 一定要和图中 Controller 能够接受到 Action 一样，没有什么特殊的地方。</p>
+<p>基于这样的理解，Redux 提出了另外的对 Flux 架构的理解：</p>
+<ol>
+<li>首先 Store 是通过 Creator 创建出来的</li>
+<li>每个 Store 都有自己的 state 用来记录当前状态</li>
+<li>在创建 Store 的时候，通过 Reducer 把 state 和 action 的关系建立起来</li>
+<li>后期通过在 Store 对象上 dispatch 不同的 action 达到对 state 的修改</li>
+</ol>
+<p>本质上同样是对数据操作和上层行为的抽象，另外从实现层面更加 functional。</p>
+<p>Vuex 是基于 Vue.js 的架构设计，稍后再展开说我的看法。</p>
+<h3 id="Flux-架构有什么不为人知的坑吗？我们就像看人黑-Flux！"><a href="#Flux-架构有什么不为人知的坑吗？我们就像看人黑-Flux！" class="headerlink" title="Flux 架构有什么不为人知的坑吗？我们就像看人黑 Flux！"></a>Flux 架构有什么不为人知的坑吗？我们就像看人黑 Flux！</h3><p>(咳咳咳~~~ 这个问题我得谨慎回答)</p>
+<p>我觉得 Flux 架构没有把一个事实告诉大家，就是它的 Store 是中心化的，Flux 用中心化的 Store 取代了它吐槽的中心化的 Controller。</p>
+<p>我看了一些基于 Flux/Redux/Vuex 架构的实现，基本上多个 Store 之间完全解耦不建立任何联系是不可能的——除非它们完全从数据行为各方面都是解耦的——这种程序用什么架构都无所谓的坦白讲。</p>
+<p>为什么中心化的 Store 无人吐槽呢？因为中心化的数据复杂度绝对低于中心化的行为控制。你甚至没有意识到它是中心化的，这其实从另外一个侧面就证实了这一点。</p>
+<p>所以我觉得透过 Flux 看架构的本质：这里不算是坑或吐槽，我更想说的是，放下 Flux 这把锤子，我们该怎么看世界，怎么看待自己每天在设计和架构的软件。</p>
+<ol>
+<li>中心化管理数据，避免数据孤立，一旦数据被孤立，就需要通过其它程序做串联，导致复杂。这是避免各路行为乱改数据导致混乱的一个潜在条件，或者说这是一个结论。</li>
+<li>把行为做个归纳，抽象度提高，不管是用户操作导致的，还是从服务器 pull 过来的，还是系统本身操作的。</li>
+<li>把修改数据的操作做个归纳，颗粒度变大，大到纯粹“无状态”的极限。</li>
+<li>另外一个没有被过多谈论的细节，就是从 Model 到 View 要简单直接，这一点各路架构都是有共识的，就不多说了。</li>
+</ol>
+<p>在这几个方面，如果一个架构师能够做到极致，去TM的各种架构缩写，用哪个都一样。</p>
+<h3 id="Vuex-怎么样？"><a href="#Vuex-怎么样？" class="headerlink" title="Vuex 怎么样？"></a>Vuex 怎么样？</h3><p>我先说我觉得 Vue.js 怎么样，Vue.js 天生做了几件事：</p>
+<ol>
+<li>components，即组件化，把视图分解开</li>
+<li>通过 computed options 简化 data 到 template 的对应关系</li>
+<li>通过 methods options 明确各路行为的抽象</li>
+<li>通过双向 computed options 增大了对 data 操作的颗粒度</li>
+<li>部分 methods options 也可以用来完成纯粹的 data 操作，增大对 data 操作的颗粒度</li>
+</ol>
+<p>所以 Vue.js 本身已经提供了很多很好的架构实践。但这在 Flux 看来还不够纯粹，它缺 2 点：</p>
+<ol>
+<li>数据有 components 之间的树形关联，但是修改起来是分散的</li>
+<li>相应的 computed、methods 也应该不是分散的，需要改造</li>
+</ol>
+<p>所以 Vuex 需要做的事情很简单：</p>
+<ol>
+<li>中心化的 store，所有 components 都共用一份数据，即一份 state；更复杂的情况下，定义有限的几种 getters，用在 computed options 中</li>
+<li>定义有限的几种 mutations (类比从 Dispatcher 到 Store 的约定)，可以直接用在 methods options 中；更复杂情况下，定义有限的几种 actions (类比从各路行为到 Dispatcher 的约定)，用在 methods options 中，背后调用的是各种定义好的 mutations。</li>
+</ol>
+<p>这样在 Vue 的基础上，再加上如虎添翼的 Vuex，开发者就可以享受到类似 Flux 的感觉了。</p>
+<h3 id="都快说完了都没提“单向数据流”这个词"><a href="#都快说完了都没提“单向数据流”这个词" class="headerlink" title="都快说完了都没提“单向数据流”这个词"></a>都快说完了都没提“单向数据流”这个词</h3><p>是的，我觉得这是一个被用烂的词，以至于很多人在求职面试的时候一被问到 Flux 就脱口而出“单向数据流”，几乎当做 Flux 这个词的中文翻译在回答。就好像一说到 Scrum 就脱口而出“看板”一样……</p>
+<p>我觉得单向数据流的讲法太过表面，不足够体现出 Flux 的设想和用意。现在一提单向数据流，我脑中第一个浮现的画面其实是这个：</p>
+<p><img src="http://img1.tbcdn.cn/L1/461/1/3b6454f7043a339f958f06f9dcc77af000286075" alt="image_jpeg" title="image_jpeg"></p>
+<h3 id="都快说完了都没提“时空穿梭-time-travel-”这个词"><a href="#都快说完了都没提“时空穿梭-time-travel-”这个词" class="headerlink" title="都快说完了都没提“时空穿梭 (time travel)”这个词"></a>都快说完了都没提“时空穿梭 (time travel)”这个词</h3><p>这是数据操作颗粒度变大之后的名词。我觉得它只是个名词，为什么这样说？</p>
+<p>所为“时空穿梭”，本质就是记录下每一次数据修改，只要每次修改都是无状态的，那么我们理论上就可以通过修改记录还原之前任意时刻的数据。</p>
+<p>大家设想一下，其实我们每次对数据最小颗粒度的、不能再分解的、最直接的操作基本 (比如赋值、删除、增减数据项目等) 都是无状态的，其实我们如果写个简单的程序，把每次直接修改数据的操作记录下来，同样可以很精细的进行“时空穿梭”，但没有人提这个词，因为它颗粒度太细了，没有语义，没有人愿意在这样琐碎的数据操作中提炼“时空”。因为数据操作的颗粒度变大了，所以变得直观，有语义，易于理解，对我们的功能研发和调试有实际帮助，所以才有了“时空穿梭”这个概念。</p>
+<h3 id="Weex-什么时候支持-Flux-Vuex？"><a href="#Weex-什么时候支持-Flux-Vuex？" class="headerlink" title="Weex 什么时候支持 Flux/Vuex？"></a>Weex 什么时候支持 Flux/Vuex？</h3><p>这是我最后想说的，首先不管有没有 Flux/Vuex，一个好的架构实践已经足以满足日常的研发需求，尤其是在手机上，界面、数据和行为都不会特别复杂。</p>
+<p>其次，如果基于 Vue 2.0 来开发 Weex 页面或应用的话，Vuex 是天生支持的，不需要额外做什么。大家如果已经在浏览器中，不论是桌面还是手机上实践过 Vuex，应该是感觉不到任何不一样的。</p>
+<p>最后，上周我简单写了个 Vuex 的复刻版，能够在 Weex 的 JS Framework 上工作，这里不想占太多篇幅介绍。坦白讲我希望大家更多的精力在理解 Flux 和 Vue 上。其它问题都是顺理成章的。</p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>这篇文章整理了我个人对 Flux 的理解和个人看法，首先解释一下 Flux 核心的四个名词：View, Store, Action, Dispatcher，然后提出 Dispatcher 在 Flux 架构中的关键位置，并解释为什么 Dispatcher 让其他三者变得更好更“正规”，然后是一些我通过了解 Flux 认识到的背后倡导的架构设计的最佳实践的提炼。</p>
+<p>真的没有代码……</p>
+<p>……好吧如果一定要看代码可以看看这里</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/reactjs/redux">https://github.com/reactjs/redux</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/vuejs/vuex">https://github.com/vuejs/vuex</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/Jinjiang/weex-x">https://github.com/Jinjiang/weex-x</a></li>
+</ul>
+<p>谢谢</p>
+
+  
+</div>
+
+<div class="content">
+  <h2>
+    <a href="/blog/vue-2-from-beta-1-to-beta-4/">
+      【整理】Vue 2.0 自 beta 1 到 beta 4 以来的主要更新
+    </a>
+  </h2>
+  
+  <p>主要内容来自 <a target="_blank" rel="noopener" href="https://github.com/vuejs/vue/releases">https://github.com/vuejs/vue/releases</a></p>
+<p>之前 <a href="https://jiongks.name/blog/announcing-vue-2/">Vue 2.0 发布技术预览版</a> 到现在差不多三个月了，之前写过一篇简单的 <a href="https://jiongks.name/blog/code-review-for-vue-next/">code review</a>，如今三个月过去了，Vue 2.0 在这个<a href="https://jiongks.name/blog/a-big-map-to-intro-vue-next/">基础</a>之上又带来了不少更新，这里汇总 beta 以来 (最新的版本是 beta 4) 的主要更新，大家随意学习感受一下</p>
+<h3 id="alpha-和-beta-版本的侧重点会有所不同"><a href="#alpha-和-beta-版本的侧重点会有所不同" class="headerlink" title="alpha 和 beta 版本的侧重点会有所不同"></a>alpha 和 beta 版本的侧重点会有所不同</h3><p>首先 Vue 2.0 对 alpha、beta 有自己的理解和设定：alpha 版本旨在完善 API、考虑所需的特性；而来到 beta 版则会对未来的正式发布进行充分的“消化”，比如提前进行一些必要的 breaking change，增强框架的稳定性、完善文档和周边工具 (如 vue-router 2.0 等)</p>
+<h3 id="最后的几个-alpha-版本主要更新"><a href="#最后的几个-alpha-版本主要更新" class="headerlink" title="最后的几个 alpha 版本主要更新"></a>最后的几个 alpha 版本主要更新</h3><p>Vue 本身的语法基础这里就不多赘述了，网上有很多资料可以查阅，我们已经假定你比较熟悉 Vue 并对 2.0 的理念和技术预览版的状态有一定的了解。</p>
+  <p class="more">
+    <a href="/blog/vue-2-from-beta-1-to-beta-4/">
+      阅读剩余部分...
+    </a>
+  </p>
+  
+</div>
+
+<div class="content">
+  <h2>
+    <a href="/blog/a-big-map-to-intro-vue-next/">
+      通过一张图走进 Vue 2.0
+    </a>
+  </h2>
+  
+  <p>这可能是字最少的一篇了，都在图里 - -</p>
+<p>文字介绍稍后抽空再补补</p>
+<p><a target="_blank" rel="noopener" href="https://ww2.sinaimg.cn/large/660d0cdfgw1f3sv9xpn3vj21221yrdp8.jpg"><img src="https://ww2.sinaimg.cn/large/660d0cdfgw1f3sv9xpn3vj21221yrdp8.jpg" alt=""></a></p>
+
+  
+</div>
+
+<div class="content">
+  <h2>
+    <a href="/blog/code-review-for-vue-next/">
+      Code Review for Vue 2.0 Preview
+    </a>
+  </h2>
+  
+  <p>是的！<a href="https://jiongks.name/blog/announcing-vue-2/">Vue 2.0 发布了！</a> 源代码仓库<a target="_blank" rel="noopener" href="https://github.com/vuejs/vue/tree/next">在此</a></p>
+<p>首先，当我第一次看到 Vue 2.0 的真面目的时候，我的内心是非常激动的</p>
+<h3 id="Demo"><a href="#Demo" class="headerlink" title="Demo"></a>Demo</h3><p>来个简单的 demo，首先把 <code>dist/vue.js</code> 导入到一个空白的网页里，然后写：</p>
+<p><strong>当然，在大家阅读下面所有的内容之前，先想象一下，这是一个运行时 min+gzip 后只有 12kb 大小的库</strong></p>
+<pre><code>&lt;script src=&quot;./dist/vue.js&quot;&gt;&lt;/script&gt;
+
+&lt;div id=&quot;app&quot;&gt;
+  Hello &#123;&#123;who&#125;&#125;
+&lt;/div&gt;
+&lt;script&gt;
+  new Vue(&#123;
+    el: &apos;#app&apos;,
+    data: &#123;who: &apos;Vue&apos;&#125;
+  &#125;)
+&lt;/script&gt;
+</code></pre><p>你将看到 “Hello Vue”</p>
+<p>然后再看一个神奇的：</p>
+<pre><code>&lt;script src=&quot;./dist/vue.js&quot;&gt;&lt;/script&gt;
+
+&lt;div id=&quot;app&quot;&gt;&lt;/div&gt;
+&lt;script&gt;
+  new Vue(&#123;
+    el: &apos;#app&apos;,
+    render: function () &#123;
+      with (this) &#123;
+        __h__(&apos;div&apos;,
+          &#123;staticAttrs:&#123;&quot;id&quot;:&quot;app&quot;&#125;&#125;,
+          [(&quot;\n  Hello &quot;+__toString__(who)+&quot;\n&quot;)],
+          &apos;&apos;
+        )
+      &#125;
+    &#125;
+    data: &#123;who: &apos;Vue&apos;&#125;
+  &#125;)
+&lt;/script&gt;
+</code></pre><p>这个是 compile 过后的格式，大家会发现首先 <code>#app</code> 下不需要写模板了，然后 <code>&lt;script&gt;</code> 里多了一个 <code>render</code> 字段，Vue 在运行时其实是会把模板内容先转换成渲染方法存入 <code>render</code> 字段，然后再执行，如果发现 <code>render</code> 已经存在，就跳过模板解析过程直接渲染。所以在 Vue 2.0 中写一段模板和写一个 <code>render</code> option 是等价的。为什么要这样设计，稍后会我们会涉及到。</p>
+  <p class="more">
+    <a href="/blog/code-review-for-vue-next/">
+      阅读剩余部分...
+    </a>
+  </p>
+  
+</div>
+
+
+
+<ol class="page-navigator">
+  <a class="extend prev" rel="prev" href="/">«</a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><a class="page-number" href="/page/6/">6</a><a class="page-number" href="/page/7/">7</a><a class="page-number" href="/page/8/">8</a><a class="page-number" href="/page/9/">9</a><a class="page-number" href="/page/10/">10</a><a class="page-number" href="/page/11/">11</a><a class="page-number" href="/page/12/">12</a><a class="page-number" href="/page/13/">13</a><a class="page-number" href="/page/14/">14</a><a class="page-number" href="/page/15/">15</a><a class="page-number" href="/page/16/">16</a><a class="page-number" href="/page/17/">17</a><a class="page-number" href="/page/18/">18</a><a class="page-number" href="/page/19/">19</a><a class="page-number" href="/page/20/">20</a><a class="extend next" rel="next" href="/page/3/">»</a>
+</ol>
+
+</div>
+
+    <div id="footer">
+      <a href="/">囧克斯</a>
+      
+      |
+      <a href="/atom.xml" title="rss_feed">RSS</a>
+      
+      |
+      我是百度统计
+      <script src="https://hm.baidu.com/h.js?a0a2372d4b7621d0bfe71f33c58a4bd8"></script>
+      |
+      我会翻脸 <a href="#" onclick="document.body.classList.toggle('dark-mode'), event.preventDefault()" style="font-size: 1.25em;">🌚🌝</a>
+    </div>
+  </div>
+
+  
+<script src="/js/script.js"></script>
+
+</body>
+
+</html>

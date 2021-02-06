@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <!-- proud for contributing Vue.js -->
+  <meta charset="utf-8">
+  <meta name="format-detection" content="telephone=no" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-touch-fullscreen" content="yes" />
+
+  
+  <title>
+    
+    帮助大家理解贝赛尔曲线(Bézier curve) -
+    
+    囧克斯
+  </title>
+
+  
+<link rel="stylesheet" href="/css/pure.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+
+  
+  <link rel="alternate" href="/atom.xml" title="囧克斯" type="application/atom+xml">
+  
+  
+  <link rel="icon" href="/favicon.ico">
+  
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+<body>
+  <script>(() => { if ((new Date().getHours() + 6) % 24 < 12) document.body.classList.add('dark-mode') })()</script>
+
+  <div class="dark-mode-helper"></div>
+
+  <div id="wrapper">
+
+    <div id="header">
+      <h1>
+        <a href="/" title="囧克斯">
+          囧克斯
+        </a>
+      </h1>
+      <p class="description">
+        这里是勾三股四的家
+      </p>
+    </div>
+
+    <div id="nav" class="pure-menu pure-menu-open pure-menu-horizontal">
+      <ul>
+        
+        <li>
+          <a href="/all-demos/">
+            线上
+          </a>
+        </li>
+        
+        <li>
+          <a href="/all-slides/">
+            线下
+          </a>
+        </li>
+        
+        <li>
+          <a href="/about/">
+            关于
+          </a>
+        </li>
+        
+        <li><a href="/archives">归档</li>
+      </ul>
+    </div>
+
+    <div id="main"><div class="content">
+  <h2>
+    帮助大家理解贝赛尔曲线(Bézier curve)
+  </h2>
+  
+<p><mark>本文摘自 勾三股四 更早时期的 <a target="_blank" rel="noopener" href="http://bulaoge.net/?g3g4">不老歌</a> 博客。</mark></p>
+
+<a id="more"></a>
+<p>在包括Photoshop钢笔工具在内的很多绘图软件里，大家会发现一般的曲线都可以通过对几个结点的拖拽完成修改，曲线的两端有两个端点，拖拽端点，就会改变曲线的起始点和结束点；两个端点周围又各自延伸出一个控制点，通过一条辅助的直线段和端点连接起来。拖拽两个控制点，曲线的弯曲度就会发生改变。总体感觉有点像织毛衣：一条弯曲的毛线，毛线两端有两根毛线针，呵呵。<br />
+<br />
+<img src="http://pic.yupoo.com/zhaojinjiang/AS0fXflh/O0Sl7.jpg" /><br />
+<br />
+这可能是大家对曲线直观的感觉吧，但其实这四个点构成的曲线就是一条三维<a href="http://baike.baidu.com/view/60154.htm" target="_blank">贝塞尔曲线</a>。<br />
+<br />
+百科中对它的介绍比较抽象，不过我喜欢用数据和公式来说话：<br />
+首先n维贝塞尔曲线的公式为：<br />
+<pre>    n
+x = ∑ C(n,i) * t^i * (1-t)^(n-i) * xi
+ 0＜i＜1
+
+    n
+y = ∑ C(n,i) * t^i * (1-t)^(n-i) * yi
+ 0＜i＜1</pre>
+如果到我们这里的三维贝赛尔曲线，那就是：<br />
+<pre>x = C(3,0) * (1-t)^3 * x0 +
+    C(3,1) * t * (1-t)^2 * x1 +
+    C(3,2) * t^2 * (1-t) * x2 +
+    C(3,3) * t^3 * x3
+  = (1-t)^3 * x0 +
+    3t(1-t)^2 * x1 +
+    3t^2(1-t) * x2 +
+    t^3 * x3
+  = x0 (1-t)^3 + 3 x1 t(1-t)^2 + 3 x2 t^2(1-t) + x3 t^3
+y = y0 (1-t)^3 + 3 y1 t(1-t)^2 + 3 y2 t^2(1-t) + y3 t^3</pre>
+举个例子，如果起始点为(0,0)，结束点为(2,0)，两个控制点分别为(0,1)和(2,1)，那么x0~x3分别为0,0,2,2，y0~y3分别为0,1,1,0。上面的公式就变为：<br />
+<pre>x = 0 + 0          + 6 t^2(1-t) + 2 t^3
+y = 0 + 3 t(1-t)^2 + 3 t^2(1-t) + 0</pre>
+这就是通过4个结点得到的贝塞尔曲线的二元参数方程式。<br />
+在实际应用中，我个人接触到的方程示意比较少，基本都是大家通过可视化的作图工具将曲线调整出理想的结果，然后再记录或推断出端点、控制点的坐标的。这里仅供了解理论知识。</p>
+
+</div>
+
+<p align="right">
+  <small>
+    <a href="https://github.com/Jinjiang/jinjiang.github.io/edit/dev/source/_posts/2011-02-23.md" target="_blank">
+      向本文提出修改或勘误建议
+    </a>
+  </small>
+</p>
+
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+
+<div id="gitalk-container"></div>
+
+<script>
+  const gitalk = new Gitalk({
+    clientID: 'c99e23053fc1bba6a58c',
+    clientSecret: '64efe1cd1438e77ae2bf8eba92b51c90d0cc2b9f',
+    repo: 'jinjiang.github.io',
+    owner: 'jinjiang',
+    admin: ['jinjiang'],
+    id: location.pathname,      // Ensure uniqueness and length less than 50
+    distractionFreeMode: false  // Facebook-like distraction free mode
+  })
+
+  gitalk.render('gitalk-container')
+</script>
+</div>
+
+    <div id="footer">
+      <a href="/">囧克斯</a>
+      
+      |
+      <a href="/atom.xml" title="rss_feed">RSS</a>
+      
+      |
+      我是百度统计
+      <script src="https://hm.baidu.com/h.js?a0a2372d4b7621d0bfe71f33c58a4bd8"></script>
+      |
+      我会翻脸 <a href="#" onclick="document.body.classList.toggle('dark-mode'), event.preventDefault()" style="font-size: 1.25em;">🌚🌝</a>
+    </div>
+  </div>
+
+  
+<script src="/js/script.js"></script>
+
+</body>
+
+</html>

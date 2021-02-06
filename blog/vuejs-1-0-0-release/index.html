@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <!-- proud for contributing Vue.js -->
+  <meta charset="utf-8">
+  <meta name="format-detection" content="telephone=no" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-touch-fullscreen" content="yes" />
+
+  
+  <title>
+    
+    Vue.js 1.0.0 发布了！ -
+    
+    囧克斯
+  </title>
+
+  
+<link rel="stylesheet" href="/css/pure.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+
+  
+  <link rel="alternate" href="/atom.xml" title="囧克斯" type="application/atom+xml">
+  
+  
+  <link rel="icon" href="/favicon.ico">
+  
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+<body>
+  <script>(() => { if ((new Date().getHours() + 6) % 24 < 12) document.body.classList.add('dark-mode') })()</script>
+
+  <div class="dark-mode-helper"></div>
+
+  <div id="wrapper">
+
+    <div id="header">
+      <h1>
+        <a href="/" title="囧克斯">
+          囧克斯
+        </a>
+      </h1>
+      <p class="description">
+        这里是勾三股四的家
+      </p>
+    </div>
+
+    <div id="nav" class="pure-menu pure-menu-open pure-menu-horizontal">
+      <ul>
+        
+        <li>
+          <a href="/all-demos/">
+            线上
+          </a>
+        </li>
+        
+        <li>
+          <a href="/all-slides/">
+            线下
+          </a>
+        </li>
+        
+        <li>
+          <a href="/about/">
+            关于
+          </a>
+        </li>
+        
+        <li><a href="/archives">归档</li>
+      </ul>
+    </div>
+
+    <div id="main"><div class="content">
+  <h2>
+    Vue.js 1.0.0 发布了！
+  </h2>
+  <p>作为“打入敌人内部”的第一件事，转载一下 Vue.js 1.0.0 新世纪福音战士 (其实发这篇文章的时候已经 1.0.3 了) 正式发布的<a target="_blank" rel="noopener" href="https://vuejs.org/2015/10/26/1.0.0-release/">博文</a> ^_^</p>
+<p><img src="/uploads/2015/10/2139857295.png" alt="Vue.js"></p>
+<hr>
+<blockquote>
+<p>Hi HN (Hacker News)! 如果你还不熟悉 Vue.js 的话，可以通过<a target="_blank" rel="noopener" href="http://blog.evanyou.me/2015/10/25/vuejs-re-introduction/">这篇文章 (英文)</a>对其有个总体印象。</p>
+</blockquote>
+<p>在经历了 300+ 次提交、8 次 alpha、4 次 beta 和 2 次 rc 之后，今天我很荣幸的向大家宣布 <a target="_blank" rel="noopener" href="https://github.com/vuejs/vue/releases/tag/1.0.0">Vue.js 1.0.0 Evangelion</a> 正式发布了！非常感谢所有参与 API 重设计的同学们——没有来自社区的贡献这是不可能完成的。</p>
+<a id="more"></a>
+<h3 id="模板语法改进"><a href="#模板语法改进" class="headerlink" title="模板语法改进"></a>模板语法改进</h3><p>1.0 的模板语法解决了很多微小的一致性问题，并使得 Vue 的模板更加简洁且易于阅读。最值得留意的新特性就是 <code>v-on</code> 和 <code>v-bind</code> 的语法简写：</p>
+<pre><code>&lt;!-- 简写版 v-bind:href --&gt;
+&lt;a :href=&quot;someURL&quot;&gt;&lt;/a&gt;
+
+&lt;!-- 简写版 v-on:click --&gt;
+&lt;button @click=&quot;onClick&quot;&gt;&lt;/button&gt;
+</code></pre><p>当使用一个子组件的时候，<code>v-on</code> 用来监听自定义事件，<code>v-bind</code> 用来绑定属性 (props)。这些简写让子组件变得更易用：</p>
+<pre><code>&lt;item-list
+  :items=&quot;items&quot;
+  @ready=&quot;onItemsReady&quot;
+  @update=&quot;onItemsUpdate&quot;&gt;
+&lt;/item-list&gt;
+</code></pre><h3 id="API-清理"><a href="#API-清理" class="headerlink" title="API 清理"></a>API 清理</h3><p>Vue.js 1.0 的总体目标是使其适用于更大型的项目。这也是很多 API 被弃用的原因。在被弃用的 API 中，除了很少被用及之外，最常见的理由就是它会导致可维护性被破坏。特别是，我们弃用了难以维护的功能，并把组件提炼隔离开，使其不会对项目其它部分产生影响。</p>
+<p>比如，在 0.12 中默认资源 (asset) 方案会隐性降级到组件树中的父级。这使得组件中的可用资源非常不确定，并且取决于在运行时的用法。在 1.0 中，所有的资源都基于严格模式进行解析，也没有了隐性降级。<code>inherit</code> 选项也被移除了，因为它很容易导致组件强耦合，无法提炼。</p>
+<h3 id="更快的初始化渲染"><a href="#更快的初始化渲染" class="headerlink" title="更快的初始化渲染"></a>更快的初始化渲染</h3><p>1.0 用 <code>v-for</code> 指令 (directive) 取代了 <code>v-repeat</code>。除了提供相同的功能和更直观的作用域之外，<code>v-for</code> 将初始化渲染大列表和大表格时的性能提升了 <strong>100%</strong>！</p>
+<h3 id="更强大的工具"><a href="#更强大的工具" class="headerlink" title="更强大的工具"></a>更强大的工具</h3><p>在 Vue.js core 之外，还有很多令人激动的东西：<a target="_blank" rel="noopener" href="https://github.com/vuejs/vue-loader">vue-loader</a> 和 <a target="_blank" rel="noopener" href="https://github.com/vuejs/vueify">vueify</a> 的新升级，包括：</p>
+<ul>
+<li><p>组件热加载。当一个 <code>*.vue</code> 组件被编辑之后，其所有活跃实例都可以在页面不刷新的情况下完成热转换。这意味着你不需要重新加载 app 就可以完成诸如样式或模板的小调整；而 app 本身及其被转换的组件的状态可以被保留，这大大提升了开发体验。</p>
+</li>
+<li><p>局部 CSS。通过在你的 <code>*.vue</code> 组件的 style 标签上简单加入一个 <code>scoped</code> 特性，该组件的模板和最终生成的 CSS 就会被奇妙的重写以保证组件的样式只被应用在其自身的元素上。最重要的是，父组件的特殊样式<strong>不会</strong>泄露到嵌套的子组件当中。</p>
+</li>
+<li><p>默认支持 ES2015。JavaScript 一直在进化。你可以用最新的语法写出更简洁生动的代码。<code>vue-loader</code> 和 <code>vueify</code> 现在会直接转换你的 <code>*.vue</code> 组件中的 JavaScript，无需额外的设置。今天，就来写未来的 JavaScript 吧！</p>
+</li>
+</ul>
+<p>结合 <a target="_blank" rel="noopener" href="https://github.com/vuejs/vue-router">vue-router</a>，Vue.js 现在不只是一个库了——它提供了一个构建复杂单页应用的稳固基础。</p>
+<h3 id="下一步？"><a href="#下一步？" class="headerlink" title="下一步？"></a>下一步？</h3><p>如一般 1.0.0 所提倡的，核心 API 将会保持稳定服务于可预见的未来，库也做好了产品级别的准备。未来的开发会专注于：</p>
+<ol>
+<li><p>改善 <code>vue-loader</code> 并使其做好产品级别的准备。</p>
+</li>
+<li><p>捋顺开发体验，比如更好的开发者工具和 Vue.js 项目/组件脚手架的 CLI。</p>
+</li>
+<li><p>提供更多诸如教程和示例的学习资料。</p>
+</li>
+</ol>
+
+</div>
+
+<p align="right">
+  <small>
+    <a href="https://github.com/Jinjiang/jinjiang.github.io/edit/dev/source/_posts/vuejs-1-0-0-release.md" target="_blank">
+      向本文提出修改或勘误建议
+    </a>
+  </small>
+</p>
+
+
+
+<div id="comments">
+  <h2>早期评论</h2>
+  <ul>
+  
+    <li id="comment-111178" style="margin-left: 0em;">
+      <p>
+        <strong>
+        超人1641
+        
+        </strong>
+        <small>2015/11/24 01:39:55</small></p>
+      没有评论？<br/>
+赞！<br/>
+沙发～～～
+    </li>
+  
+  </ul>
+</div>
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+
+<div id="gitalk-container"></div>
+
+<script>
+  const gitalk = new Gitalk({
+    clientID: 'c99e23053fc1bba6a58c',
+    clientSecret: '64efe1cd1438e77ae2bf8eba92b51c90d0cc2b9f',
+    repo: 'jinjiang.github.io',
+    owner: 'jinjiang',
+    admin: ['jinjiang'],
+    id: location.pathname,      // Ensure uniqueness and length less than 50
+    distractionFreeMode: false  // Facebook-like distraction free mode
+  })
+
+  gitalk.render('gitalk-container')
+</script>
+</div>
+
+    <div id="footer">
+      <a href="/">囧克斯</a>
+      
+      |
+      <a href="/atom.xml" title="rss_feed">RSS</a>
+      
+      |
+      我是百度统计
+      <script src="https://hm.baidu.com/h.js?a0a2372d4b7621d0bfe71f33c58a4bd8"></script>
+      |
+      我会翻脸 <a href="#" onclick="document.body.classList.toggle('dark-mode'), event.preventDefault()" style="font-size: 1.25em;">🌚🌝</a>
+    </div>
+  </div>
+
+  
+<script src="/js/script.js"></script>
+
+</body>
+
+</html>

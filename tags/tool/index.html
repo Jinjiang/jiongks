@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <!-- proud for contributing Vue.js -->
+  <meta charset="utf-8">
+  <meta name="format-detection" content="telephone=no" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-touch-fullscreen" content="yes" />
+
+  
+  <title>
+    
+    tag: tool -
+    
+    囧克斯
+  </title>
+
+  
+<link rel="stylesheet" href="/css/pure.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+
+  
+  <link rel="alternate" href="/atom.xml" title="囧克斯" type="application/atom+xml">
+  
+  
+  <link rel="icon" href="/favicon.ico">
+  
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+<body>
+  <script>(() => { if ((new Date().getHours() + 6) % 24 < 12) document.body.classList.add('dark-mode') })()</script>
+
+  <div class="dark-mode-helper"></div>
+
+  <div id="wrapper">
+
+    <div id="header">
+      <h1>
+        <a href="/" title="囧克斯">
+          囧克斯
+        </a>
+      </h1>
+      <p class="description">
+        这里是勾三股四的家
+      </p>
+    </div>
+
+    <div id="nav" class="pure-menu pure-menu-open pure-menu-horizontal">
+      <ul>
+        
+        <li>
+          <a href="/all-demos/">
+            线上
+          </a>
+        </li>
+        
+        <li>
+          <a href="/all-slides/">
+            线下
+          </a>
+        </li>
+        
+        <li>
+          <a href="/about/">
+            关于
+          </a>
+        </li>
+        
+        <li><a href="/archives">归档</li>
+      </ul>
+    </div>
+
+    <div id="main">
+<div class="content">
+  <h2>
+    <a href="/blog/introducing-zhlint/">
+      中文格式化小工具 zhlint 及其开发心得
+    </a>
+  </h2>
+  
+  <p>介绍要给小工具给大家：<strong><a target="_blank" rel="noopener" href="https://github.com/Jinjiang/zhlint">zhlint</a></strong></p>
+<p><img src="https://raw.githubusercontent.com/Jinjiang/zhlint/master/logo.svg" alt="zhlint logo"></p>
+<p>这个工具可以帮助你快速格式化中文或中英混排的文本。比如常见的中英文之间要不要用空格、标点符号要用全角字符之类的。</p>
+<p>看上去这工具似乎和自己的工作和职业关系不大，但其实也是有一定由来的。</p>
+<h3 id="项目的由来"><a href="#项目的由来" class="headerlink" title="项目的由来"></a>项目的由来</h3><p>自己之前参与过一些 <a target="_blank" rel="noopener" href="https://www.w3.org/html/ig/zh/wiki/%E7%BF%BB%E8%AF%91">W3C 规范的翻译工作</a>，这其中除了需要一定的词汇量、语法知识和表达技巧之外，最主要的部分应该就是格式了。因为大家对诸如空格、标点符号等细节的使用其实不太统一，这在团队协作的时候其实会变成问题，大家都花了一些不必要的时间在格式讨论和校对上。感觉这部分工作比较枯燥且机械，但又不得不做。只能花更多时间在上面。</p>
+<p>后来因为接触 <a target="_blank" rel="noopener" href="https://vuejs.org/">Vue.js</a> 的关系。这个项目在早期并没有太多人知道它，而且当时社区普遍比较迷信像 Google 这种大厂官方推出的技术方案，对“野生”项目都不是很有兴趣，所以我希望可以把这个项目介绍给更多人认识。结合我之前的翻译经验，我觉得翻译文档是一个比较好的途径，于是就发起了 <a target="_blank" rel="noopener" href="https://github.com/vuejs/cn.vuejs.org/">Vue 中文文档</a>的翻译，结果没想到这件事一发不可收拾，我就不知不觉从 2014/2015 年做到了今天。随着 Vue 的不断发展，关注文档的人也越来越多，中间发生了很多故事，这些故事也让我自己逐步对翻译和中文格式的细节有了更多的认识。</p>
+<p>真正触发我做这个项目的事情，是去年的一个翻译讨论：<a target="_blank" rel="noopener" href="https://github.com/vuejs/cn.vuejs.org/issues/480">如何</a><a target="_blank" rel="noopener" href="https://github.com/vuejs/cn.vuejs.org/issues/544">翻译</a> <a target="_blank" rel="noopener" href="https://github.com/vuejs/cn.vuejs.org/issues/630">attribute</a> 和 <a target="_blank" rel="noopener" href="https://github.com/vuejs/cn.vuejs.org/issues/646">property</a>。这个问题几乎从我接触技术翻译的第一天起就一直是个噩梦。我和周围的小伙伴尝试了各种译法，都不能让所有人满意，无奈之下通过刻意的区分和强化教育，把它们分别译成“特性”和“属性”。这个状态持续了很长一段时间，Vue 的文档也基本都是这么翻译的。直到去年的一段时间，我逐步意识到，也许这两个词不翻译会更好，索性直接保留英文原词，这样不会有歧义，同时随着整个社区的英文程度在提高，像这样的词不翻译大家应该也能顺畅的理解了，中英文混着读也逐渐可以接受了。所以就在 GitHub 开了个 <a target="_blank" rel="noopener" href="https://github.com/vuejs/cn.vuejs.org/issues/895">issue</a>，同时也扩散到了 <a target="_blank" rel="noopener" href="https://lists.w3.org/Archives/Public/public-chinese-web/2019Apr/0000.html">W3C Web 中文兴趣组</a>。没想到这次讨论大家的意见出奇的一致，几乎“全票通过”。看上去困扰我多年的问题终于要解开了……</p>
+<p>然而在这之后，我意识到，如何对已经翻译好的大量文档做关键词批量替换并不是一件容易的事情——主要还是格式细节太多了。不能做简单粗暴的文本批量替换。</p>
+<p>比如把“特性”换回“attribute”之后，如果“特性”一词的两边也都还是中文，那么“attribute”两边就都需要加一个空格，而如果是标点符号就不需要，而如果是英文，那理论上这个空格已经加过了。所以情况很多很复杂。你读到这里可能觉得那我们稍微加个正则表达式也许可以解决，那我会在告诉你，如果这个词的边上还可能有 HTML 标记或 Markdown 标记，那这个正则该如何写呢？或许也不那么容易了。</p>
+<p>因此这个译法改动在去年就已经有定论了，但是实际上到今年上半年我才真正改好。原因是我觉得这次我不打算再靠蛮力去解决问题了，而打算通过工具来解决——这就是我做这个项目的由来和动机——没错我陆陆续续做了一年左右，最近终于做出一个比较文档的版本了，然后才完成了这次译法的替换。</p>
+<p>另外一个促使我做这个工具的原因其实是我个人希望尝试一些语法分析之类的技术，因为觉得作为一个前端工程师，未来这个方向的可能性和空间比较大。如之前和很多人都聊到过的，现如今的前端框架全部都开始在编辑器这个环节大做文章。因为它可以帮助你突破一些 JS 语言的限制。所以大家武装到牙齿之后这部分是一定会碰的。我预测接下来这个趋势会从框架往上发展，逐步延申到前端工作的更多环节。做这个工具看上去似乎有那么一点可以积累到的知识和经验，于是就想先做个这个试试看。</p>
+  <p class="more">
+    <a href="/blog/introducing-zhlint/">
+      阅读剩余部分...
+    </a>
+  </p>
+  
+</div>
+
+
+
+</div>
+
+    <div id="footer">
+      <a href="/">囧克斯</a>
+      
+      |
+      <a href="/atom.xml" title="rss_feed">RSS</a>
+      
+      |
+      我是百度统计
+      <script src="https://hm.baidu.com/h.js?a0a2372d4b7621d0bfe71f33c58a4bd8"></script>
+      |
+      我会翻脸 <a href="#" onclick="document.body.classList.toggle('dark-mode'), event.preventDefault()" style="font-size: 1.25em;">🌚🌝</a>
+    </div>
+  </div>
+
+  
+<script src="/js/script.js"></script>
+
+</body>
+
+</html>

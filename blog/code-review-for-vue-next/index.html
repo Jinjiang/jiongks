@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <!-- proud for contributing Vue.js -->
+  <meta charset="utf-8">
+  <meta name="format-detection" content="telephone=no" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-touch-fullscreen" content="yes" />
+
+  
+  <title>
+    
+    Code Review for Vue 2.0 Preview -
+    
+    囧克斯
+  </title>
+
+  
+<link rel="stylesheet" href="/css/pure.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+
+  
+  <link rel="alternate" href="/atom.xml" title="囧克斯" type="application/atom+xml">
+  
+  
+  <link rel="icon" href="/favicon.ico">
+  
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+<body>
+  <script>(() => { if ((new Date().getHours() + 6) % 24 < 12) document.body.classList.add('dark-mode') })()</script>
+
+  <div class="dark-mode-helper"></div>
+
+  <div id="wrapper">
+
+    <div id="header">
+      <h1>
+        <a href="/" title="囧克斯">
+          囧克斯
+        </a>
+      </h1>
+      <p class="description">
+        这里是勾三股四的家
+      </p>
+    </div>
+
+    <div id="nav" class="pure-menu pure-menu-open pure-menu-horizontal">
+      <ul>
+        
+        <li>
+          <a href="/all-demos/">
+            线上
+          </a>
+        </li>
+        
+        <li>
+          <a href="/all-slides/">
+            线下
+          </a>
+        </li>
+        
+        <li>
+          <a href="/about/">
+            关于
+          </a>
+        </li>
+        
+        <li><a href="/archives">归档</li>
+      </ul>
+    </div>
+
+    <div id="main"><div class="content">
+  <h2>
+    Code Review for Vue 2.0 Preview
+  </h2>
+  <p>是的！<a href="https://jiongks.name/blog/announcing-vue-2/">Vue 2.0 发布了！</a> 源代码仓库<a target="_blank" rel="noopener" href="https://github.com/vuejs/vue/tree/next">在此</a></p>
+<p>首先，当我第一次看到 Vue 2.0 的真面目的时候，我的内心是非常激动的</p>
+<h3 id="Demo"><a href="#Demo" class="headerlink" title="Demo"></a>Demo</h3><p>来个简单的 demo，首先把 <code>dist/vue.js</code> 导入到一个空白的网页里，然后写：</p>
+<p><strong>当然，在大家阅读下面所有的内容之前，先想象一下，这是一个运行时 min+gzip 后只有 12kb 大小的库</strong></p>
+<pre><code>&lt;script src=&quot;./dist/vue.js&quot;&gt;&lt;/script&gt;
+
+&lt;div id=&quot;app&quot;&gt;
+  Hello &#123;&#123;who&#125;&#125;
+&lt;/div&gt;
+&lt;script&gt;
+  new Vue(&#123;
+    el: &apos;#app&apos;,
+    data: &#123;who: &apos;Vue&apos;&#125;
+  &#125;)
+&lt;/script&gt;
+</code></pre><p>你将看到 “Hello Vue”</p>
+<p>然后再看一个神奇的：</p>
+<pre><code>&lt;script src=&quot;./dist/vue.js&quot;&gt;&lt;/script&gt;
+
+&lt;div id=&quot;app&quot;&gt;&lt;/div&gt;
+&lt;script&gt;
+  new Vue(&#123;
+    el: &apos;#app&apos;,
+    render: function () &#123;
+      with (this) &#123;
+        __h__(&apos;div&apos;,
+          &#123;staticAttrs:&#123;&quot;id&quot;:&quot;app&quot;&#125;&#125;,
+          [(&quot;\n  Hello &quot;+__toString__(who)+&quot;\n&quot;)],
+          &apos;&apos;
+        )
+      &#125;
+    &#125;
+    data: &#123;who: &apos;Vue&apos;&#125;
+  &#125;)
+&lt;/script&gt;
+</code></pre><p>这个是 compile 过后的格式，大家会发现首先 <code>#app</code> 下不需要写模板了，然后 <code>&lt;script&gt;</code> 里多了一个 <code>render</code> 字段，Vue 在运行时其实是会把模板内容先转换成渲染方法存入 <code>render</code> 字段，然后再执行，如果发现 <code>render</code> 已经存在，就跳过模板解析过程直接渲染。所以在 Vue 2.0 中写一段模板和写一个 <code>render</code> option 是等价的。为什么要这样设计，稍后会我们会涉及到。</p>
+<a id="more"></a>
+<h3 id="Code-Review"><a href="#Code-Review" class="headerlink" title="Code Review"></a>Code Review</h3><p>废话不说，来看<a target="_blank" rel="noopener" href="https://github.com/vuejs/vue/tree/next">仓库</a></p>
+<p>哎呀好东西太多我都不知道该先讲哪个啦！</p>
+<h3 id="package-json"><a href="#package-json" class="headerlink" title="package.json - -"></a><code>package.json</code> - -</h3><p><a target="_blank" rel="noopener" href="https://github.com/vuejs/vue/blob/next/package.json">https://github.com/vuejs/vue/blob/next/package.json</a></p>
+<p>先看这里，我个人习惯是拿到仓库之后除了 README (它没写) 就先看这个。和 1.x 相比，开发工具链还是以 rollup + webpack + karma 为主，开发的时候用 webpack 加 watch；打包的时候用 rollup 快速而且可以自动删掉没用到的代码片段；测试的时候用 karma 各种组合，包括 e2e、spec、coverage、sauce等。语法检查用了 eslint 这个似乎没什么争议和悬念。另外我发现了两个新东西：<a target="_blank" rel="noopener" href="http://nightwatchjs.org/">nightwatch</a> 和 <a target="_blank" rel="noopener" href="https://www.npmjs.com/package/selenium-server">selenium-server</a></p>
+<p>另外你们就选眼睛再迟钝也会看到 ssr 这个词吧！对，就是服务端渲染 Server-Side Rendering！先不急，这个最后说，你们可以先去 high 一会儿</p>
+<h3 id="src"><a href="#src" class="headerlink" title="src"></a><code>src</code></h3><p>作为一个见证了一小段 Vue 2.0 成长过程的脑残粉，我得跟大家从时间线的角度介绍一下这个文件夹：</p>
+<h4 id="compiler-runtime"><a href="#compiler-runtime" class="headerlink" title="compiler + runtime"></a><code>compiler</code> + <code>runtime</code></h4><p>早些时候 Vue 2.0 的代码还是这样分的，一半运行时，一半(预)编译时，中间会通过一个 JavaScript 的格式严格划清界限，即源代码 template + JavaScript 经过编译之后变成了一段纯 JavaScript 代码，然后这段纯 JavaScript 的代码又可以在运行时被执行渲染。</p>
+<p>这里面奇妙的地方是：编译时的代码完全可以脱离浏览器预执行，也可以在浏览器里执行。所以你可以把代码提前编译好，减轻运行时的负担。</p>
+<p>由于 Vue 2.0 对 template 的解析没有借助 DOM 以及 fragment document，而是在 John Resig 的 <a target="_blank" rel="noopener" href="https://github.com/vuejs/vue/blob/14feb83879fe32fc9c54eddf33c6c5ef2fb4e8a2/src/compiler/parser/html-parser.js">HTML Parser</a> 基础上实现的，所以完全可以在任何主流的 JavaScript 环境中执行，这也为 ssr 提供了必要的基础</p>
+<p>Vue 最早会打包生成三个文件，一个是 runtime only 的文件 vue.common.js，一个是 compiler only 的文件 compiler.js，一个是 runtime + compiler 的文件 vue.js，它们有三个打包入口，都放在了 <code>entries</code> 目录下，这是 <code>src</code> 里的第三个文件夹，第四个文件夹是 <code>shared</code>，放置一些运行时和编译时都会用到的工具方法集。</p>
+<h4 id="compiler-runtime-platforms"><a href="#compiler-runtime-platforms" class="headerlink" title="compiler + runtime + platforms"></a><code>compiler</code> + <code>runtime</code> + <code>platforms</code></h4><p>Wahahaha~</p>
+<p>这要说到 Vue 2.0 的第二个优点：virtual-DOM！virtual-DOM 有很多优点，也被很多人热议，而 Vue 2.0 里面的 virtual-DOM 简直是把它做到了极致！代码非常简练，而且性能超高 (据说秒杀 React，我自己没试过，大家可以自己比比看)。在这一点上编译器的前置起到了非常重要的作用，而且很多 diff 算法的优化点而且是在运行时之前就准备好的。</p>
+<p>另外 virtual-DOM 的另一个优点当然就是可以对渲染引擎做一般化的抽象，进而适配到更多类型的终端渲染引擎上！所以在我的怂恿下，小右把本来在 <code>runtime</code> 下的 <code>runtime/dom</code> 文件夹挪到了一个名叫 <code>platforms</code> 的新文件夹下，改名叫 <code>platforms/web/runtime</code>，把本来 <code>compiler</code> 文件夹下 web 相关的 <code>modules</code> 挪到了 <code>platforms/web/compiler</code>！</p>
+<p>(是的没错，今天在 <a target="_blank" rel="noopener" href="https://alibaba.github.io/weex/">Weex</a> 的子仓库里已经有另外一个 <code>platforms/weex</code> 文件夹了耶)</p>
+<h4 id="compiler-runtime-platforms-server"><a href="#compiler-runtime-platforms-server" class="headerlink" title="compiler + runtime + platforms + server"></a><code>compiler</code> + <code>runtime</code> + <code>platforms</code> + <code>server</code></h4><p>是的没有错！Vue 2.0 既然已经有了 virtual-DOM，也有了运行环境无关的 compiler，为什么不能 ssr 呢？！Vue 2.0 不只是简单的把预渲染拿到服务端这么简单，Vue 2.0 ssr 除了提供传统的由源文件编译出字符串之外，还提供了输出 stream 的功能，这样服务端的渲染不会因为大量的同步字符串处理而变慢。即：<code>createRenderer()</code> 会返回 <code>renderToString()</code> 和 <code>renderToStream()</code> 两个方法。同时，在 <code>platforms/web</code> 文件夹下除了 <code>runtime</code> 和 <code>compiler</code> 之外又多了一个 <code>server</code> 目录，这样编译器、服务端流式预渲染、运行时的铁三角架构就这样达成了！</p>
+<h3 id="test"><a href="#test" class="headerlink" title="test"></a><code>test</code></h3><p>说到测试，我惊奇的发现，在带来了这么多颠覆性的改变之后，Vue 2.0 竟然完好保留了绝大多数 1.0 的 API 设计，而且更快更小巧延展性更强。Vue 2.0 在前期研发阶段主要是通过粗线条的 e2e 测试进行质量保障的，因为版本延续性做得非常好，所以这部分在 1.x 的积累已经帮上很大忙了。现在 Vue 2.0 逐渐的在从 feature 的角度在进一步覆盖测试用例，对每个 API 和每个流程进行测试。目前以我个人的感觉主要的常见的链路都已经比较畅通了，具体功能细节上偶尔还是会遇到 bug 待修复，不过作为一个新兴的 Vue 2.0 来说，相信这已经远远超过大家的预期了！</p>
+<h3 id="其它"><a href="#其它" class="headerlink" title="其它"></a>其它</h3><p>我觉得 Vue 2.0 在编译器和运行时的解耦上做得超级棒！中间格式设计得也非常巧妙，把静态的部分在编译时就分析出来，而且通过非常简单的 <code>__h__</code>, <code>__renderList__</code> 等方法就搞定了几乎所有的逻辑控制和数据绑定。之前我个人在实践 Weex 的时候也是会把 template 提前 compile，但只是 compile 成一段 JSON，逻辑分析还是在运行时做的，当时和小右交流的时候就在讨论，能不能把分析过程也前置，无奈自己功力不够啊，一直没搞出来。看到 2.0 横空出世，简直是泪流满面有木有！！</p>
+<p>还有一件事情也是之前跟小右聊到过，就是目前 Vue 提供的很多 directive 包括 filter 也都是有机会前置处理的，所以在 Vue 2.0 里，有相当一部分 directive 是前置处理成一般格式的，运行时只是针对各端的渲染机制保留了 attr, style, class, event 等几个最基础简单的解析过程，比如 if, for, else 都直接在 compile 的时候被解开了。而且 Vue 2.0 把这部分内容抽象得如此清晰，除了赞叹还是赞叹！！</p>
+<p>还有就是，你们去看看 Vue 2.0 的提交记录，300+ 次提交，上万行高效优质的代码，总共花了差不多两周的时间，而且提交时间几乎遍布二十四个小时……</p>
+<p>别的不多啰嗦了，我觉得大家还是亲自看过 Vue 2.0 的源码，会对这些内容有更深刻的了解。从今天起，fork + clone Vue 2.0，写写 demo、写写测试、练练英文 XD go!</p>
+
+</div>
+
+<p align="right">
+  <small>
+    <a href="https://github.com/Jinjiang/jinjiang.github.io/edit/dev/source/_posts/code-review-for-vue-next.md" target="_blank">
+      向本文提出修改或勘误建议
+    </a>
+  </small>
+</p>
+
+
+
+<div id="comments">
+  <h2>早期评论</h2>
+  <ul>
+  
+    <li id="comment-112294" style="margin-left: 0em;">
+      <p>
+        <strong>
+        tom
+        
+        </strong>
+        <small>2016/04/28 02:04:17</small></p>
+      沙发
+    </li>
+  
+    <li id="comment-112295" style="margin-left: 0em;">
+      <p>
+        <strong>
+        <a href="https://github.com/airyland/vux" target="_blank" title="airyland">airyland</a>
+        
+        </strong>
+        <small>2016/04/28 02:12:21</small></p>
+      终于出来了，手动广告，明天立即把vux更新到2.0。
+    </li>
+  
+    <li id="comment-112347" style="margin-left: 2em;">
+      <p>
+        <strong>
+        Tibbers
+        
+        </strong>
+        <small>2016/05/02 02:29:24</small></p>
+      马上要上项目了，我打算用您的vux，期待升级到vue2.0！
+    </li>
+  
+    <li id="comment-112296" style="margin-left: 0em;">
+      <p>
+        <strong>
+        动感小前端
+        
+        </strong>
+        <small>2016/04/28 03:31:42</small></p>
+      好叼的编译提前！没想到竟会越来越快了，要是加上wasm，岂不是赶上native的节奏...
+    </li>
+  
+    <li id="comment-112298" style="margin-left: 0em;">
+      <p>
+        <strong>
+        leo
+        
+        </strong>
+        <small>2016/04/28 07:15:39</small></p>
+      好鸡冻，最后还是要回去看看编译原理。
+    </li>
+  
+    <li id="comment-112300" style="margin-left: 0em;">
+      <p>
+        <strong>
+        <a href="http://tiye.me" target="_blank" title="题叶">题叶</a>
+        
+        </strong>
+        <small>2016/04/28 09:54:19</small></p>
+      所以更加像 React 了...
+    </li>
+  
+    <li id="comment-112301" style="margin-left: 2em;">
+      <p>
+        <strong>
+        <a href="http://jiongks.name/" target="_blank" title="囧克斯">囧克斯</a>
+        
+        </strong>
+        <small>2016/04/28 10:51:00</small></p>
+      Vue 也有些地方像 angular 像 polymer 我猜大家都能在 Vue 上找到自己喜欢的那部分
+    </li>
+  
+    <li id="comment-112304" style="margin-left: 0em;">
+      <p>
+        <strong>
+        <a href="http://4n70n.com/?p=45" target="_blank" title="说一下Vue.js 2.0 以及自己的一些看法 - 4n70n&#39;s Blog - 一生懸命がんばります">说一下Vue.js 2.0 以及自己的一些看法 - 4n70n&#39;s Blog - 一生懸命がんばります</a>
+        
+        </strong>
+        <small>2016/04/28 01:05:33</small></p>
+      [...]当然，下面还附了一份Code Review[...]
+    </li>
+  
+    <li id="comment-112307" style="margin-left: 0em;">
+      <p>
+        <strong>
+        尤小右
+        
+        </strong>
+        <small>2016/04/28 09:18:39</small></p>
+      不错不错
+    </li>
+  
+    <li id="comment-112318" style="margin-left: 0em;">
+      <p>
+        <strong>
+        乐事
+        
+        </strong>
+        <small>2016/04/29 04:40:20</small></p>
+      var vm = new Vue({<br/>
+            el: 'body',<br/>
+            data: {who: 'Vue'}<br/>
+})<br/>
+<br/>
+将el绑定到body上面会出现重复复制body，报错：vue.js:3247Uncaught RangeError: Maximum call stack size exceeded.<br/>
+vue.js:3251Uncaught TypeError: Cannot read property 'removeChild' of null。2.0不可以直接绑定body了是吗？
+    </li>
+  
+    <li id="comment-112319" style="margin-left: 0em;">
+      <p>
+        <strong>
+        <a href="http://qiansen1386.github.io" target="_blank" title="东方孤思子">东方孤思子</a>
+        
+        </strong>
+        <small>2016/04/29 06:09:25</small></p>
+      为什么 Weex 不直接叫 Vue-Native 呢？23333
+    </li>
+  
+    <li id="comment-112329" style="margin-left: 0em;">
+      <p>
+        <strong>
+        Fake
+        
+        </strong>
+        <small>2016/04/30 10:45:18</small></p>
+      说好的code review 呢
+    </li>
+  
+    <li id="comment-112348" style="margin-left: 0em;">
+      <p>
+        <strong>
+        前端小菜
+        
+        </strong>
+        <small>2016/05/02 05:36:15</small></p>
+      编译时的代码完全可以脱离浏览器预执行，也可以在浏览器里执行。所以你可以把代码提前编译好，减轻运行时的负担--这句话是什么意思,js还有编译这一说吗?
+    </li>
+  
+    <li id="comment-112425" style="margin-left: 0em;">
+      <p>
+        <strong>
+        <a href="http://erguotou.me" target="_blank" title="二锅头">二锅头</a>
+        
+        </strong>
+        <small>2016/05/08 09:19:29</small></p>
+      想问下nightwatch中有些断言方法我在文档中（包括nodejs的assert文档）没有看到，例如assert.count .value .evaluate方法，这些是从哪来的呢？
+    </li>
+  
+    <li id="comment-112430" style="margin-left: 2em;">
+      <p>
+        <strong>
+        <a href="http://erguotou.me" target="_blank" title="二锅头">二锅头</a>
+        
+        </strong>
+        <small>2016/05/09 10:48:44</small></p>
+      发现好像是自定义的断言
+    </li>
+  
+    <li id="comment-112479" style="margin-left: 0em;">
+      <p>
+        <strong>
+        <a href="http://hao.jser.com/archive/10422/" target="_blank" title="Vue 学习笔记 R12; 好JSER">Vue 学习笔记 R12; 好JSER</a>
+        
+        </strong>
+        <small>2016/05/14 04:41:11</small></p>
+      [...]Announcing Vue.js 2.0（译）Announcing Vue.js 2.0Code Review for Vue 2.0 PreviewVue 2.0 数据绑定实现一瞥[...]
+    </li>
+  
+    <li id="comment-112504" style="margin-left: 0em;">
+      <p>
+        <strong>
+        hiyuki
+        
+        </strong>
+        <small>2016/05/17 02:05:24</small></p>
+      请问vue2.0源码用的是那种预编译语言啊？
+    </li>
+  
+    <li id="comment-112505" style="margin-left: 2em;">
+      <p>
+        <strong>
+        hiyuki
+        
+        </strong>
+        <small>2016/05/17 03:19:08</small></p>
+      哦，里面的类型声明是flow吧
+    </li>
+  
+    <li id="comment-114759" style="margin-left: 0em;">
+      <p>
+        <strong>
+        <a href="https://geekweb.me" target="_blank" title="HarveyZ">HarveyZ</a>
+        
+        </strong>
+        <small>2017/01/15 06:41:05</small></p>
+      刚接触vue2,发现学习起来感觉好有心劲!!!早日用到生产环境!
+    </li>
+  
+  </ul>
+</div>
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+
+<div id="gitalk-container"></div>
+
+<script>
+  const gitalk = new Gitalk({
+    clientID: 'c99e23053fc1bba6a58c',
+    clientSecret: '64efe1cd1438e77ae2bf8eba92b51c90d0cc2b9f',
+    repo: 'jinjiang.github.io',
+    owner: 'jinjiang',
+    admin: ['jinjiang'],
+    id: location.pathname,      // Ensure uniqueness and length less than 50
+    distractionFreeMode: false  // Facebook-like distraction free mode
+  })
+
+  gitalk.render('gitalk-container')
+</script>
+</div>
+
+    <div id="footer">
+      <a href="/">囧克斯</a>
+      
+      |
+      <a href="/atom.xml" title="rss_feed">RSS</a>
+      
+      |
+      我是百度统计
+      <script src="https://hm.baidu.com/h.js?a0a2372d4b7621d0bfe71f33c58a4bd8"></script>
+      |
+      我会翻脸 <a href="#" onclick="document.body.classList.toggle('dark-mode'), event.preventDefault()" style="font-size: 1.25em;">🌚🌝</a>
+    </div>
+  </div>
+
+  
+<script src="/js/script.js"></script>
+
+</body>
+
+</html>

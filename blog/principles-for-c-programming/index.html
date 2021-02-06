@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <!-- proud for contributing Vue.js -->
+  <meta charset="utf-8">
+  <meta name="format-detection" content="telephone=no" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-touch-fullscreen" content="yes" />
+
+  
+  <title>
+    
+    [译]C 程序的原则 -
+    
+    囧克斯
+  </title>
+
+  
+<link rel="stylesheet" href="/css/pure.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+
+  
+  <link rel="alternate" href="/atom.xml" title="囧克斯" type="application/atom+xml">
+  
+  
+  <link rel="icon" href="/favicon.ico">
+  
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+<body>
+  <script>(() => { if ((new Date().getHours() + 6) % 24 < 12) document.body.classList.add('dark-mode') })()</script>
+
+  <div class="dark-mode-helper"></div>
+
+  <div id="wrapper">
+
+    <div id="header">
+      <h1>
+        <a href="/" title="囧克斯">
+          囧克斯
+        </a>
+      </h1>
+      <p class="description">
+        这里是勾三股四的家
+      </p>
+    </div>
+
+    <div id="nav" class="pure-menu pure-menu-open pure-menu-horizontal">
+      <ul>
+        
+        <li>
+          <a href="/all-demos/">
+            线上
+          </a>
+        </li>
+        
+        <li>
+          <a href="/all-slides/">
+            线下
+          </a>
+        </li>
+        
+        <li>
+          <a href="/about/">
+            关于
+          </a>
+        </li>
+        
+        <li><a href="/archives">归档</li>
+      </ul>
+    </div>
+
+    <div id="main"><div class="content">
+  <h2>
+    [译]C 程序的原则
+  </h2>
+  <p><mark>译自：<a target="_blank" rel="noopener" href="https://drewdevault.com/2017/03/15/How-I-learned-to-stop-worrying-and-love-C.html">Principles for C programming</a></mark></p>
+<p>按照 Doug Gwyn 的话说：“Unix 不会阻止你做愚蠢的事情，因为那会同样阻止你做聪明的事情”。C 是一个非常强大的工具，但使用它的时候需要非常小心和<a target="_blank" rel="noopener" href="http://dict.cn/discipline">自律</a>。学习这些纪律是绝对值得的，因为 C 是所有程序语言中最优秀的。一个自律的 C 程序员将会……</p>
+<p><strong>喜欢可维护性</strong>。不要在不必要的地方自作聪明。取而代之的是，找出最简单最易懂的满足需求的方案。诸如性能之类考量是放在第二位的。你应该为你的代码做一个性能预算，并自在的支配它。</p>
+<p>随着你对这门语言越来越<a target="_blank" rel="noopener" href="http://dict.cn/proficient">了解</a>，掌握了越来越多能够从中获益的特性，你也应该学会什么时候不能使用它们。相比用到了很多新奇的方式去解决问题，易于<a target="_blank" rel="noopener" href="http://dict.cn/novice">新手</a>理解是更重要的。最好是让一个新手理解你的代码并从中有所收获。像你<a target="_blank" rel="noopener" href="http://dict.cn/circa">大概</a>去年就在维护它一样去撰写代码。</p>
+<p><strong>避免使用魔法</strong>。不要使用宏 (macros)——尽管用它定义常量是没问题的。不要使用 typedef 来隐藏指针或回避撰写“结构”。避免撰写复杂的抽象。保持你的构建系统简单透明。不要因为一个愚蠢的 hacky 的<a target="_blank" rel="noopener" href="http://dict.cn/crap">废物</a>解决问题的方式酷炫就使用它。你的代码在行为<a target="_blank" rel="noopener" href="http://dict.cn/underlying">之下</a>应该是明显的，甚至不需要上下文。</p>
+<p>C 最大的优势之一就是透明和简单。这应该被信奉，而不是被<a target="_blank" rel="noopener" href="http://dict.cn/subverted">颠覆</a>。但是 C 的优良传统是给你足够的空间施展自己，所以你可以为了一些魔术般的目的使用它。但最好还是不要这样，做个<a target="_blank" rel="noopener" href="http://dict.cn/muggle">麻瓜</a>挺好的。</p>
+<p><strong>辨识并回避危险的模式</strong>。不要使用固定尺寸的 buffers (有人指出这种说法并不是完全正确。我之前打草稿的时候提到了这些，但还是删掉了)——始终计算你需要分配的空间。阅读你使用的函数的 man 手册并掌握他的成功有出错模式。立刻把不安全的用户输入转换为<a target="_blank" rel="noopener" href="http://dict.cn/sanitized">干净</a>的 C 结构。如果你之后会把这些数据展现给用户，那么尽可能把 C 结构保持到最后。要学会在使用例如 strcat 的敏感函数时多加留意。</p>
+<p>撰写 C 有的时候像握着一把枪。枪是很重要的工具，但是和枪有关的事故都是非常糟糕的。你对待枪要非常小心：不要用枪指着任何你喜爱的东西，要有好的用枪<a target="_blank" rel="noopener" href="http://dict.cn/discipline">纪律</a>，把它当作始终上膛一样谨慎。而就像枪善于拿来打孔一样，C 也善于用来撰写内核。</p>
+<p><strong>用心组织代码。</strong>永远不要把代码写到 header 里。永远不要使用 <code>inline</code> 关键字。把独立的东西分开写成不同的文件。<a target="_blank" rel="noopener" href="http://dict.cn/liberally">大量</a>使用静态方法组织你的逻辑。用一套编码规范让一切都有足够的<a target="_blank" rel="noopener" href="http://dict.cn/breathing%20room">空间</a>且易于阅读。当目的<a target="_blank" rel="noopener" href="http://dict.cn/self-evident">显而易见</a>的情况下使用单字符变量名，反之则使用<a target="_blank" rel="noopener" href="http://dict.cn/descriptive">描述性</a>的变量名。</p>
+<p>我喜欢把我的代码组织成目录，每个目录实现一组函数，每个函数有属于自己的文件。这些文件通常会包含很多静态函数，但是它们全部用于组织这个文件所要实现的行为。写一个 header 允许这个模块被外部访问。并使用 Linux 内核编码规范，<a target="_blank" rel="noopener" href="http://dict.cn/god%20dammit">该死</a>。</p>
+<p><strong>只使用标准的特性</strong>。不要把平台假设为 Linux。不要把编译器假设为 gcc。不要把 libc 假设为 glibc。不要把架构假设为 x86 的。不要把核心工具假设为 GNU。不要定义 <code>_GNU_SOURCE</code>。</p>
+<p>如果你一定要使用平台相关的特性，为这样的特性描述一个接口，然后撰写各自平台相关的支持代码。在任何<a target="_blank" rel="noopener" href="http://dict.cn/circumstances">情况</a>下都不要使用 gcc 扩展或 glibc 扩展。GNU 是<a target="_blank" rel="noopener" href="http://dict.cn/blight">枯萎的</a>，不要让它<a target="_blank" rel="noopener" href="http://dict.cn/infect">传染</a>到你的代码。</p>
+<p><strong>使用<a target="_blank" rel="noopener" href="http://dict.cn/discipline">严谨</a>的工作流</strong>。也要有严谨的版本控制方法。撰写提交记录的时候要<a target="_blank" rel="noopener" href="http://dict.cn/thoughtful">用心</a>——在第一行简短解释变动，然后在扩展提交记录中加上改变它的<a target="_blank" rel="noopener" href="http://dict.cn/justification">理由</a>。在 feature 分支上工作要明确定义目标，不要包含和这个目标不相关的改动。不要害怕在 rebase 时编辑你的分支的历史，它会让你的改动展示得更清晰。</p>
+<p>当你稍后不得不回退你的代码时，你将会感激你之前详尽撰写的提交记录。其他人和你的代码互动时也同样会心存感激。当你看到一些愚蠢的代码时，也可以知道这个<a target="_blank" rel="noopener" href="http://dict.cn/bastard">白痴</a>当时是怎么想的，尤其是当这个<a target="_blank" rel="noopener" href="http://dict.cn/bastard">白痴</a>是你自己的时候。</p>
+<p><strong>严格测试和<a target="_blank" rel="noopener" href="http://dict.cn/review">回顾</a></strong>。找出你的改动可能会经过的代码路径。测试每条路径的行为是正确的。给它不正确的输入。给它“永远不可能发生”的输入。对<a target="_blank" rel="noopener" href="http://dict.cn/error-prone">有错误倾向</a>的模式格外小心。寻找可以简化代码的地方并让过程变得更清晰。</p>
+<p>接下来，把你的改动交给另外一个人进行<a target="_blank" rel="noopener" href="http://dict.cn/review">回顾</a>。这个人应该运用相同的程序并签署你的改动。而且<a target="_blank" rel="noopener" href="http://dict.cn/review">回顾</a>要<a target="_blank" rel="noopener" href="http://dict.cn/discipline">严格</a>，标准始终如一。<a target="_blank" rel="noopener" href="http://dict.cn/review">回顾</a>的时候应该想着，如果由于这些代码出了问题，自己会<a target="_blank" rel="noopener" href="http://dict.cn/be%20your%20ass%20on%20the%20line">感到耻辱</a>。</p>
+<p><strong>从错误中学习</strong>。首先，修复 bug。然后，修复实际的 bug：你的流程允许里这个错误的发生。拉<a target="_blank" rel="noopener" href="http://dict.cn/review">回顾</a>你代码的人讨论——这是你们共同的过错。严格的检查撰写、<a target="_blank" rel="noopener" href="http://dict.cn/review">回顾</a>和部署这些代码的流程，找出<a target="_blank" rel="noopener" href="http://dict.cn/root%20cause">根源</a>所在。</p>
+<p>解决方案可以简单，比如把 strcat 加入到你的触发“认真回顾”<a target="_blank" rel="noopener" href="http://dict.cn/reflex">条件反射</a>的函数列表。它可以通过电脑进行静态分析，帮你检测到这个问题。可能这些代码需要<a target="_blank" rel="noopener" href="http://dict.cn/refactored">重构</a>，这样找出问题变得简单容易。疏于避免未来的<a target="_blank" rel="noopener" href="http://dict.cn/fuck-up">错误</a>才是真的<a target="_blank" rel="noopener" href="http://dict.cn/fuck-up">大错</a>。</p>
+<hr>
+<p>重要的是记住规则就是用来打破的。可能有些情况下，不被鼓励的行为是有用的，被鼓励的行为是应该<a target="_blank" rel="noopener" href="http://dict.cn/disregarded">被忽视的</a>。你应该<a target="_blank" rel="noopener" href="http://dict.cn/strive">力争</a>把这些情况当作例外而不是<a target="_blank" rel="noopener" href="http://dict.cn/norm">常态</a>，并当它们发生时仔细的<a target="_blank" rel="noopener" href="http://dict.cn/justify">证明</a>它们。</p>
+<p>C 是狗屎。我爱它，并希望更多的人可以学到我做事的方式。祝好运！</p>
+
+</div>
+
+<p align="right">
+  <small>
+    <a href="https://github.com/Jinjiang/jinjiang.github.io/edit/dev/source/_posts/principles-for-c-programming.md" target="_blank">
+      向本文提出修改或勘误建议
+    </a>
+  </small>
+</p>
+
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+
+<div id="gitalk-container"></div>
+
+<script>
+  const gitalk = new Gitalk({
+    clientID: 'c99e23053fc1bba6a58c',
+    clientSecret: '64efe1cd1438e77ae2bf8eba92b51c90d0cc2b9f',
+    repo: 'jinjiang.github.io',
+    owner: 'jinjiang',
+    admin: ['jinjiang'],
+    id: location.pathname,      // Ensure uniqueness and length less than 50
+    distractionFreeMode: false  // Facebook-like distraction free mode
+  })
+
+  gitalk.render('gitalk-container')
+</script>
+</div>
+
+    <div id="footer">
+      <a href="/">囧克斯</a>
+      
+      |
+      <a href="/atom.xml" title="rss_feed">RSS</a>
+      
+      |
+      我是百度统计
+      <script src="https://hm.baidu.com/h.js?a0a2372d4b7621d0bfe71f33c58a4bd8"></script>
+      |
+      我会翻脸 <a href="#" onclick="document.body.classList.toggle('dark-mode'), event.preventDefault()" style="font-size: 1.25em;">🌚🌝</a>
+    </div>
+  </div>
+
+  
+<script src="/js/script.js"></script>
+
+</body>
+
+</html>

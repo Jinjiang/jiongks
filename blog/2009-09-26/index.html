@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <!-- proud for contributing Vue.js -->
+  <meta charset="utf-8">
+  <meta name="format-detection" content="telephone=no" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-touch-fullscreen" content="yes" />
+
+  
+  <title>
+    
+    浅浅浅谈将 Aero 特效应用到整个窗体 -
+    
+    囧克斯
+  </title>
+
+  
+<link rel="stylesheet" href="/css/pure.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+
+  
+  <link rel="alternate" href="/atom.xml" title="囧克斯" type="application/atom+xml">
+  
+  
+  <link rel="icon" href="/favicon.ico">
+  
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+<body>
+  <script>(() => { if ((new Date().getHours() + 6) % 24 < 12) document.body.classList.add('dark-mode') })()</script>
+
+  <div class="dark-mode-helper"></div>
+
+  <div id="wrapper">
+
+    <div id="header">
+      <h1>
+        <a href="/" title="囧克斯">
+          囧克斯
+        </a>
+      </h1>
+      <p class="description">
+        这里是勾三股四的家
+      </p>
+    </div>
+
+    <div id="nav" class="pure-menu pure-menu-open pure-menu-horizontal">
+      <ul>
+        
+        <li>
+          <a href="/all-demos/">
+            线上
+          </a>
+        </li>
+        
+        <li>
+          <a href="/all-slides/">
+            线下
+          </a>
+        </li>
+        
+        <li>
+          <a href="/about/">
+            关于
+          </a>
+        </li>
+        
+        <li><a href="/archives">归档</li>
+      </ul>
+    </div>
+
+    <div id="main"><div class="content">
+  <h2>
+    浅浅浅谈将 Aero 特效应用到整个窗体
+  </h2>
+  
+<p><mark>本文摘自 勾三股四 更早时期的 <a target="_blank" rel="noopener" href="http://bulaoge.net/?g3g4">不老歌</a> 博客。</mark></p>
+
+<a id="more"></a>
+<p>传说中的 Aero 这个词，是指 Windows 窗体的一种半透明的显示效果。<br />
+在 Vista+ 的操作系统里，窗体是自动有 Aero 边框的，但有些程序不仅仅是边框才有 Aero 特效。比如 IE / Media Player 等等。(这两个例子都快被人举烂了……)<br />
+<br />
+前阵子看到了 <a href="https://wiki.mozilla.org/Firefox/4.0_Windows_Theme_Mockups" target="_blank">Firefox 4.0 的未来设计图</a>，整个窗体都是 Aero 特效的，看过一直流口水。经过一些无聊的探索，我发现了将 Aero 特效从边框扩展到其它区域的实现方法。<br />
+<br />
+以下是 C# 代码<br />
+<br />
+在 C# 代码出现之前<br />
+好吧<br />
+表问我为什么 Ajax 程序员会写 C#<br />
+表问我为什么会写 C# 却去做低贱的 Ajax<br />
+表问我为什么决定了要做 Ajax，还回头去看 C# ……<br />
+<br />
+<pre>internal class DwmApi
+{
+    [DllImport("dwmapi.dll", PreserveSig = false)]
+    public static extern void DwmExtendFrameIntoClientArea(IntPtr hWnd, MARGINS pMargins);
+
+    [DllImport("dwmapi.dll", PreserveSig = false)]
+    public static extern bool DwmIsCompositionEnabled();
+
+    [StructLayout(LayoutKind.Sequential)]
+    public class MARGINS
+    {
+        public int cxLeftWidth, cxRightWidth, cyTopHeight, cyBottomHeight;
+
+        public MARGINS(int left, int top, int right, int bottom)
+        {
+            cxLeftWidth = left; cyTopHeight = top;
+            cxRightWidth = right; cyBottomHeight = bottom;
+        }
+    }
+}</pre>这段代码引入了：<br />
+1. 扩展窗体“实体”区域的方法<br />
+2. 判断当前操作系统是否开启了 Aero 显示方式的方法<br />
+3. 描述“实体”区域的数据格式<br />
+<br />
+有了这些东西，代码就基本会写了吧^_^
+<pre>private void Form1_Load(object sender, EventArgs e)
+{
+    if (DwmApi.DwmIsCompositionEnabled()) {
+        DwmApi.DwmExtendFrameIntoClientArea(this.Handle, new DwmApi.MARGINS(-1, -1, -1, -1));
+    }
+}
+
+private void OnPaint(object sender, PaintEventArgs e)
+{
+    if (DwmApi.DwmIsCompositionEnabled())
+    {
+        e.Graphics.FillRectangle(Brushes.Black, this.ClientRectangle);
+    }
+}
+
+protected override void WndProc(ref Message m)
+{
+    base.WndProc(ref m);
+
+    const int WM_DWMCOMPOSITIONCHANGED = 0x031E;
+
+    switch (m.Msg)
+    { 
+        case WM_DWMCOMPOSITIONCHANGED:
+            if (DwmApi.DwmIsCompositionEnabled())
+            {
+                DwmApi.DwmExtendFrameIntoClientArea(this.Handle, new DwmApi.MARGINS(-1, -1, -1, -1));
+            }
+            break;
+    }
+}</pre>这三个函数分别做的是：<br />
+1. 窗体载入成功后将“实体”窗体区域扩展到“窗体外面”，这样窗体就仿佛全 Aero 了，实际是“实体”区域不可见罢了——当然这不影响我们往非“实体”区域放置控件或别的任何对象<br />
+2. 绘制窗体时，将“实体”区域涂黑(这样做的缘由还没完全研究明白，总之这个函数不可或缺，等我弄明白了会把理由补上)<br />
+3. 窗体监听到操作系统显示方式改变是，判断是否还支持 Aero 特效，如果是，则“实体”区域需要重新扩展<br />
+<br />
+一点浅浅的认识<br />
+最后补一个链接：<a href="http://tech.ddvip.com/2008-11/122569523088390.html" target="_blank">http://tech.ddvip.com/2008-11/122569523088390.html</a></p>
+
+</div>
+
+<p align="right">
+  <small>
+    <a href="https://github.com/Jinjiang/jinjiang.github.io/edit/dev/source/_posts/2009-09-26.md" target="_blank">
+      向本文提出修改或勘误建议
+    </a>
+  </small>
+</p>
+
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+
+<div id="gitalk-container"></div>
+
+<script>
+  const gitalk = new Gitalk({
+    clientID: 'c99e23053fc1bba6a58c',
+    clientSecret: '64efe1cd1438e77ae2bf8eba92b51c90d0cc2b9f',
+    repo: 'jinjiang.github.io',
+    owner: 'jinjiang',
+    admin: ['jinjiang'],
+    id: location.pathname,      // Ensure uniqueness and length less than 50
+    distractionFreeMode: false  // Facebook-like distraction free mode
+  })
+
+  gitalk.render('gitalk-container')
+</script>
+</div>
+
+    <div id="footer">
+      <a href="/">囧克斯</a>
+      
+      |
+      <a href="/atom.xml" title="rss_feed">RSS</a>
+      
+      |
+      我是百度统计
+      <script src="https://hm.baidu.com/h.js?a0a2372d4b7621d0bfe71f33c58a4bd8"></script>
+      |
+      我会翻脸 <a href="#" onclick="document.body.classList.toggle('dark-mode'), event.preventDefault()" style="font-size: 1.25em;">🌚🌝</a>
+    </div>
+  </div>
+
+  
+<script src="/js/script.js"></script>
+
+</body>
+
+</html>

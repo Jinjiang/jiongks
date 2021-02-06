@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <!-- proud for contributing Vue.js -->
+  <meta charset="utf-8">
+  <meta name="format-detection" content="telephone=no" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-touch-fullscreen" content="yes" />
+
+  
+  <title>
+    
+    tag: css -
+    
+    囧克斯
+  </title>
+
+  
+<link rel="stylesheet" href="/css/pure.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+
+  
+  <link rel="alternate" href="/atom.xml" title="囧克斯" type="application/atom+xml">
+  
+  
+  <link rel="icon" href="/favicon.ico">
+  
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+<body>
+  <script>(() => { if ((new Date().getHours() + 6) % 24 < 12) document.body.classList.add('dark-mode') })()</script>
+
+  <div class="dark-mode-helper"></div>
+
+  <div id="wrapper">
+
+    <div id="header">
+      <h1>
+        <a href="/" title="囧克斯">
+          囧克斯
+        </a>
+      </h1>
+      <p class="description">
+        这里是勾三股四的家
+      </p>
+    </div>
+
+    <div id="nav" class="pure-menu pure-menu-open pure-menu-horizontal">
+      <ul>
+        
+        <li>
+          <a href="/all-demos/">
+            线上
+          </a>
+        </li>
+        
+        <li>
+          <a href="/all-slides/">
+            线下
+          </a>
+        </li>
+        
+        <li>
+          <a href="/about/">
+            关于
+          </a>
+        </li>
+        
+        <li><a href="/archives">归档</li>
+      </ul>
+    </div>
+
+    <div id="main">
+<div class="content">
+  <h2>
+    <a href="/blog/cssconf-cn-4/">
+      第四届 CSSConf CN 见闻
+    </a>
+  </h2>
+  
+  <p>上周末作为一名分享者参加了 <a target="_blank" rel="noopener" href="https://css.w3ctech.com/">CSSConf CN</a>，在厦门。</p>
+<p>其实除了自己的分享内容，这次我是带着很明确的目的参会的，因为有两个主题我特别关注，就是：</p>
+<ul>
+<li>第一个：响应式的组件</li>
+<li>第三个：从 API 的角度看组件的 CSS</li>
+</ul>
+<p>(两个分享的标题都被我稍微“演绎”了一下)</p>
+<p>这两件事都是自己工作上正在特别关注的事情，一方面，我们很少从 API 的角度去理解一个组件的 CSS 该如何组织和管理，所以这个标题就特别吸引我，另一方面响应式组件的分享者是来自新加坡的前端工程师 Zell (我个人一直觉得国内的响应式都是在瞎搞，看了很多周围团队都没有认真做这件事，甚至不相信响应式的价值，从设计师到工程师)，因此非常珍惜这个机会能近距离学习一些国外的同行们是怎么看待和实践响应式的。</p>
+<p>所以尽管我们团队的差旅经费已经用完了，还是决定自费来厦门近距离交流一下。</p>
+<p>现在证明这次真的不虚此行。</p>
+<p>当然参加这种线下活动，“面基”的目的是一定有的……恩，这个不值一提。</p>
+  <p class="more">
+    <a href="/blog/cssconf-cn-4/">
+      阅读剩余部分...
+    </a>
+  </p>
+  
+</div>
+
+<div class="content">
+  <h2>
+    <a href="/blog/our-image-workflow/">
+      手机淘宝前端的图片相关工作流程梳理
+    </a>
+  </h2>
+  
+  <p>本文首发自<a target="_blank" rel="noopener" href="https://github.com/amfe/article/issues/8">阿里无线前端博客</a></p>
+<p><em>注：本文摘自阿里内网的无线前端博客《无线前端的图片相关工作流程梳理》。其实是一个月前写的，鉴于团队在<a target="_blank" rel="noopener" href="http://css.w3ctech.com/">中国第二届 CSS Conf</a> 上做了《手机淘宝 CSS 实践启示录》的分享，而图片工作流程梳理是其中的一个子话题，故在此一并分享出来，希望仍可以给大家一些经验和启发。另外，考虑到这是一篇公开分享，原版内容有部分删节和调整，里面有一些经验和产出是和我们的工作环境相关的，不完全具有普遍性，还请见谅。</em></p>
+<p>今天很荣幸的跟大家分享一件事情，就是经过差不多半年多的努力，尤其是最近 2 周的“突击扫尾”，无线前端团队又在工具流程方面有了一个不小的突破：我们暂且称其为“图片工作流”梳理。</p>
+<h3 id="图片！图片！图片！"><a href="#图片！图片！图片！" class="headerlink" title="图片！图片！图片！"></a>图片！图片！图片！</h3><p>要说最近 1 年里，无线前端开发的一线同学最“难搞”的几件事，图片处理绝对可以排在前三。</p>
+<ul>
+<li>首先，我们首先要从视觉稿 (绝大部分出自 photoshop) 里把图片合理的分解、测量、切割、导出——俗称“切图”</li>
+<li>然后，我们要把切好的图放入页面代码中，完成相关的本地调试</li>
+<li>第三步，把本地图片通过一个内部网站 (名叫 TPS) 上传到我们的图片 CDN 上，并复制图片的 CDN 地址，把本地调试用的相对路径替换掉</li>
+<li>第四步，不同的图片、不同的外部环境下 (比如 3g 还是 wifi)，我们需要给图片不一样的尺寸、画质展现，并有一系列的配置需要遵循</li>
+<li>如果视觉稿有更改 (不要小看这件事，微观上还是很频繁的哦)，不好意思，从第一步开始再重新走一遍……</li>
+</ul>
+<p>这里面“难搞”在哪些地方呢？我们逐一分析一下：</p>
+<ol>
+<li>“切图”的效率并不高，而且每一步都很容易出现返工或再沟通</li>
+<li>打开 TPS 网站上传图片放到前端开发流程中并不是一个连贯流畅的步骤，而且 GUI 相比于命令行工具的缺陷在于无法和其它工具更好的集成</li>
+<li>替换 CDN 图片路径的工作机械而繁琐，并且代码中替换后的图片地址失去了原本的可读性，非常容易造成后期的维护困惑甚至混乱</li>
+<li>适配工作异常繁杂和辛苦，也很容易漏掉其中的某个环节</li>
+<li>视觉变更的成本高，web 的快速响应的特点在丧失</li>
+</ol>
+<p>所以可能把这些东西画成一张图表的话：</p>
+<p><img src="http://img2.tbcdn.cn/L1/461/1/58a8b4f12816b6f71918c31ee5a0ceae74f40fb9" alt=""></p>
+<h3 id="团队的单点突破"><a href="#团队的单点突破" class="headerlink" title="团队的单点突破"></a>团队的单点突破</h3><p>在最近半年的一段时间里，无线前端团队先后发起了下面几项工作，从某个点上尝试解决这些问题：</p>
+  <p class="more">
+    <a href="/blog/our-image-workflow/">
+      阅读剩余部分...
+    </a>
+  </p>
+  
+</div>
+
+<div class="content">
+  <h2>
+    <a href="/blog/naming-css-stuff-is-really-hard/">
+      [译]CSS命名神马的真心难
+    </a>
+  </h2>
+  
+  <p><mark>译自：<a target="_blank" rel="noopener" href="http://seesparkbox.com/foundry/naming_css_stuff_is_really_hard">Naming CSS Stuff Is Really Hard</a></mark></p>
+<p>找到的这篇文章算是对我之前写的 <a href="/blog/html-or-id-or-class/">《标签？ID？还是CLASS？》</a> 的再深入。我当时写那篇文章的时候，就有朋友提出了“非语义化”的 class 命名的问题，我当时确实觉得很纠结，简单的想法是“框架性质的表象 class 我没异议……框架的实质是通过降低灵活性达成更广泛的共识，我们个人不要再创造这样的样式就好了”，但没有想到特别好的“套路”，更多的是在实际情况中再分辨。看过这篇文章，我似乎找到了更好的答案。同时顺着文中提到的 <a target="_blank" rel="noopener" href="http://nicolasgallagher.com/about-html-semantics-front-end-architecture/">Nicolas 那篇文章</a>看下去，也对 OOCSS、BEM 之类的提法有了更多的认同感。特译给大家参考。
+  <p class="more">
+    <a href="/blog/naming-css-stuff-is-really-hard/">
+      阅读剩余部分...
+    </a>
+  </p>
+  
+</div>
+
+
+
+</div>
+
+    <div id="footer">
+      <a href="/">囧克斯</a>
+      
+      |
+      <a href="/atom.xml" title="rss_feed">RSS</a>
+      
+      |
+      我是百度统计
+      <script src="https://hm.baidu.com/h.js?a0a2372d4b7621d0bfe71f33c58a4bd8"></script>
+      |
+      我会翻脸 <a href="#" onclick="document.body.classList.toggle('dark-mode'), event.preventDefault()" style="font-size: 1.25em;">🌚🌝</a>
+    </div>
+  </div>
+
+  
+<script src="/js/script.js"></script>
+
+</body>
+
+</html>

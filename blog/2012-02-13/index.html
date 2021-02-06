@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <!-- proud for contributing Vue.js -->
+  <meta charset="utf-8">
+  <meta name="format-detection" content="telephone=no" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-touch-fullscreen" content="yes" />
+
+  
+  <title>
+    
+    IndexedDB技术简介(三) -
+    
+    囧克斯
+  </title>
+
+  
+<link rel="stylesheet" href="/css/pure.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+
+  
+  <link rel="alternate" href="/atom.xml" title="囧克斯" type="application/atom+xml">
+  
+  
+  <link rel="icon" href="/favicon.ico">
+  
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+<body>
+  <script>(() => { if ((new Date().getHours() + 6) % 24 < 12) document.body.classList.add('dark-mode') })()</script>
+
+  <div class="dark-mode-helper"></div>
+
+  <div id="wrapper">
+
+    <div id="header">
+      <h1>
+        <a href="/" title="囧克斯">
+          囧克斯
+        </a>
+      </h1>
+      <p class="description">
+        这里是勾三股四的家
+      </p>
+    </div>
+
+    <div id="nav" class="pure-menu pure-menu-open pure-menu-horizontal">
+      <ul>
+        
+        <li>
+          <a href="/all-demos/">
+            线上
+          </a>
+        </li>
+        
+        <li>
+          <a href="/all-slides/">
+            线下
+          </a>
+        </li>
+        
+        <li>
+          <a href="/about/">
+            关于
+          </a>
+        </li>
+        
+        <li><a href="/archives">归档</li>
+      </ul>
+    </div>
+
+    <div id="main"><div class="content">
+  <h2>
+    IndexedDB技术简介(三)
+  </h2>
+  
+<p><mark>本文摘自 勾三股四 更早时期的 <a target="_blank" rel="noopener" href="http://bulaoge.net/?g3g4">不老歌</a> 博客。</mark></p>
+
+<a id="more"></a>
+<p>今天做一个IndexedDB(以下简称IDB)的demo，运行环境是Firefox 10。<br>
+<br>
+<a href="http://jinjiang.github.com/demos/indexed-db/firefox-10.html" target="_blank">DEMO演示链接</a> (firefox 10+ only)<br>
+<br>
+我们做一个阅读列表的页面，可以让用户把任意网址存入这个阅读列表中，并为每一个网址起一个名字，也可以随时删除，且列表可以按网址自动去重。<br>
+<br>
+正如上一篇文章介绍的步骤，我们先初始化数据库，然后建表，然后把添加/删除/读取网址的事件和数据库操作绑定在一起。<br>
+<br>
+首先是html代码：
+<pre>_body onload="<strong>init()</strong>">
+    _button onclick="<strong>clickAddBtn()</strong>">Add_/button>
+    _ul <strong>id="list"</strong>>_/ul>
+_/body></pre>
+为了演示方便，我们引入jQuery作界面处理，再声明一个全局变量<code>db</code>，作为数据库连接的句柄；再声明一个全局变量<code>list</code>，作为网页中列表元素的jQuery句柄。
+<pre>var db;
+var list = $('#list');</pre>
+然后定义数据库初始化的行数<code>init</code>
+<pre>function init() {
+    var req = window.<strong>mozIndexedDB</strong>.open('readinglist', '1.0');
+    req.onsuccess = function (e) {
+        <strong>db = this.result;</strong>
+        // TODO: 连接成功后展示列表
+    };
+    req.onupgradeneeded = function (e) {
+        <strong>db = this.result;</strong>
+        // TODO: 版本不同时创建一个新的object store
+    };
+}</pre>
+这段代码的作用是初始化数据库(<code>readinglist</code>)连接，并在第一次连接数据库时创建表(<code>links</code>)。我们把展示列表的函数定义为<code>showList()</code>，把创建表的代码也补充完整，即：
+<pre>function init() {
+    var req = window.mozIndexedDB.open('readinglist', '1.0');
+    req.onsuccess = function (e) {
+        db = this.result;
+        <strong>showList();</strong>
+    };
+    req.onupgradeneeded = function (e) {
+        db = this.result;
+        <strong>db.createObjectStore('links', {keyPath: 'url'});</strong>
+    };
+}</pre>
+然后我们定义添加/删除/展示链接的函数：<code>add(title, url)</code>/<code>remove(url)</code>/<code>showList()</code>
+<pre>function add(<strong>title, url</strong>) {
+    var <strong>link</strong> = {
+        title: title,
+        url: url
+    }; // 创建要存储的对象
+    var transaction = db.transaction('links', IDBTransaction.READ_WRITE);
+    var store = transaction.objectStore('links');
+    <strong>var req = store.put(link);</strong> // put的作用是key存在时做更新处理，不存在是做添加处理
+    <strong>req.onsuccess = showList;</strong> // 添加成功后重新展示列表
+}
+
+function remove(<strong>url</strong>) {
+    var transaction = db.transaction('links', IDBTransaction.READ_WRITE);
+    var store = transaction.objectStore('links');
+    <strong>var req = store.delete(url);</strong> // 删除此链接
+    <strong>req.onsuccess = showList;</strong> // 删除成功后重新展示列表
+}
+
+function showList() {
+    // TODO: clear element: #list
+
+    var transaction = db.transaction('links');
+    var store = transaction.objectStore('links');
+    <strong>var range = IDBKeyRange.lowerBound(0);</strong> // 创建关键字范围描述
+    <strong>var req = store.openCursor(range);</strong> // 创建在上述范围内遍历的游标
+    req.onsuccess = function (e) {
+        var result = this.result;
+        if (result) {
+            var link = result.value;
+            // TODO: append this link to element: #list
+            <strong>result.continue();</strong>
+        }
+    };
+}</pre>
+注意这里的<code><a href="http://www.w3.org/TR/IndexedDB/#idl-def-IDBKeyRange" target="_blank">IDBKeyRange</a></code>和<code>store.openCursor</code>是用来遍历列表的，前者确定遍历的范围，后者根据前者的范围逐条触发<code>onsuccess</code>事件，这里定义的遍历范围是大于0，即所有非空的url，其实所有js类型的值都是可以在一起比大小的，如果想测试<a href="http://www.w3.org/TR/IndexedDB/#key-construct" target="_blank">比较任意两个key的大小</a>，可以运行函数<code>window.mozIndexedDB.cmp(any first, any second)</code>。<br>
+<br>
+最后，我们把最后两个<code>TODO</code>的部分补充完整，再把界面上的事件绑定好。编码工作就完成了。
+
+<pre>function showList() {
+    <strong>list.empty();</strong>
+
+    var transaction = db.transaction('links');
+    var store = transaction.objectStore('links');
+    var range = IDBKeyRange.lowerBound(0); // 创建关键字范围描述
+    var req = store.openCursor(range); // 创建在上述范围内遍历的游标
+    req.onsuccess = function (e) {
+        var result = this.result;
+        if (result) {
+            var link = result.value;
+            <strong>appendLink(link);</strong>
+            result.continue();
+        }
+    };
+}
+
+function appendLink(link) {
+    var url = link.url;
+    var title = link.title;
+    var li = $('_li>_a href="#" target="_blank">_/a> _button>X_/button>_/li>');
+    li.find('a').attr('title', title).attr('href', url).text(title);
+    li.find('button').click(function (e) {
+        <strong>remove(link.url);</strong>
+    });
+    list.append(li);
+}
+
+function clickAddBtn(e) {
+    var title = prompt('please input the title') || '[No title]';
+    var url = prompt('please input the url', 'http://');
+    if (title && url) {
+        <strong>add(title, url);</strong>
+    }
+}</pre>
+<br>
+<a href="http://jinjiang.github.com/demos/indexed-db/firefox-10.html" target="_blank">DEMO演示链接</a> (firefox 10+ only)<br>
+<br>
+下一篇讨论webkit下使用IDB的注意事项，并提供兼容问题的解决办法。<br>
+<br>
+(未完待续)</p>
+
+</div>
+
+<p align="right">
+  <small>
+    <a href="https://github.com/Jinjiang/jinjiang.github.io/edit/dev/source/_posts/2012-02-13.md" target="_blank">
+      向本文提出修改或勘误建议
+    </a>
+  </small>
+</p>
+
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+
+<div id="gitalk-container"></div>
+
+<script>
+  const gitalk = new Gitalk({
+    clientID: 'c99e23053fc1bba6a58c',
+    clientSecret: '64efe1cd1438e77ae2bf8eba92b51c90d0cc2b9f',
+    repo: 'jinjiang.github.io',
+    owner: 'jinjiang',
+    admin: ['jinjiang'],
+    id: location.pathname,      // Ensure uniqueness and length less than 50
+    distractionFreeMode: false  // Facebook-like distraction free mode
+  })
+
+  gitalk.render('gitalk-container')
+</script>
+</div>
+
+    <div id="footer">
+      <a href="/">囧克斯</a>
+      
+      |
+      <a href="/atom.xml" title="rss_feed">RSS</a>
+      
+      |
+      我是百度统计
+      <script src="https://hm.baidu.com/h.js?a0a2372d4b7621d0bfe71f33c58a4bd8"></script>
+      |
+      我会翻脸 <a href="#" onclick="document.body.classList.toggle('dark-mode'), event.preventDefault()" style="font-size: 1.25em;">🌚🌝</a>
+    </div>
+  </div>
+
+  
+<script src="/js/script.js"></script>
+
+</body>
+
+</html>

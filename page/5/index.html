@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <!-- proud for contributing Vue.js -->
+  <meta charset="utf-8">
+  <meta name="format-detection" content="telephone=no" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-touch-fullscreen" content="yes" />
+
+  
+  <title>
+    
+    囧克斯
+  </title>
+
+  
+<link rel="stylesheet" href="/css/pure.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+
+  
+  <link rel="alternate" href="/atom.xml" title="囧克斯" type="application/atom+xml">
+  
+  
+  <link rel="icon" href="/favicon.ico">
+  
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+<body>
+  <script>(() => { if ((new Date().getHours() + 6) % 24 < 12) document.body.classList.add('dark-mode') })()</script>
+
+  <div class="dark-mode-helper"></div>
+
+  <div id="wrapper">
+
+    <div id="header">
+      <h1>
+        <a href="/" title="囧克斯">
+          囧克斯
+        </a>
+      </h1>
+      <p class="description">
+        这里是勾三股四的家
+      </p>
+    </div>
+
+    <div id="nav" class="pure-menu pure-menu-open pure-menu-horizontal">
+      <ul>
+        
+        <li>
+          <a href="/all-demos/">
+            线上
+          </a>
+        </li>
+        
+        <li>
+          <a href="/all-slides/">
+            线下
+          </a>
+        </li>
+        
+        <li>
+          <a href="/about/">
+            关于
+          </a>
+        </li>
+        
+        <li><a href="/archives">归档</li>
+      </ul>
+    </div>
+
+    <div id="main">
+<div class="content">
+  <h2>
+    <a href="/blog/parallax/">
+      [译]视觉差，走起！
+    </a>
+  </h2>
+  
+  <p><mark>译自：<a target="_blank" rel="noopener" href="https://www.html5rocks.com/en/tutorials/speed/parallax/">https://www.html5rocks.com/en/tutorials/speed/parallax/</a></mark></p>
+<h3 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h3><p>现在满大街都是视觉差(parallax)网站了，我们随便看几个：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="http://www.rowtothepole.com/">Old Pulteney Row to the Pole</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.adidas.com/com/apps/snowboarding/">Adidas Snowboarding</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.bbc.co.uk/news/entertainment-arts-20026367">BBC News - James Bond: Cars, catchphrases and kisses</a></li>
+</ul>
+<p>也许你对这玩意儿还不太熟，视觉差其实就是它的视觉结构会随着页面的滚动而变化。通常情况下页面里的元素会根据页面的滚动位置而缩放、旋转或移动。</p>
+<p><img src="https://www.html5rocks.com/static/demos/parallax/parallax.jpg" alt="一个视觉差页面的demo"><br>我们的视觉差demo的完整效果</p>
+<p>不管你喜不喜欢视觉差网站，有一件事毫无疑问，它是一个性能的黑洞。因为当页面滚动时，浏览器的优化都倾向于新内容随滚动而出现于屏幕的最上方或最下方的情况。一般来说，内容改变得越少浏览器性能越高。而对于一个视觉差网站来说，在页面滚动时，好多元素都在发生改变，大多数情况下整个页面的大块可视元素都在发生变化，所以浏览器不得不重绘整个页面。</p>
+<p>我们有理由这样归纳一个视觉差的网站：</p>
+<ul>
+<li>背景元素会在你向上或向下滚动页面时改变位置、旋转或缩放。</li>
+<li>页面内容，如文字或小的图片，在页面滚动时会按照传统的方式进行上下移动。</li>
+</ul>
+<p>建议大家先阅读我们之前介绍过的<a target="_blank" rel="noopener" href="https://www.html5rocks.com/en/tutorials/speed/scrolling/">滚动性能</a>来改进你的app的响应速度。本篇文章是基于那篇文章所写的。</p>
+<p>所以文字是如果你在建立一个视觉差网站，那么你是否受困于高昂的重绘开销？有没有别的改进建议使得性能最大化？让我们看看这几个方案：</p>
+  <p class="more">
+    <a href="/blog/parallax/">
+      阅读剩余部分...
+    </a>
+  </p>
+  
+</div>
+
+<div class="content">
+  <h2>
+    <a href="/blog/devtools-five-performance-features/">
+      [译]Chrome开发者工具中评估性能的五大新特性
+    </a>
+  </h2>
+  
+  <p><mark>摘自：<a target="_blank" rel="noopener" href="https://www.html5rocks.com/en/tutorials/developertools/revolutions2013/">Chrome DevTools Revolutions 2013</a></mark></p>
+<p>本次开发者工具的改进中有几项新特性是针对性能的：</p>
+<ul>
+<li>持续绘制模式</li>
+<li>显示绘制矩形及其层的边框</li>
+<li>每秒帧数的测量仪</li>
+<li>找到强制同步布局(layout thrashing)</li>
+<li>对象分配跟踪</li>
+</ul>
+  <p class="more">
+    <a href="/blog/devtools-five-performance-features/">
+      阅读剩余部分...
+    </a>
+  </p>
+  
+</div>
+
+<div class="content">
+  <h2>
+    <a href="/blog/i-am-working-hard/">
+      精气神儿
+    </a>
+  </h2>
+  
+  <p>“国足打出了精气神儿”</p>
+<p>相关新闻：<a target="_blank" rel="noopener" href="http://cs.sports.163.com/match/report/2702.html">东亚杯-王永珀2球孙可建功 中国两球落后3-3日本</a></p>
+<p><img src="/uploads/2013/07/2059864972.jpg" alt=""></p>
+<p>当我再一次看到这样的标题的时候，我就知道，言外之意是国足的状况一定非常糟糕。</p>
+<p>精气神儿是个什么东西？我觉得是一种最基本的态度，它只是个精神层面的很虚的过程。我举个例子，当你一无所有的时候，你只能说：哦，至少我还有节操。——这就是拿精气神儿说事儿的节奏。</p>
+<p>国足说我们努力了，大家说其实人家从上到下还是很努力的，这一点我们还是要认可的……好吧你们确实真的很努力，但为时已晚。而且国足真的很差，现在才知道努力有个屁用？未雨绸缪的事情怎么从来没见足协做过？</p>
+<p>以前国足被叫作头球队，叫热身赛之王，如今头球也没了，热身赛也能输个精光，连博彩公司的小伙伴们都惊呆了。<br>以前几年赢不了韩国就说恐韩，如今15年不胜日本了，也没人造出个什么恐日了，因为觉得跟人家比不自量力，丢不起那人。<br>以前国足98年，当时还叫东亚四强赛，国足在日本的主场2比0羞辱对手，范志毅还踢飞丢了一个点球，不然就是3比0的大胜（对，两边都是成人队，而且都是男足）。如今在一片铺天盖地的唾骂声中，国足才开始努力，开始打出精气神儿，勉强在最后时刻，逼平了日本二线队。</p>
+<p>国足的努力掩盖不了一个事实，那就是战绩糟糕，排名持续下滑，多年无缘各项国际大赛。<br>这有什么可高兴的？</p>
+<p>所以请别扯淡！拿成绩说话！！</p>
+<p>看看今天的国足，还剩下什么？答：“只剩下两滴冰冷的泪水：一滴化斗酒添一份麻醉；一滴沉落于岁月的潮水。”</p>
+<p>好。我这里对国足的吐槽完毕。</p>
+<p>其实我没想太多聊国足。</p>
+<p>接下来，请把“国足”二字换成你看到“其实很努力”之后首先联想到的事物，然后把上面全文的“国足”二字换掉重读一遍。相信你会很有乐趣和感悟。</p>
+
+  
+</div>
+
+<div class="content">
+  <h2>
+    <a href="/blog/nokia-1050-vs-1202-report/">
+      细节无微不至，彩屏让人又爱又恨——新老“神机”大对决：Nokia 1050 vs Nokia 1202
+    </a>
+  </h2>
+  
+  <h3 id="吐在前面的槽……"><a href="#吐在前面的槽……" class="headerlink" title="吐在前面的槽……"></a>吐在前面的槽……</h3><p>今年，在老罗锤子手机一路跳票、累不死手机活蹦乱跳、魅族手机版本号即将输给小米、iOS被拍扁、Windows Phone在卖萌、安卓在卖身等诸多鸟事相继雷到众生之后，人们无不感叹，手机这个行业还有救吗？站在智能和愚蠢的十字路口，我们该何去何从？囧rz</p>
+<p>就在大家迷茫之时，Nokia发布了它的又一力作——1050！整个业界犹如刮来了一股春风，无不感到清新舒畅。大家纷纷感叹，那个曾经的科技巨人就要王者归来鸟！这个夏天，This summer，最受瞩目的大事件，big event！就是：</p>
+<p><img src="/uploads/2013/06/1458120974.jpg" alt=""></p>
+<p>Nokia 1050 的发布！！！</p>
+<p>作为一个反智能化手机操作系统的支持者，我很自豪的宣布，经历了前两轮的预定失败之后，我终于在上周成功订到了这款神机——要不要卖得这么好啊 - -</p>
+<p>我之前用的手机是<a target="_blank" rel="noopener" href="http://baike.baidu.com/view/1969934.htm">Nokia 1202</a>，2008年的神机，其实也不算太老，要不是1050发布，它也其实已经是一个非常现代化、非常新款的愚蠢手机了，无奈在这个1050的时代趋势下也不得不接受停产的命运。</p>
+<p><img src="/uploads/2013/06/2984211007.jpg" alt=""></p>
+<p>1050基本上继承了1202所有的成员函数和成员变量，小巧大方，简单易用，低碳环保，超长待机，便宜实惠，这已经足以吊起广大消费者的胃口了。然而真正的1050到底表现如何？它能否在1202的光环之下更进一步再创辉煌？带着这些疑问，记者走访了不少xxx，挖掘出了很多珍贵的xxxx，也听到了各种xxxxxxxx……</p>
+<p>OK 马上开始</p>
+<h3 id="目录"><a href="#目录" class="headerlink" title="目录"></a>目录</h3><ol>
+<li>开箱/外观</li>
+<li>屏幕</li>
+<li>主界面</li>
+<li>基本功能 (电话/短信/通讯录)</li>
+<li>特色功能</li>
+<li>实用工具</li>
+<li>性能/续航能力</li>
+<li>综述</li>
+</ol>
+  <p class="more">
+    <a href="/blog/nokia-1050-vs-1202-report/">
+      阅读剩余部分...
+    </a>
+  </p>
+  
+</div>
+
+<div class="content">
+  <h2>
+    <a href="/blog/qin-sheng-effect-in-the-national-team/">
+      秦升拿到红牌之后……
+    </a>
+  </h2>
+  
+  <p><img src="/uploads/2013/06/3893919286.jpg" alt=""></p>
+<ul>
+<li>工体上空飘扬着“傻X”的洪亮口号，晚上天津牌照的车又被砸了不少</li>
+<li>比赛收视率直线下降——比赛才开始了13分钟，还有80分钟呢</li>
+<li>赞助商的脸全都绿了，下次国足的比赛就没有再打广告了，不过无非是又有别的厂商挨宰了</li>
+<li>谭晶从此霉运不断</li>
+<li>看台上两国外交部长正在谈一个上百亿的项目，荷兰大爷若有所思的说：这个我们回去再考虑考虑…… 对面：恩，下次我们还是改一起看乒乓球吧</li>
+<li>刘建宏紧紧攥着双拳：完了完了，今天这场球大Boss都在看啊，这种球我该肿么说比较得体呢？肿么办肿么办……</li>
+<li>小区里：还是很安静的，现在大家看球都不是看彩电了，要么是笔记本电脑，不舍得扔下去，要么是大平板电视，扔不动</li>
+</ul>
+  <p class="more">
+    <a href="/blog/qin-sheng-effect-in-the-national-team/">
+      阅读剩余部分...
+    </a>
+  </p>
+  
+</div>
+
+<div class="content">
+  <h2>
+    <a href="/blog/write-my-theme-with-sass/">
+      用Sass重新整理自己的博客主题样式
+    </a>
+  </h2>
+  
+  <p><img src="http://sass-lang.com/images/sass.gif" alt="Sass"></p>
+<p>远远关注<a target="_blank" rel="noopener" href="http://sass-lang.com">Sass</a>很久了，今天终于鼓起勇气写了<a target="_blank" rel="noopener" href="https://github.com/Jinjiang/jinjiang.github.io/blob/dev/data/themes/iambig-3d/style.sass">我的第一个Sass文件</a></p>
+<h3 id="Sass简介"><a href="#Sass简介" class="headerlink" title="Sass简介"></a>Sass简介</h3><p>一种CSS的预处理程序，基于Ruby运行。安装过程和相关的准备工作非常简单：</p>
+<ol start="0">
+<li>当然首先要安装<a target="_blank" rel="noopener" href="https://www.ruby-lang.org/">Ruby</a></li>
+<li><code>gem install ruby</code>，必要的环境下需要在命令前加上<code>sudo</code></li>
+<li>进入我的博客主题文件夹，运行<code>sass-convert style.css style.sass</code>，把我的css文件先转换成sass文件</li>
+<li>运行<code>sass --watch style.sass:style.css</code>，使得程序自动把<code>style.sass</code>文件接下来的任何改动自动同步转换到<code>style.css</code></li>
+</ol>
+<p>这时，新的Sass文件就创建完毕了！^_^ 去碎觉……</p>
+<p>呵呵，开个玩笑。其实这样的Sass文件虽然格式上没有任何问题，但和直接撰写CSS几乎没区别。而Sass除了可以让我们少写几个花括号和分号之外，其实还有很多实用的特性是我们真正需要的。</p>
+<p>无论如何，现在的这个Sass文件是一个整理的基础，接下来，我们就来一步一步整理这个文件，同时也一步一步熟悉Sass的特性。</p>
+  <p class="more">
+    <a href="/blog/write-my-theme-with-sass/">
+      阅读剩余部分...
+    </a>
+  </p>
+  
+</div>
+
+<div class="content">
+  <h2>
+    <a href="/blog/connect-middleware-manual/">
+      Connect中间件使用手册
+    </a>
+  </h2>
+  
+  <p>以下内容大多译自<a target="_blank" rel="noopener" href="https://www.senchalabs.org/connect/">Connect官网</a> 2013-06-02</p>
+<p>Connect是基于Node的中间件框架(middleware framework)，提供超过18种官方中间件以及更多的第三方中间件。</p>
+<p>示例：</p>
+<pre><code>var app = connect()
+  .use(connect.logger(&apos;dev&apos;))
+  .use(connect.static(&apos;public&apos;))
+  .use(function(req, res)&#123;
+    res.end(&apos;hello world\n&apos;);
+  &#125;)
+ .listen(3000);
+</code></pre><p>安装方式：</p>
+<pre><code>$ npm install connect
+</code></pre><p>依次介绍官方中间件</p>
+  <p class="more">
+    <a href="/blog/connect-middleware-manual/">
+      阅读剩余部分...
+    </a>
+  </p>
+  
+</div>
+
+<div class="content">
+  <h2>
+    <a href="/blog/do-practice/">
+      实践
+    </a>
+  </h2>
+  
+  <p>上周末在图灵的技术沙龙分享了自己Node.JS的一些项目实践心得。</p>
+<p>Node.JS这东西说起来也是3年前就听说的东西了，最近一段时间才真正拿它做东西。这种感觉既熟悉又陌生，熟悉在听大家谈过无数次，陌生在自己没怎么亲自动过手。这回的一些尝试和项目实践，让我更多的了解了这门技术，也更好的了解了我自己。</p>
+<p>分享的在线链接在此：<a target="_blank" rel="noopener" href="https://t.cn/zHIafSq">https://t.cn/zHIafSq</a>，这里就不重复其中的内容了。</p>
+<p><img src="http://www.programmer.com.cn/wp-content/uploads/2013/02/QQ截图20130225140912-231x300.jpg" alt="《程序员》201303期封面"></p>
+<p>我想更多说的是，我们有幸在HTML5快速发展的时代，这里几乎每天都会有新的规范、新的工具、新的库、新的框架、新的理论。玲琅满目，目不暇接。也许我们每天走马灯似的看它们，都不一定看得过来。我感觉自己就长期处于这种状态。可是当这些东西都只是我们眼前的匆匆过客，来不及细细体验、品味其中的内涵，那和从来都没看过相比，有多少实质上的差别呢？</p>
+<p>我觉得这里有两件事情值得考虑：第一，要再多些时间在新技术的关注和尝试上；第二，有选择性的深入其中。</p>
+<p>先说第一点，我们不能始终沉醉在对现有技术或业务的娴熟之中，同时要相信技术和产品、设计、市场、商务一样，可以驱动业务的发展和进步。我们唯有带着这样的信念去工作，去和同事交流，去和领导沟通，去在团队里一起探讨问题，才会令自己有这种空间和时间。凡事都有难处，但总要走出这第一步。</p>
+<p>第二，前端这个词逐渐由html/css/js三门语言和基本ps技巧的集合，变成一个无限宽泛的概念。我们在鼓励全面发展的同时，也不能一把抓，也需要量力而行，循序渐进，找到属于自己的突破口，找到和自身工作最佳的结合点。最关键的是，要有实践的机会。</p>
+<p>人生有时难免会站在命运的十字路口，左右为难。最后发现，真正让自己踏实下来的，往往是这些真材实料的东西。</p>
+
+  
+</div>
+
+<div class="content">
+  <h2>
+    <a href="/blog/build-any-web-project-with-requirejs-optimizer/">
+      巧用 RequireJS Optimizer 给传统的前端项目打包
+    </a>
+  </h2>
+  
+  <p><a target="_blank" rel="noopener" href="https://github.com/jrburke/r.js">r.js</a> 本是 <a target="_blank" rel="noopener" href="https://requirejs.org/">RequireJS</a> 的一个附属产品，支持在 NodeJS、Rhino 等环境下运行 <a target="_blank" rel="noopener" href="https://wiki.commonjs.org/wiki/Modules/AsynchronousDefinition">AMD</a> 程序，并且其包含了一个名为 RequireJS Optimizer 的工具，可以为项目完成合并脚本等优化操作。</p>
+<p>r.js 的介绍中明确写道它是 RequireJS 项目的一部分，和 RequireJS 协同工作。但我发现，RequireJS Optimizer 提供了丰富的配置参数，可以让我们完全跳出 AMD 和 RequireJS 程序的束缚，为我们的前端程序服务。</p>
+  <p class="more">
+    <a href="/blog/build-any-web-project-with-requirejs-optimizer/">
+      阅读剩余部分...
+    </a>
+  </p>
+  
+</div>
+
+<div class="content">
+  <h2>
+    <a href="/blog/code-editor-survay/">
+      编辑器小调查结果
+    </a>
+  </h2>
+  
+  <p>我在侧边栏放了一阵子编辑器的小调查，时间过去比较久了，是时候统计一下了，供大家参考：</p>
+<p>我一共放了5个默认选项，使用情况排名依次是：</p>
+<ol>
+<li>SublimeText 2</li>
+<li>Notepad++</li>
+<li>Dreamweaver</li>
+<li>EditPlus</li>
+<li>Vim</li>
+</ol>
+<p><img src="/uploads/2013/02/404926186.png" alt="默认选项的选择情况">
+  <p class="more">
+    <a href="/blog/code-editor-survay/">
+      阅读剩余部分...
+    </a>
+  </p>
+  
+</div>
+
+
+
+<ol class="page-navigator">
+  <a class="extend prev" rel="prev" href="/page/4/">«</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><span class="page-number current">5</span><a class="page-number" href="/page/6/">6</a><a class="page-number" href="/page/7/">7</a><a class="page-number" href="/page/8/">8</a><a class="page-number" href="/page/9/">9</a><a class="page-number" href="/page/10/">10</a><a class="page-number" href="/page/11/">11</a><a class="page-number" href="/page/12/">12</a><a class="page-number" href="/page/13/">13</a><a class="page-number" href="/page/14/">14</a><a class="page-number" href="/page/15/">15</a><a class="page-number" href="/page/16/">16</a><a class="page-number" href="/page/17/">17</a><a class="page-number" href="/page/18/">18</a><a class="page-number" href="/page/19/">19</a><a class="page-number" href="/page/20/">20</a><a class="extend next" rel="next" href="/page/6/">»</a>
+</ol>
+
+</div>
+
+    <div id="footer">
+      <a href="/">囧克斯</a>
+      
+      |
+      <a href="/atom.xml" title="rss_feed">RSS</a>
+      
+      |
+      我是百度统计
+      <script src="https://hm.baidu.com/h.js?a0a2372d4b7621d0bfe71f33c58a4bd8"></script>
+      |
+      我会翻脸 <a href="#" onclick="document.body.classList.toggle('dark-mode'), event.preventDefault()" style="font-size: 1.25em;">🌚🌝</a>
+    </div>
+  </div>
+
+  
+<script src="/js/script.js"></script>
+
+</body>
+
+</html>

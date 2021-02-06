@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <!-- proud for contributing Vue.js -->
+  <meta charset="utf-8">
+  <meta name="format-detection" content="telephone=no" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-touch-fullscreen" content="yes" />
+
+  
+  <title>
+    
+    囧克斯
+  </title>
+
+  
+<link rel="stylesheet" href="/css/pure.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+
+  
+  <link rel="alternate" href="/atom.xml" title="囧克斯" type="application/atom+xml">
+  
+  
+  <link rel="icon" href="/favicon.ico">
+  
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+<body>
+  <script>(() => { if ((new Date().getHours() + 6) % 24 < 12) document.body.classList.add('dark-mode') })()</script>
+
+  <div class="dark-mode-helper"></div>
+
+  <div id="wrapper">
+
+    <div id="header">
+      <h1>
+        <a href="/" title="囧克斯">
+          囧克斯
+        </a>
+      </h1>
+      <p class="description">
+        这里是勾三股四的家
+      </p>
+    </div>
+
+    <div id="nav" class="pure-menu pure-menu-open pure-menu-horizontal">
+      <ul>
+        
+        <li>
+          <a href="/all-demos/">
+            线上
+          </a>
+        </li>
+        
+        <li>
+          <a href="/all-slides/">
+            线下
+          </a>
+        </li>
+        
+        <li>
+          <a href="/about/">
+            关于
+          </a>
+        </li>
+        
+        <li><a href="/archives">归档</li>
+      </ul>
+    </div>
+
+    <div id="main">
+<div class="content">
+  <h2>
+    <a href="/blog/config-in-webcomponents/">
+      webcomponents 笔记 之 配置管理
+    </a>
+  </h2>
+  
+  <p>话说上周末看到<a target="_blank" rel="noopener" href="https://weibo.com/1712131295/CaM1n2FcY">一个吐槽腾讯“内部开源”的微博</a>，后来我想了想，自己那么骚包的在项目还没做完之前，就在 <a href="/slides/css-scoping/">CSSConf</a> 上说我们将来要开源一个名叫 Zorro 的库。结果好几个月过去了还是没有准备好，也就不敢再笑话别人了……</p>
+<p>我觉得把东西开源出来之前，有几件事要准备好，不然除了自己刷存在感之外，真的没意义。比如：</p>
+<ol>
+<li>是否有了 (或阐述清楚了) 明确的目标和方向，不然找不到合适的合作者和贡献者</li>
+<li>是否有了 (或阐述清楚了) 明确的设计哲学和开发原则，不然大家无法形成合力，项目很容易陷入混乱</li>
+<li>是否有了最小的可工作版本，不然雪球滚不起来</li>
+<li>是否有了充分的文档、demo和测试用例，让大家更直观的了解项目，利用项目，也对项目的质量更有信心</li>
+</ol>
+<p>印象中我见到的优秀的开源项目，基本都在被大家广泛认识之前，都已经把这些事情打理好了——这也是我一直推崇的。<br>好吧很惭愧，这几点我还都没有做到……</p>
+<p>不过在这之前，我愿意在此分享一些自己开发中的心得，跟大家一起探讨相关的话题。</p>
+<p>—- 以上是一些比较啰嗦的铺陈 —-</p>
+<h3 id="组件分解的方式及其衍变"><a href="#组件分解的方式及其衍变" class="headerlink" title="组件分解的方式及其衍变"></a>组件分解的方式及其衍变</h3><p>在开发大型应用的时候，难免要用到一些组件化的分解方式。比如：把一个相册浏览界面分解成：“相册列表”和“大图预览”两个区域，“相册列表”又由一个个“相册缩略图”组成，每个“相册缩略图”包含了一个“小图片”以及“预览按钮”、“删除按钮”、“排序按钮”等操作按钮……</p>
+<p>而如何管理和划分组件逐渐变成了前端工程里的一门学问。
+  <p class="more">
+    <a href="/blog/config-in-webcomponents/">
+      阅读剩余部分...
+    </a>
+  </p>
+  
+</div>
+
+<div class="content">
+  <h2>
+    <a href="/blog/2014-2015/">
+      14}, {15
+    </a>
+  </h2>
+  
+  <p>去年年底的时候刚换了工作，刚到杭州，一到杭州就赶上996，匆匆忙忙，年底就稀里糊涂过去了<br>紧接着就是忙碌的一整年，忙工作，忙生活，各种忙</p>
+<p>今天晚上，改完了自己名下的最后一个bug，也算是给2014简单收个尾吧，也突然觉得自己有一点时间回顾一下了</p>
+<p>先从13年说起吧，最大的变化就是<a target="_blank" rel="noopener" href="https://weibo.com/1712131295/ApUfbAq2a">我换工作了</a>，也搬家了，从北京搬到了杭州，从此过上了南方人的生活：</p>
+<ul>
+<li>夏天更热，冬天屋里更冷，这一点嘛，已经差不多习惯了。无非是多开空调呗……</li>
+<li>空气更好，雨水更多</li>
+<li>交通更好，上班路上很畅通，而且有班车坐很方便</li>
+<li>也赶在限牌之前买到了自己心仪已久的那款车</li>
+<li>有了车以后，生活确实方便了许多，晚上或者周末出门有了更多选择，近郊出游也很方便，还去了一趟上海、去了一趟宁波、去了一趟横店 (说道横店，我超喜欢秦宫，气势恢宏，有刀枪剑戟的感觉)</li>
+<li>杭州本来也是个旅游城市，西湖、龙井、西溪湿地，也给平日的生活增添了很多乐趣</li>
+<li>饮食方面，这边吃海鲜/日料的机会比在北京的时候多多了，相对的火锅和面食少了</li>
+<li>运动比以前少了，以前在北京常踢球的，来杭州之后几乎没怎么踢，可能是因为自己没找对组织，现在逐渐开始多游泳了</li>
+</ul>
+<p>经过了1年多的时间，我想说，我很喜欢杭州这个地方。</p>
+<p>然后说说工作吧。</p>
+<p>这一年多时间我其实没做太多事情，更多的还是在熟悉环境，熟悉人、熟悉业务、熟悉流程、熟悉沟通方式、熟悉做事风格。阿里确实是个巨大的集团，有超过十年的历史和沉淀。我希望可以帮助团队做得更好，但首当其冲的事情是要先弄清楚游戏规则，努力找到问题的症结，谨慎的提出可实施方案，然后循序渐进的往前走。可以说每一步都要走得小心谨慎，稍有疏漏，可能就前功尽弃了，这一点在阿里可能体现的尤为明显。我想这也正是我之前的工作经验可以体现出价值的地方。</p>
+<p>从工程和管理的角度，我今年主要是以培训或布道的方式为大家分享一些系统而又务实的最佳实践，包括如何高效开会、合作、项目管理、代码管理、时间管理，也包括组织团队讨论编码规范、项目目录结构、文档格式、工具链使用等。希望可以全面的提升团队的工作效率和效果。这些工作会继续延续到2015年。</p>
+<p>团队的技术视野也是一个亟待提高的地方，这同时也和团队每一位同学的职业发展有着密切的联系，这也是在新的一年我希望可以做好的一件事。</p>
+<p>技术上，今年我主要的精力聚焦在了2件事情上：前半年花了一些时间在触摸屏幕操作上，研究了几个手势库，也尝试自己写，不过没有太像样的成果，算是个失败的过程吧，我今天回顾这件事情，主要是没有抓到重点，上来就研究多点复杂操作，也许这些东西在未来可能会显得更有价值，还是决定放一放，什么时候有了更成熟的思路，再考虑拿起来；后半年花了更多时间在 web components 上，还有 polymer 框架，我觉得这是我们看得见的未来，非常值得投入进去看一看，我和几个同事一起做了些实践，也有很多心得。</p>
+<p>在全年技术探索和实践的过程中，我有一个深刻的感悟，是和“造轮子”这件事有关系的，在今天这个技术世界里，与其说“不要重复造轮子”，不如说“造轮子”的和“用轮子”的已经是两种性质的工作了。我们今天很多人选择的工作，首要任务是造汽车而不是造轮子。我觉得这是很多讨论“到底要不要造轮子”的问题的根源。造汽车和造轮子有各自的技术含量，有各自需要认真思考的问题，如果没有认清这个问题，明明是造汽车的，结果觉得造轮子更牛掰而去造轮子，必定没有好结果，或者事倍功半；如果真想造轮子，应该好好找个造轮子的地方，才会造出最好的轮子，不然也只会做个半调子。篇幅有限，这事儿暂不细说了……</p>
+<p>技术方面还有一件事，就是开始组织 W3C 中文兴趣组的技术讨论，我们这一年组织了几次《ig在线talk》，也发起了一些标准翻译，也讨论了一些诸如首屏渲染的提案，还有中文字体和排版的制定，有的时候电话会议的时间已经超了，但是大家还会津津有味的在技术的领域里讨论闲聊，这种感觉是很少有的，相信经历过这些讨论的同学们也感受得到。</p>
+<p>另外自己在2014年初暗自下决心要看10本以上的书——这对于我这种平时没有看书习惯的人来说其实并不容易——这个目标算是已经达成了。这里面《习惯的力量》、《合作的进化》、《反脆弱》、《rework》、《remote》都是令我印象深刻的书，看过之后有非常多的收获。</p>
+<p>2015年，我有这么几个简单的想法：</p>
+<ul>
+<li>第一，要有健康的身体。这似乎是我从来没有过的对健康如此重视，也是因为现在工作和生活能够协调的更好的一个结果吧。不要连续熬夜或者休息不够，更重要的是保持运动，控制饮食，眼睛、颈椎、牙齿和肝这4个上班族体检最多出现的问题都要特别注意起来。</li>
+<li>第二，多花时间陪家人、老同学、周围的朋友，多参与一些社交活动</li>
+<li>第三，要把自己的编码量降下来，把团队打理好。我也深刻的感觉到，自己应该花更多的时间关怀身边的每一位同事，业务上的、技术上的、心态上的，都有很多值得去做的事情。让团队每一个人更好，比自己一个人更好重要的多。</li>
+<li>第四，把有限的个人精力集中投入在1件或几件事上</li>
+<li>第五，看15本书</li>
+</ul>
+<p>到明年这个时候，我会把这篇blog翻出来看看完成的怎么样：）</p>
+
+  
+</div>
+
+<div class="content">
+  <h2>
+    <a href="/blog/recent-photography-works-1314/">
+      小秀个人的13~14年摄影作品 (共19张)
+    </a>
+  </h2>
+  
+  <p>2 年前<a href="/blog/recent-photography-works/">曾经也发过几张自己拍的照片</a>，似乎大家对于我的拍照技术还是蛮宽容的。下面几张同样是我认真挑选过的这 2 年来拍的，同样求轻拍 ^_^</p>
+<p>p.s. 这 2 年真的经历了不少事情</p>
+<p>港版风景</p>
+<p><img src="/uploads/2014/10/1117334014.jpg" alt="港版风景">
+  <p class="more">
+    <a href="/blog/recent-photography-works-1314/">
+      阅读剩余部分...
+    </a>
+  </p>
+  
+</div>
+
+<div class="content">
+  <h2>
+    <a href="/blog/thinking-by-d2-forum-2014/">
+      由今年D2前端论坛想到的
+    </a>
+  </h2>
+  
+  <p><img src="/uploads/2014/10/1199434854.png" alt="第9届D2前端技术论坛"></p>
+<p>之前参加过 2 次，今年的 <a target="_blank" rel="noopener" href="https://d2forum.alibaba-inc.com/">D2</a> 是我第一次以“自己人”的身份参加的。和往年一样，受益匪浅，但也有了一些不一样的想法。
+  <p class="more">
+    <a href="/blog/thinking-by-d2-forum-2014/">
+      阅读剩余部分...
+    </a>
+  </p>
+  
+</div>
+
+<div class="content">
+  <h2>
+    <a href="/blog/naming-css-stuff-is-really-hard/">
+      [译]CSS命名神马的真心难
+    </a>
+  </h2>
+  
+  <p><mark>译自：<a target="_blank" rel="noopener" href="http://seesparkbox.com/foundry/naming_css_stuff_is_really_hard">Naming CSS Stuff Is Really Hard</a></mark></p>
+<p>找到的这篇文章算是对我之前写的 <a href="/blog/html-or-id-or-class/">《标签？ID？还是CLASS？》</a> 的再深入。我当时写那篇文章的时候，就有朋友提出了“非语义化”的 class 命名的问题，我当时确实觉得很纠结，简单的想法是“框架性质的表象 class 我没异议……框架的实质是通过降低灵活性达成更广泛的共识，我们个人不要再创造这样的样式就好了”，但没有想到特别好的“套路”，更多的是在实际情况中再分辨。看过这篇文章，我似乎找到了更好的答案。同时顺着文中提到的 <a target="_blank" rel="noopener" href="http://nicolasgallagher.com/about-html-semantics-front-end-architecture/">Nicolas 那篇文章</a>看下去，也对 OOCSS、BEM 之类的提法有了更多的认同感。特译给大家参考。
+  <p class="more">
+    <a href="/blog/naming-css-stuff-is-really-hard/">
+      阅读剩余部分...
+    </a>
+  </p>
+  
+</div>
+
+<div class="content">
+  <h2>
+    <a href="/blog/a-successful-git-branching-model/">
+      [译]Git 分支的最佳实践
+    </a>
+  </h2>
+  
+  <p><mark>译自：<a target="_blank" rel="noopener" href="https://nvie.com/posts/a-successful-git-branching-model/">A successful Git branching model» nvie.com</a></mark></p>
+<hr>
+<p>本文将展示我一年前在自己的项目中成功运用的开发模型。我一直打算把这些东西写出来，但总是没有抽出时间，现在终于写好了。这里介绍的不是任何项目的细节，而是有关分支的策略以及对发布的管理。</p>
+<p><img src="https://nvie.com/img/git-model@2x.png" alt=""></p>
+<p>在我的演示中，所有的操作都是通过 git 完成的。</p>
+  <p class="more">
+    <a href="/blog/a-successful-git-branching-model/">
+      阅读剩余部分...
+    </a>
+  </p>
+  
+</div>
+
+<div class="content">
+  <h2>
+    <a href="/blog/writing-testable-javascript/">
+      [译]撰写可测试的 JavaScript
+    </a>
+  </h2>
+  
+  <p><mark>译自：<a target="_blank" rel="noopener" href="http://alistapart.com/article/writing-testable-javascript">Writing Testable JavaScript - A List Apart</a></mark></p>
+<p>这篇文章算是 A List Apart 系列文章中，包括滑动门在内，令我印象最深刻的文章之一。最近有时间翻译了一下，分享给更多人，希望对大家有所帮助！</p>
+<hr>
+<p><strong>我们已经面对到了这一窘境：一开始我们写的 JavaScript 只有区区几行代码，但是它的代码量一直在增长，我们不断的加参数、加条件。最后，粗 bug 了…… 我们才不得不收拾这个烂摊子。</strong></p>
+<p>如上所述，今天的客户端代码确实承载了更多的责任，浏览器里的整个应用都越变越复杂。我们发现两个明显的趋势：1、我们没法通过单纯的鼠标定位和点击来检验代码是否正常工作，自动化的测试才会真正让我们放心；2、我们也许应该在撰写代码的时候就考虑到，让它变得可测试。</p>
+<p>神马？我们需要改变自己的编码方式？是的。因为即使我们意识到自动化测试的好，大部分人可能只是写写集成测试(integration tests)罢了。集成测试的侧重点是让整个系统的每一部分和谐共存，但是这并没有告诉我们每个独立的<em>功能单元</em>运转起来是否都和我们预期的一样。</p>
+<p>这就是为什么我们要引入单元测试。我们已经准备好经历一段痛苦的<em>撰写单元测试</em>的过程了，但最终我们能够<em>撰写可测试的 JavaScript</em>。</p>
+  <p class="more">
+    <a href="/blog/writing-testable-javascript/">
+      阅读剩余部分...
+    </a>
+  </p>
+  
+</div>
+
+<div class="content">
+  <h2>
+    <a href="/blog/semantic-versioning/">
+      [译]语义化版本管理
+    </a>
+  </h2>
+  
+  <p><mark>译自：<a target="_blank" rel="noopener" href="http://semver.org/">语义化版本管理</a> 2.0.0</mark></p>
+<h3 id="摘要"><a href="#摘要" class="headerlink" title="摘要"></a>摘要</h3><p>对于一个给定的版本号 MAJOR.MINOR.PATCH (主、次、补丁)，其变化的规律是：</p>
+<ol>
+<li>MAJOR version (主版本) 会在 API 发生不可向下兼容的改变时增大。</li>
+<li>MINOR version (次版本) 会在有向下兼容的新功能加入时增大。</li>
+<li>PATCH version (补丁版本) 会在bug以向下兼容的方式被修复时增大。</li>
+</ol>
+<p>我们还可以根据预发布、构建元数据 (build metadata) 的实际需求，在 MAJOR.MINOR.PATCH 格式之上扩展出额外的标记。</p>
+<h3 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h3><p>在软件管理领域，存在一个叫做“dependency hell (依赖地狱)”的坑。随着系统越变越大，你集成了越多的软件包，也越发觉得，有一天，你会陷入绝望。</p>
+<p>对于有很多依赖关系的系统来说，发布新版本的软件包会迅速变成一场噩梦。如果依赖性规定得太紧，你会陷入 version lock (版本锁，即每次软件包的升级无法产生新的版本)。如果依赖性规定得太松，你会不可避免的面对 version promiscuity (版本泛滥，假设未来版本是需要考虑兼容性的)。当 version lock 和 version promiscuity 让你的项目无法安全而又轻松的向前推进时，这就是所谓的 dependency hell。</p>
+<p>作为一种解决问题的办法，我提出了一套简单的规则和要求来表明版本号该如何确定和增加。这套规则基于但不仅限用于已经广泛存在的开源闭源软件的一般实践。为了让这个系统工作起来，你首先需要声明一个公有的 API，它可以由文档组成或在代码层面强制实现，且必须是清晰准确的。一旦你标识了你的公有 API，你就可以通过不同的版本号的增加来交流 API 的各种改变。设想一个形如 X.Y.Z 的版本，不影响 API 的 bug 修复会增大补丁版本，向下兼容的 API 增加或改变会增大次版本，而不兼容的 API 改变会增大主版本。</p>
+<p>我把这套系统称作“语义化版本管理”。在这套系统之下，版本号及其改变传递了代码背后的含义，以及每个相邻版本之间的变化。</p>
+  <p class="more">
+    <a href="/blog/semantic-versioning/">
+      阅读剩余部分...
+    </a>
+  </p>
+  
+</div>
+
+<div class="content">
+  <h2>
+    <a href="/blog/color-matrix-filters-using-the-html5-canvas/">
+      [译]通过HTML5 Canvas API调节图像的亮度和颜色
+    </a>
+  </h2>
+  
+  <p><mark>译自：<a target="_blank" rel="noopener" href="http://www.storminthecastle.com/2013/10/06/color-matrix-filters-using-the-html5-canvas/">Adjusting Image Brightness and Color Using the HTML5 Canvas API</a></mark></p>
+<p>你曾否需要调节一张图片的亮度？或者增强红色通道让它变得温暖一些？</p>
+<p><img src="http://www.storminthecastle.com/wp-content/uploads/2013/04/filtered.jpg" alt=""></p>
+<p>这是我之前两篇文章“<a target="_blank" rel="noopener" href="http://www.storminthecastle.com/2013/04/06/how-you-can-do-cool-image-effects-using-html5-canvas/">如何通过HTML5 Canvas处理图片酷效</a>”和“<a target="_blank" rel="noopener" href="http://www.storminthecastle.com/2013/10/06/color-matrix-filters-using-the-html5-canvas/how-you-can-build-an-html5-photobooth-app/">如何创建一个HTML5的大头贴应用</a>”的后续。在之前的那些文章里，我提供了一些可分离的颜色滤镜代码：灰度、灰褐色、红色、变亮、变暗等。这些滤镜都是经典的颜色滤镜，每个像素点的颜色都是独立运算的，互不影响。我们的可以将其建模成一个单独数据驱动的称为颜色矩阵滤镜(Color Matrix Filter)的东西。这一概念将会遍布本文。这种滤镜将会以一个包含权重(即系数)的颜色矩阵作为输入，并决定输出的颜色组件(color component)如何和输入的颜色组建相对应。</p>
+  <p class="more">
+    <a href="/blog/color-matrix-filters-using-the-html5-canvas/">
+      阅读剩余部分...
+    </a>
+  </p>
+  
+</div>
+
+<div class="content">
+  <h2>
+    <a href="/blog/v8-javascript-performance-tips/">
+      [译]JavaScript V8性能小贴士
+    </a>
+  </h2>
+  
+  <p><mark>译自：<a target="_blank" rel="noopener" href="https://www.html5rocks.com/en/tutorials/speed/v8/">Performance Tips for JavaScript in V8</a></mark></p>
+<h3 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h3><p>关于如何巧妙提高V8 JavaScript性能的话题，Daniel Clifford在Google I/O上做了<a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=UJPdhx5zTaw">一次非常精彩的分享</a>。Daniel鼓励我们“追求更快”，认真的分析C++和JavaScript之间的性能差距，根据JavaScript的工作原理撰写代码。在Daniel的分享中，有一个核心要点的归纳，我们也会根据性能指导的变化保持对这篇文章的更新。</p>
+<h3 id="最重要的建议"><a href="#最重要的建议" class="headerlink" title="最重要的建议"></a>最重要的建议</h3><p>最重要的是要把任何性能建议放在特定的情境当中。性能建议是附加的东西，有时一开始就特别注意深层的建议反而会对我们造成干扰。你需要从一个综合的角度看待你的Web应用的性能——在关注这些性能建议之前，你应该找<a target="_blank" rel="noopener" href="https://developers.google.com/speed/pagespeed/">PageSpeed</a>之类的工具大概分析一下你的代码，也算是跑个分先。这会防止你过度优化。</p>
+<p>对Web应用的性能优化，几个原则性的建议是：</p>
+<ul>
+<li>首先，未雨绸缪</li>
+<li>然后，找到症结</li>
+<li>最后，修复它</li>
+</ul>
+<p>为了完成这几个步骤，理解V8如何优化JS是一件很重要的事情，这样你就可以根据其对JS运行时的设计撰写代码。同样重要的是掌握一些帮得上忙的工具。Daniel也交代了一些开发者工具的用法，它们刚好抓住了一些V8引擎设计上最重要的部分。</p>
+<p>OK。开始V8小贴士。</p>
+  <p class="more">
+    <a href="/blog/v8-javascript-performance-tips/">
+      阅读剩余部分...
+    </a>
+  </p>
+  
+</div>
+
+
+
+<ol class="page-navigator">
+  <a class="extend prev" rel="prev" href="/page/3/">«</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><a class="page-number" href="/page/6/">6</a><a class="page-number" href="/page/7/">7</a><a class="page-number" href="/page/8/">8</a><a class="page-number" href="/page/9/">9</a><a class="page-number" href="/page/10/">10</a><a class="page-number" href="/page/11/">11</a><a class="page-number" href="/page/12/">12</a><a class="page-number" href="/page/13/">13</a><a class="page-number" href="/page/14/">14</a><a class="page-number" href="/page/15/">15</a><a class="page-number" href="/page/16/">16</a><a class="page-number" href="/page/17/">17</a><a class="page-number" href="/page/18/">18</a><a class="page-number" href="/page/19/">19</a><a class="page-number" href="/page/20/">20</a><a class="extend next" rel="next" href="/page/5/">»</a>
+</ol>
+
+</div>
+
+    <div id="footer">
+      <a href="/">囧克斯</a>
+      
+      |
+      <a href="/atom.xml" title="rss_feed">RSS</a>
+      
+      |
+      我是百度统计
+      <script src="https://hm.baidu.com/h.js?a0a2372d4b7621d0bfe71f33c58a4bd8"></script>
+      |
+      我会翻脸 <a href="#" onclick="document.body.classList.toggle('dark-mode'), event.preventDefault()" style="font-size: 1.25em;">🌚🌝</a>
+    </div>
+  </div>
+
+  
+<script src="/js/script.js"></script>
+
+</body>
+
+</html>

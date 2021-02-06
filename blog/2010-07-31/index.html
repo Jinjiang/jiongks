@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <!-- proud for contributing Vue.js -->
+  <meta charset="utf-8">
+  <meta name="format-detection" content="telephone=no" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-touch-fullscreen" content="yes" />
+
+  
+  <title>
+    
+    终于把蒋定宇分享的modev代码跑通了！ -
+    
+    囧克斯
+  </title>
+
+  
+<link rel="stylesheet" href="/css/pure.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+
+  
+  <link rel="alternate" href="/atom.xml" title="囧克斯" type="application/atom+xml">
+  
+  
+  <link rel="icon" href="/favicon.ico">
+  
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+<body>
+  <script>(() => { if ((new Date().getHours() + 6) % 24 < 12) document.body.classList.add('dark-mode') })()</script>
+
+  <div class="dark-mode-helper"></div>
+
+  <div id="wrapper">
+
+    <div id="header">
+      <h1>
+        <a href="/" title="囧克斯">
+          囧克斯
+        </a>
+      </h1>
+      <p class="description">
+        这里是勾三股四的家
+      </p>
+    </div>
+
+    <div id="nav" class="pure-menu pure-menu-open pure-menu-horizontal">
+      <ul>
+        
+        <li>
+          <a href="/all-demos/">
+            线上
+          </a>
+        </li>
+        
+        <li>
+          <a href="/all-slides/">
+            线下
+          </a>
+        </li>
+        
+        <li>
+          <a href="/about/">
+            关于
+          </a>
+        </li>
+        
+        <li><a href="/archives">归档</li>
+      </ul>
+    </div>
+
+    <div id="main"><div class="content">
+  <h2>
+    终于把蒋定宇分享的modev代码跑通了！
+  </h2>
+  
+<p><mark>本文摘自 勾三股四 更早时期的 <a target="_blank" rel="noopener" href="http://bulaoge.net/?g3g4">不老歌</a> 博客。</mark></p>
+
+<a id="more"></a>
+<p>资料来源：<a href="http://www.slideshare.net/josephj/webrebuild" target="_blank">http://www.slideshare.net/josephj/webrebuild</a><br />
+<a target="_blank" rel="noopener" href="http://www.yupoo.com/photos/zhaojinjiang/76569479/" title="来自蒋定宇分享的modev站点预览截图"><img src="http://pic.yupoo.com/zhaojinjiang/168029b7f201/medium.jpg" alt="来自蒋定宇分享的modev站点预览截图" width="450" height="500" border="0" /></a><br />
+这里有真相！<br />
+<br />
+这对于我这种完全不懂linux/apache的人来说，真是花了不少功夫……<br />
+<br />
+1.首先要在linux上面安装apache/php，我使用了Ubuntu自己提供的安装包和直接安装的方式。<br />
+2.然后认真学习了apache的配置文件，了解了Ubuntu里apache的默认配置信息，也看懂了蒋定宇的配置文件。<br />
+3.把apache的配置文件也写好了，重启apache，发现网站还是没有跑起来——系统提示apc_fetch()函数执行失败<br />
+4.又去php.net查阅了一翻，发现它是属于PECL的一个包，默认是没有被安装的。于是开始想尽一切办法把APC包装好<br />
+5.一开始安装了PEAR PECL，然后把网上的最新版本APC包下载下来，可怎么也安装不上，似乎文件包和安装命令不太匹配的样子，这个问题纠结了我很久，直到刚才……<br />
+6.昨天我请教了我们公司后端开发的同事，他说，我按照Ubuntu自己提供的安装包安装，这个是一个关键：即安装目录是被拆开放到不同的文件夹中，这使得安装第三方扩展包的时候无从下手。刚才我又想到了这句话，心想如果APC也通过Ubuntu自己提供的安装包安装，应该就100%没有问题了。于是打开“新立得”软件包管理者，搜索，果然搜到了一个叫做“php5-apc”的模块，安装完成。<br />
+7.于是欣喜得去刷新页面——还是没打开<br />
+8.其实这离成功非常近了，重启apache，或，重启Ubuntu，东西就都出来了(就是上图的样子)<br />
+<br />
+太TM兴奋啦！！</p>
+
+</div>
+
+<p align="right">
+  <small>
+    <a href="https://github.com/Jinjiang/jinjiang.github.io/edit/dev/source/_posts/2010-07-31.md" target="_blank">
+      向本文提出修改或勘误建议
+    </a>
+  </small>
+</p>
+
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+
+<div id="gitalk-container"></div>
+
+<script>
+  const gitalk = new Gitalk({
+    clientID: 'c99e23053fc1bba6a58c',
+    clientSecret: '64efe1cd1438e77ae2bf8eba92b51c90d0cc2b9f',
+    repo: 'jinjiang.github.io',
+    owner: 'jinjiang',
+    admin: ['jinjiang'],
+    id: location.pathname,      // Ensure uniqueness and length less than 50
+    distractionFreeMode: false  // Facebook-like distraction free mode
+  })
+
+  gitalk.render('gitalk-container')
+</script>
+</div>
+
+    <div id="footer">
+      <a href="/">囧克斯</a>
+      
+      |
+      <a href="/atom.xml" title="rss_feed">RSS</a>
+      
+      |
+      我是百度统计
+      <script src="https://hm.baidu.com/h.js?a0a2372d4b7621d0bfe71f33c58a4bd8"></script>
+      |
+      我会翻脸 <a href="#" onclick="document.body.classList.toggle('dark-mode'), event.preventDefault()" style="font-size: 1.25em;">🌚🌝</a>
+    </div>
+  </div>
+
+  
+<script src="/js/script.js"></script>
+
+</body>
+
+</html>

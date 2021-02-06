@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <!-- proud for contributing Vue.js -->
+  <meta charset="utf-8">
+  <meta name="format-detection" content="telephone=no" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-touch-fullscreen" content="yes" />
+
+  
+  <title>
+    
+    Connect中间件使用手册 -
+    
+    囧克斯
+  </title>
+
+  
+<link rel="stylesheet" href="/css/pure.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+
+  
+  <link rel="alternate" href="/atom.xml" title="囧克斯" type="application/atom+xml">
+  
+  
+  <link rel="icon" href="/favicon.ico">
+  
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+<body>
+  <script>(() => { if ((new Date().getHours() + 6) % 24 < 12) document.body.classList.add('dark-mode') })()</script>
+
+  <div class="dark-mode-helper"></div>
+
+  <div id="wrapper">
+
+    <div id="header">
+      <h1>
+        <a href="/" title="囧克斯">
+          囧克斯
+        </a>
+      </h1>
+      <p class="description">
+        这里是勾三股四的家
+      </p>
+    </div>
+
+    <div id="nav" class="pure-menu pure-menu-open pure-menu-horizontal">
+      <ul>
+        
+        <li>
+          <a href="/all-demos/">
+            线上
+          </a>
+        </li>
+        
+        <li>
+          <a href="/all-slides/">
+            线下
+          </a>
+        </li>
+        
+        <li>
+          <a href="/about/">
+            关于
+          </a>
+        </li>
+        
+        <li><a href="/archives">归档</li>
+      </ul>
+    </div>
+
+    <div id="main"><div class="content">
+  <h2>
+    Connect中间件使用手册
+  </h2>
+  <p>以下内容大多译自<a target="_blank" rel="noopener" href="https://www.senchalabs.org/connect/">Connect官网</a> 2013-06-02</p>
+<p>Connect是基于Node的中间件框架(middleware framework)，提供超过18种官方中间件以及更多的第三方中间件。</p>
+<p>示例：</p>
+<pre><code>var app = connect()
+  .use(connect.logger(&apos;dev&apos;))
+  .use(connect.static(&apos;public&apos;))
+  .use(function(req, res)&#123;
+    res.end(&apos;hello world\n&apos;);
+  &#125;)
+ .listen(3000);
+</code></pre><p>安装方式：</p>
+<pre><code>$ npm install connect
+</code></pre><p>依次介绍官方中间件</p>
+<a id="more"></a>
+<h3 id="1-日志-logger"><a href="#1-日志-logger" class="headerlink" title="1. 日志 logger"></a>1. 日志 logger</h3><p>服务器请求日志，支持自定义格式，支持传入 <code>options</code> 选项对象或 <code>format</code> 字符串。</p>
+<h4 id="选项"><a href="#选项" class="headerlink" title="选项"></a>选项</h4><ul>
+<li><code>format</code> 表示日志格式的字符串，由各种记号(token)组合而成</li>
+<li><code>stream</code> 表示输出到哪里。默认是 <code>stdout</code></li>
+<li><code>buffer</code> 表示缓冲的时间间隔，默认为 1000ms</li>
+<li><code>immediate</code> 是否在请求(request)的时候立即写日志，而不是在回应(response)的时候</li>
+</ul>
+<h4 id="记号-Tokens"><a href="#记号-Tokens" class="headerlink" title="记号(Tokens)"></a>记号(Tokens)</h4><ul>
+<li>:req[header] (如 :req[Accept])</li>
+<li>:res[header] (如 :res[Content-Length])</li>
+<li>:http-version、:response-time、:remote-addr、:date、:method、:url、:referrer、:user-agent、:status</li>
+</ul>
+<h4 id="默认的日志格式-Formats"><a href="#默认的日志格式-Formats" class="headerlink" title="默认的日志格式(Formats)"></a>默认的日志格式(Formats)</h4><p> <code>default</code> 、 <code>short</code> 、 <code>tiny</code></p>
+<p>其中 <code>default</code> 代表的格式是：</p>
+<pre><code>:remote-addr - - [:date] &quot;:method :url HTTP/:http-version&quot; :status :res[content-length] &quot;:referrer&quot; &quot;:user-agent&quot;
+</code></pre><p>另外还有 <code>dev</code> 格式，可以着色输出响应状态，开发时适用。</p>
+<h4 id="其它"><a href="#其它" class="headerlink" title="其它"></a>其它</h4><p>记号和格式都是可以自定义更多的，通过</p>
+<ul>
+<li><code>connect.logger.token(name, function (req, res) &#123;...&#125;)</code> 和</li>
+<li><code>connect.logger.format(name, stringOrFunction)</code></li>
+</ul>
+<p>更多细节请<a target="_blank" rel="noopener" href="https://www.senchalabs.org/connect/logger.html">移步至此</a></p>
+<h3 id="2-防止跨域伪造请求-csrf"><a href="#2-防止跨域伪造请求-csrf" class="headerlink" title="2. 防止跨域伪造请求 csrf"></a>2. 防止跨域伪造请求 csrf</h3><p>默认情况下该中间件会生成一个名为“_csrf”的记号，该记号可以作为请求的状态、表单提交的隐藏属性值或查询字符串等等，并在服务器端与 <code>req.session._csrf</code> 属性进行核对。如果核对出错，则会出现403错误。</p>
+<p>默认的 <code>value</code> 函数会以此核对 <code>bodyParser()</code> 中间件生成的 <code>req.body</code> 、 <code>query()</code> 生成的 <code>req.query</code> 以及名为“X-CSRF-Token”的头信息。</p>
+<p>该中间件需要会话支持，因此必须出现在 <code>session()</code> 和 <code>cookieParse()</code> 中间件之后。</p>
+<p>默认的 <code>defaultValue()</code> 实现如下：</p>
+<pre><code>function defaultValue(req) &#123;
+  return (req.body &amp;&amp; req.body._csrf)
+    || (req.query &amp;&amp; req.query._csrf)
+    || (req.headers[&apos;x-csrf-token&apos;]);
+&#125;
+</code></pre><p>更多细节请<a target="_blank" rel="noopener" href="https://www.senchalabs.org/connect/csrf.html">移步至此</a></p>
+<h3 id="3-压缩-compress"><a href="#3-压缩-compress" class="headerlink" title="3. 压缩 compress"></a>3. 压缩 compress</h3><p>Gzip压缩的中间件</p>
+<p>支持的方法都在 <code>connect.compress.methods</code> 中，通过 <code>connect.compress.filter(req, res)</code> 方法判断文件是否需要压缩，默认压缩Content-Type含json、text或javascript的文件。</p>
+<p>更高级的操作是可以将具体压缩方法的参数通过options参数传进去：</p>
+<pre><code>connect.compress(&#123;
+    chunkSize: ..., // default 16*1024
+    windowBits: ...,
+    level: ..., // 0-9
+    memLevel: ..., // 1-9
+    strategy: ...
+&#125;)
+</code></pre><p>更多细节请<a target="_blank" rel="noopener" href="https://www.senchalabs.org/connect/compress.html">移步至此</a></p>
+<h3 id="4-HTTP基础认证-basicAuth"><a href="#4-HTTP基础认证-basicAuth" class="headerlink" title="4. HTTP基础认证 basicAuth"></a>4. HTTP基础认证 basicAuth</h3><ul>
+<li>提供回调函数 <code>connect.basicAuth(function (user, pass) &#123;...&#125;)</code> ，如果这个回调函数返回 <code>true</code> ，则获得访问权限。</li>
+<li>提供异步的调用方式 <code>connect.basicAuth(function (user, pass, callback))</code></li>
+<li>直接有效的单一用户名密码的方式 <code>connect.basicAuth(&#39;username&#39;, &#39;password&#39;)</code></li>
+</ul>
+<p>更多细节请<a target="_blank" rel="noopener" href="https://www.senchalabs.org/connect/basicAuth.html">移步至此</a></p>
+<h3 id="5-主体解析器-Body-Parser"><a href="#5-主体解析器-Body-Parser" class="headerlink" title="5. 主体解析器 Body Parser"></a>5. 主体解析器 Body Parser</h3><p>可扩展的解析器，对请求的body进行解析。支持<em>application/json</em>、<em>application/x-www-form-urlencoded</em>、<em>multipart/form-data</em></p>
+<p>其等同于：</p>
+<pre><code>app.use(connect.json());
+app.use(connect.urlencoded());
+app.use(connect.multipart());
+</code></pre><p>更多细节请<a target="_blank" rel="noopener" href="https://www.senchalabs.org/connect/bodyParser.html">移步至此</a></p>
+<h3 id="5-1-json"><a href="#5-1-json" class="headerlink" title="5.1 json"></a>5.1 json</h3><p><em>application/json</em>解析器，并将结果放至 <code>req.body</code></p>
+<h4 id="选项-1"><a href="#选项-1" class="headerlink" title="选项"></a>选项</h4><ul>
+<li><code>strict</code> 是否严格解析，当值为 <code>false</code> 时，理论上 <code>JSON.parse()</code> 能解析的数据都是被允许的</li>
+<li><code>reviver</code> 用作 <code>JSON.parse()</code> 方法的第二参数</li>
+<li><code>limit</code> 字节数限制，默认不开启</li>
+</ul>
+<p>更多细节请<a target="_blank" rel="noopener" href="https://www.senchalabs.org/connect/json.html">移步至此</a></p>
+<h3 id="5-2-urlencoded"><a href="#5-2-urlencoded" class="headerlink" title="5.2 urlencoded"></a>5.2 urlencoded</h3><p><em>application/x-www-form-urlencoded</em>解析器，并将结果放至 <code>req.body</code></p>
+<h4 id="选项-2"><a href="#选项-2" class="headerlink" title="选项"></a>选项</h4><ul>
+<li><code>limit</code> 字节数限制，默认不开启</li>
+</ul>
+<p>更多细节请<a target="_blank" rel="noopener" href="https://www.senchalabs.org/connect/urlencoded.html">移步至此</a></p>
+<h3 id="5-3-multipart"><a href="#5-3-multipart" class="headerlink" title="5.3 multipart"></a>5.3 multipart</h3><p><em>multipart/form-data</em>解析器，并将结果放至 <code>req.body</code> 和 <code>req.files</code></p>
+<h4 id="选项-3"><a href="#选项-3" class="headerlink" title="选项"></a>选项</h4><ul>
+<li><code>limit</code> 字节数限制，默认不开启</li>
+<li><code>defer</code> 延时处理并不等 <code>end</code> 事件触发就调用 <code>req.form.next()</code> 展示大表单。该选项在需要绑定 <code>progress</code> 事件时可用。</li>
+</ul>
+<p>更多细节请<a target="_blank" rel="noopener" href="https://www.senchalabs.org/connect/multipart.html">移步至此</a></p>
+<h3 id="6-超时时间-timeout"><a href="#6-超时时间-timeout" class="headerlink" title="6. 超时时间 timeout"></a>6. 超时时间 timeout</h3><p>用法： <code>connect.timeout(ms)</code> 。如果请求超时则指向408错误。</p>
+<p>另， <code>req</code> 对象会多一个 <code>req.clearTimeout()</code> 方法，用来在必要的情况下取消计时。</p>
+<p>更多细节请<a target="_blank" rel="noopener" href="https://www.senchalabs.org/connect/timeout.html">移步至此</a></p>
+<h3 id="7-Cookie解析器-cookieParser"><a href="#7-Cookie解析器-cookieParser" class="headerlink" title="7. Cookie解析器 cookieParser"></a>7. Cookie解析器 cookieParser</h3><p>解析头中的<em>Cookie</em>并将结果放至 <code>req.cookies</code> 。你还可以通过 <code>connect.cookieParser(secret)</code> 中的 <code>secret</code> 参数对cookie进行加密。该密码可以通过 <code>req.secret</code> 进行取值。</p>
+<p>更多细节请<a target="_blank" rel="noopener" href="https://www.senchalabs.org/connect/cookieParser.html">移步至此</a></p>
+<h3 id="8-会话-session"><a href="#8-会话-session" class="headerlink" title="8. 会话 session"></a>8. 会话 session</h3><p>详情略。</p>
+<p>更多细节请<a target="_blank" rel="noopener" href="https://www.senchalabs.org/connect/session.html">移步至此</a></p>
+<h3 id="9-基于cookie的会话支持-cookieSession"><a href="#9-基于cookie的会话支持-cookieSession" class="headerlink" title="9. 基于cookie的会话支持 cookieSession"></a>9. 基于cookie的会话支持 cookieSession</h3><pre><code>connect.cookieSession(&#123; secret: &apos;tobo!&apos;, cookie: &#123; maxAge: 60 * 60 * 1000 &#125;&#125;);
+</code></pre><h4 id="选项-4"><a href="#选项-4" class="headerlink" title="选项"></a>选项</h4><ul>
+<li><code>key</code> cookie名，默认是 <code>connect.sess</code></li>
+<li><code>secret</code> 密码</li>
+<li><code>cookie</code> 会话cookie的设置，默认是 <code>&#123; path: &#39;/&#39;, httpOnly: true, maxAge: null &#125;</code></li>
+<li><code>proxy</code> 信任反向代理</li>
+</ul>
+<h4 id="清除会话"><a href="#清除会话" class="headerlink" title="清除会话"></a>清除会话</h4><pre><code>req.session = null;
+</code></pre><p>更多细节请<a target="_blank" rel="noopener" href="https://www.senchalabs.org/connect/cookieSession.html">移步至此</a></p>
+<h3 id="10-支持伪造HTTP方法-methodOverride"><a href="#10-支持伪造HTTP方法-methodOverride" class="headerlink" title="10. 支持伪造HTTP方法 methodOverride"></a>10. 支持伪造HTTP方法 methodOverride</h3><p>当检查到方法重载的时候，把原方法存入 <code>req.originalMethod</code> ，检查的字段可以通过参数 <code>key</code> 设置，默认为 <code>_method</code></p>
+<pre><code>connect.methodOverride(key)
+</code></pre><p>更多细节请<a target="_blank" rel="noopener" href="https://www.senchalabs.org/connect/methodOverride.html">移步至此</a></p>
+<h3 id="11-响应时间-responseTime"><a href="#11-响应时间-responseTime" class="headerlink" title="11. 响应时间 responseTime"></a>11. 响应时间 responseTime</h3><p>计算响应时间并展示为 <code>X-Response-Time</code> 头</p>
+<p>更多细节请<a target="_blank" rel="noopener" href="https://www.senchalabs.org/connect/responseTime.html">移步至此</a></p>
+<h3 id="12-静态服务缓存-staticCache"><a href="#12-静态服务缓存-staticCache" class="headerlink" title="12. 静态服务缓存 staticCache"></a>12. 静态服务缓存 staticCache</h3><p>在内存中建立static中间件的缓存。默认最大缓存对象为128个，每个对象的最大体积是256k，总共大约32mb。</p>
+<h4 id="选项-5"><a href="#选项-5" class="headerlink" title="选项"></a>选项</h4><ul>
+<li><code>maxObjects</code> 最大缓存对象个数，默认128个</li>
+<li><code>maxLength</code> 最大缓存对象体积，默认256kb</li>
+</ul>
+<p>更多细节请<a target="_blank" rel="noopener" href="https://www.senchalabs.org/connect/staticCache.html">移步至此</a></p>
+<h3 id="12-1-静态文件服务-static"><a href="#12-1-静态文件服务-static" class="headerlink" title="12.1 静态文件服务 static"></a>12.1 静态文件服务 static</h3><p>为给定的 <code>root</code> 路径提供静态文件服务，例如</p>
+<pre><code>connect.static(__dirname + &apos;/public&apos;, &#123;maxAge: 86400000&#125;)
+</code></pre><h4 id="选项-6"><a href="#选项-6" class="headerlink" title="选项"></a>选项</h4><ul>
+<li><code>maxAge</code> 浏览器缓存时间，默认是 <code>0</code></li>
+<li><code>hidden</code> 是否允许访问隐藏文件，默认是 <code>false</code></li>
+<li><code>redirect</code> 路径是目录时是否在结尾自动加 <code>/</code> ，默认是 <code>true</code></li>
+</ul>
+<h4 id="MIME表"><a href="#MIME表" class="headerlink" title="MIME表"></a>MIME表</h4><p>展示MIME模块，可读写</p>
+<pre><code>connect.static.mime
+</code></pre><p>更多细节请<a target="_blank" rel="noopener" href="https://www.senchalabs.org/connect/static.html">移步至此</a></p>
+<h3 id="13-目录-directory"><a href="#13-目录-directory" class="headerlink" title="13. 目录 directory"></a>13. 目录 directory</h3><p>列出目录的文件列表</p>
+<h4 id="选项-7"><a href="#选项-7" class="headerlink" title="选项"></a>选项</h4><ul>
+<li><code>hidden</code> 是否显示点(.)开头的文件，默认是 <code>false</code></li>
+<li><code>icons</code> 是否显示文件图标，默认是 <code>false</code></li>
+<li><code>filter</code> 过滤文件的函数，默认是 <code>false</code></li>
+</ul>
+<p>图标文件在 <code>lib/public/icons/</code> 目录中</p>
+<h4 id="其它-1"><a href="#其它-1" class="headerlink" title="其它"></a>其它</h4><ul>
+<li><code>connect.directory.html()</code> 输出html格式的内容</li>
+<li><code>connect.directory.json()</code> 输出json格式的内容</li>
+<li><code>connect.directory.plain()</code> 输出文本格式的内容</li>
+</ul>
+<p>更多细节请<a target="_blank" rel="noopener" href="https://www.senchalabs.org/connect/directory.html">移步至此</a></p>
+<h3 id="14-虚拟主机-vhost"><a href="#14-虚拟主机-vhost" class="headerlink" title="14. 虚拟主机 vhost"></a>14. 虚拟主机 vhost</h3><p>例如：</p>
+<pre><code>connect()
+  .use(connect.vhost(&apos;foo.com&apos;, fooApp))
+  .use(connect.vhost(&apos;bar.com&apos;, barApp))
+  .use(connect.vhost(&apos;*.com&apos;, mainApp))
+</code></pre><p>更多细节请<a target="_blank" rel="noopener" href="https://www.senchalabs.org/connect/vhost.html">移步至此</a></p>
+<h3 id="15-站点图标-favicon"><a href="#15-站点图标-favicon" class="headerlink" title="15. 站点图标 favicon"></a>15. 站点图标 favicon</h3><p>默认图标为 <code>lib/public/favicon.ico</code> ，可更改，调用方式：</p>
+<pre><code>connect.favicon(&apos;public/favicion.ico&apos;, &#123;maxAge: 86400000&#125;)
+</code></pre><h4 id="选项-8"><a href="#选项-8" class="headerlink" title="选项"></a>选项</h4><ul>
+<li><code>maxAge</code> 过期时间，默认是1天(86400000)</li>
+</ul>
+<p>更多细节请<a target="_blank" rel="noopener" href="https://www.senchalabs.org/connect/favicon.html">移步至此</a></p>
+<h3 id="16-请求大小限制-limit"><a href="#16-请求大小限制-limit" class="headerlink" title="16. 请求大小限制 limit"></a>16. 请求大小限制 limit</h3><p>限制请求的body字节数，可传入一个数字或代表容量大小的字符串，比如： <code>5mb</code> 、 <code>200kb</code> 、 <code>1gb</code></p>
+<pre><code>connect.limit(&apos;5.5mb&apos;)
+</code></pre><p>更多细节请<a target="_blank" rel="noopener" href="https://www.senchalabs.org/connect/limit.html">移步至此</a></p>
+<h3 id="17-查询字符串-query"><a href="#17-查询字符串-query" class="headerlink" title="17. 查询字符串 query"></a>17. 查询字符串 query</h3><p>自动解析查询字符串，生成 <code>req.query</code></p>
+<p>更多细节请<a target="_blank" rel="noopener" href="https://www.senchalabs.org/connect/query.html">移步至此</a></p>
+<h3 id="18-错误处理-errorHandler"><a href="#18-错误处理-errorHandler" class="headerlink" title="18. 错误处理 errorHandler"></a>18. 错误处理 errorHandler</h3><p>灵活的错误处理机制，开发环境下提供出错信息和栈追踪，回应信息支持纯文本、HTML和JSON</p>
+<ul>
+<li>在<em>text/plain</em>的情况下回应文本格式的错误信息</li>
+<li>在<em>application/json</em>情况下，回应 <code>&#123; &quot;error&quot;: error &#125;</code></li>
+<li>在允许的情况下回应HTML错误信息</li>
+</ul>
+<p>更多细节请<a target="_blank" rel="noopener" href="https://www.senchalabs.org/connect/errorHandler.html">移步至此</a></p>
+<p>(完)</p>
+
+</div>
+
+<p align="right">
+  <small>
+    <a href="https://github.com/Jinjiang/jinjiang.github.io/edit/dev/source/_posts/connect-middleware-manual.md" target="_blank">
+      向本文提出修改或勘误建议
+    </a>
+  </small>
+</p>
+
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+
+<div id="gitalk-container"></div>
+
+<script>
+  const gitalk = new Gitalk({
+    clientID: 'c99e23053fc1bba6a58c',
+    clientSecret: '64efe1cd1438e77ae2bf8eba92b51c90d0cc2b9f',
+    repo: 'jinjiang.github.io',
+    owner: 'jinjiang',
+    admin: ['jinjiang'],
+    id: location.pathname,      // Ensure uniqueness and length less than 50
+    distractionFreeMode: false  // Facebook-like distraction free mode
+  })
+
+  gitalk.render('gitalk-container')
+</script>
+</div>
+
+    <div id="footer">
+      <a href="/">囧克斯</a>
+      
+      |
+      <a href="/atom.xml" title="rss_feed">RSS</a>
+      
+      |
+      我是百度统计
+      <script src="https://hm.baidu.com/h.js?a0a2372d4b7621d0bfe71f33c58a4bd8"></script>
+      |
+      我会翻脸 <a href="#" onclick="document.body.classList.toggle('dark-mode'), event.preventDefault()" style="font-size: 1.25em;">🌚🌝</a>
+    </div>
+  </div>
+
+  
+<script src="/js/script.js"></script>
+
+</body>
+
+</html>

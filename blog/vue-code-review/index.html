@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <!-- proud for contributing Vue.js -->
+  <meta charset="utf-8">
+  <meta name="format-detection" content="telephone=no" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-touch-fullscreen" content="yes" />
+
+  
+  <title>
+    
+    Vue.js 源码学习笔记 -
+    
+    囧克斯
+  </title>
+
+  
+<link rel="stylesheet" href="/css/pure.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+
+  
+  <link rel="alternate" href="/atom.xml" title="囧克斯" type="application/atom+xml">
+  
+  
+  <link rel="icon" href="/favicon.ico">
+  
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+<body>
+  <script>(() => { if ((new Date().getHours() + 6) % 24 < 12) document.body.classList.add('dark-mode') })()</script>
+
+  <div class="dark-mode-helper"></div>
+
+  <div id="wrapper">
+
+    <div id="header">
+      <h1>
+        <a href="/" title="囧克斯">
+          囧克斯
+        </a>
+      </h1>
+      <p class="description">
+        这里是勾三股四的家
+      </p>
+    </div>
+
+    <div id="nav" class="pure-menu pure-menu-open pure-menu-horizontal">
+      <ul>
+        
+        <li>
+          <a href="/all-demos/">
+            线上
+          </a>
+        </li>
+        
+        <li>
+          <a href="/all-slides/">
+            线下
+          </a>
+        </li>
+        
+        <li>
+          <a href="/about/">
+            关于
+          </a>
+        </li>
+        
+        <li><a href="/archives">归档</li>
+      </ul>
+    </div>
+
+    <div id="main"><div class="content">
+  <h2>
+    Vue.js 源码学习笔记
+  </h2>
+  <p>最近饶有兴致的又把最新版 <a target="_blank" rel="noopener" href="https://vuejs.org/">Vue.js</a> 的源码学习了一下，觉得真心不错，个人觉得 Vue.js 的代码非常之优雅而且精辟，作者本身可能无 (bu) 意 (xie) 提及这些。那么，就让我来吧：）</p>
+<h3 id="程序结构梳理"><a href="#程序结构梳理" class="headerlink" title="程序结构梳理"></a>程序结构梳理</h3><p><img src="http://img2.tbcdn.cn/L1/461/1/8142ef3fc2055839f1a93a933d80e17694b4f76b" alt="Vue 程序结构"></p>
+<p>Vue.js 是一个非常典型的 MVVM 的程序结构，整个程序从最上层大概分为</p>
+<ol>
+<li>全局设计：包括全局接口、默认选项等</li>
+<li>vm 实例设计：包括接口设计 (vm 原型)、实例初始化过程设计 (vm 构造函数)</li>
+</ol>
+<p>这里面大部分内容可以直接跟 Vue.js 的<a target="_blank" rel="noopener" href="https://vuejs.org/api/">官方 API 参考文档</a>对应起来，但文档里面没有且值得一提的是构造函数的设计，下面是我摘出的构造函数最核心的工作内容。</p>
+<p><img src="http://img3.tbcdn.cn/L1/461/1/00049a09def4aff8d80f3bb7229e3f6d395426fb" alt="Vue 实例初始化"></p>
+<p>整个实例初始化的过程中，重中之重就是把数据 (Model) 和视图 (View) 建立起关联关系。Vue.js 和诸多 MVVM 的思路是类似的，主要做了三件事：</p>
+<ol>
+<li>通过 observer 对 data 进行了监听，并且提供订阅某个数据项的变化的能力</li>
+<li>把 template 解析成一段 document fragment，然后解析其中的 directive，得到每一个 directive 所依赖的数据项及其更新方法。比如 <code>v-text=&quot;message&quot;</code> 被解析之后 (这里仅作示意，实际程序逻辑会更严谨而复杂)：<ol>
+<li>所依赖的数据项 <code>this.$data.message</code>，以及</li>
+<li>相应的视图更新方法 <code>node.textContent = this.$data.message</code></li>
+</ol>
+</li>
+<li>通过 watcher 把上述两部分结合起来，即把 directive 中的数据依赖订阅在对应数据的 observer 上，这样当数据变化的时候，就会触发 observer，进而触发相关依赖对应的视图更新方法，最后达到模板原本的关联效果。</li>
+</ol>
+<p>所以整个 vm 的核心，就是如何实现 observer, directive (parser), watcher 这三样东西</p>
+<a id="more"></a>
+<h3 id="文件结构梳理"><a href="#文件结构梳理" class="headerlink" title="文件结构梳理"></a>文件结构梳理</h3><p>Vue.js 源代码都存放在项目的 <code>src</code> 目录中，我们主要关注一下这个目录 (事实上 <code>test/unit/specs</code> 目录也值得一看，它是对应着每个源文件的测试用例)。</p>
+<p><code>src</code> 目录下有多个并列的文件夹，每个文件夹都是一部分独立而完整的程序设计。不过在我看来，这些目录之前也是有更立体的关系的：</p>
+<p><img src="http://img4.tbcdn.cn/L1/461/1/cb73a147451157e52500734c0d31665a9540adae" alt="Vue 文件结构"></p>
+<ul>
+<li>首先是 <code>api/*</code> 目录，这几乎是最“上层”的接口封装，实际的实现都埋在了其它文件夹里</li>
+<li>然后是 <code>instance/init.js</code>，如果大家希望自顶向下了解所有 Vue.js 的工作原理的话，建议从这个文件开始看起<ul>
+<li><code>instance/scope.js</code>：数据初始化，相关的子程序 (目录) 有 <code>observer/*</code>、<code>watcher.js</code>、<code>batcher.js</code>，而 <code>observer/dep.js</code> 又是数据观察和视图依赖相关联的关键</li>
+<li><code>instance/compile.js</code>：视图初始化，相关的子程序 (目录) 有 <code>compiler/*</code>、<code>directive.js</code>、<code>parsers/*</code></li>
+</ul>
+</li>
+<li>其它核心要素：<code>directives/*</code>、<code>element-directives/*</code>、<code>filters/*</code>、<code>transition/*</code></li>
+<li>当然还有 <code>util/*</code> 目录，工具方法集合，其实还有一个类似的 <code>cache.js</code></li>
+<li>最后是 <code>config.js</code> 默认配置项</li>
+</ul>
+<p>篇幅有限，如果大家有意“通读” Vue.js 的话，个人建议顺着上面的整体介绍来阅读赏析。</p>
+<p>接下来是一些自己觉得值得一提的代码细节</p>
+<h3 id="一些不容错过的代码-程序细节"><a href="#一些不容错过的代码-程序细节" class="headerlink" title="一些不容错过的代码/程序细节"></a>一些不容错过的代码/程序细节</h3><h4 id="this-eventsCount-是什么"><a href="#this-eventsCount-是什么" class="headerlink" title="this._eventsCount 是什么?"></a><code>this._eventsCount</code> 是什么?</h4><p>一开始看 <code>instance/init.js</code> 的时候，我立刻注意到一个细节，就是 <code>this._eventsCount = &#123;&#125;</code> 这句，后面还有注释</p>
+<p><img src="http://img4.tbcdn.cn/L1/461/1/ba0408eb6b96275540a3584e8d2f54fc3e6fa143" alt="eventsCount1"></p>
+<blockquote>
+<p>for $broadcast optimization</p>
+</blockquote>
+<p>非常好奇，然后带着疑问继续看了下去，直到看到 <code>api/events.js</code> 中 <code>$broadcast</code> 方法的实现，才知道这是为了避免不必要的深度遍历：在有广播事件到来时，如果当前 vm 的 <code>_eventsCount</code> 为 <code>0</code>，则不必向其子 vm 继续传播该事件。而且这个文件稍后也有 <code>_eventsCount</code> 计数的实现方式。</p>
+<p><img src="http://img2.tbcdn.cn/L1/461/1/c998cff73b20104c67f9a87d696fed2e505bfb5e" alt="eventsCount2"></p>
+<p><img src="http://img2.tbcdn.cn/L1/461/1/d536a283e6f76e5ab82d1fb77abea50d86edefd1" alt="eventsCount3"></p>
+<p>这是一种很巧妙同时也可以在很多地方运用的性能优化方法。</p>
+<h4 id="数据更新的-diff-机制"><a href="#数据更新的-diff-机制" class="headerlink" title="数据更新的 diff 机制"></a>数据更新的 diff 机制</h4><p>前阵子有很多关于视图更新效率的讨论，我猜主要是因为 virtual dom 这个概念的提出而导致的吧。这次我详细看了一下 Vue.js 的相关实现原理。</p>
+<p>实际上，视图更新效率的焦点问题主要在于大列表的更新和深层数据更新这两方面，而被热烈讨论的主要是前者 (后者是因为需求小还是没争议我就不得而知了)。所以这里着重介绍一下 <code>directives/repeat.js</code> 里对于列表更新的相关代码。</p>
+<p><img src="http://img2.tbcdn.cn/L1/461/1/688d02febd3c3b0633bb89a8c6ed0d03111651de" alt="diff1"></p>
+<p>首先 <code>diff(data, oldVms)</code> 这个函数的注释对整个比对更新机制做了个简要的阐述，大概意思是先比较新旧两个列表的 vm 的数据的状态，然后差量更新 DOM。</p>
+<p><img src="http://img1.tbcdn.cn/L1/461/1/947041e58ac0648ef21c0a76f88c4dd21c1e10ca" alt="diff2"></p>
+<p>第一步：遍历新列表里的每一项，如果该项的 vm 之前就存在，则打一个 <code>_reused</code> 的标 (这个字段我一开始看 <code>init.js</code> 的时候也是困惑的…… 看到这里才明白意思)，如果不存在对应的 vm，则创建一个新的。</p>
+<p><img src="http://img3.tbcdn.cn/L1/461/1/befe4ad131b854f48a5db76d208d066b3fc92bf9" alt="diff3"></p>
+<p>第二步：遍历旧列表里的每一项，如果 <code>_reused</code> 的标没有被打上，则说明新列表里已经没有它了，就地销毁该 vm。</p>
+<p><img src="http://img3.tbcdn.cn/L1/461/1/734be56ff87ce5f7eab1f0c2dfeccf1980bfb4fe" alt="diff4"></p>
+<p>第三步：整理新的 vm 在视图里的顺序，同时还原之前打上的 <code>_reused</code> 标。就此列表更新完成。</p>
+<p>顺带提一句 Vue.js 的元素过渡动画处理 (<code>v-transition</code>) 也设计得非常巧妙，感兴趣的自己看吧，就不展开介绍了</p>
+<h4 id="组件的-keep-alive-特性"><a href="#组件的-keep-alive-特性" class="headerlink" title="组件的 [keep-alive] 特性"></a>组件的 <code>[keep-alive]</code> 特性</h4><p><img src="http://img3.tbcdn.cn/L1/461/1/84c59f338de3b80f50df41aac16ef35fc7d96ee3" alt="keepAlive1"></p>
+<p><img src="http://img4.tbcdn.cn/L1/461/1/aab1152e83634dcd06fdf1eb2d68aed37468c643" alt="keepAlive2"></p>
+<p>Vue.js 为其组件设计了一个 <code>[keep-alive]</code> 的特性，如果这个特性存在，那么在组件被重复创建的时候，会通过缓存机制快速创建组件，以提升视图更新的性能。代码在 <code>directives/component.js</code>。</p>
+<h4 id="数据监听机制"><a href="#数据监听机制" class="headerlink" title="数据监听机制"></a>数据监听机制</h4><p>如何监听某一个对象属性的变化呢？我们很容易想到 <code>Object.defineProperty</code> 这个 API，为此属性设计一个特殊的 getter/setter，然后在 setter 里触发一个函数，就可以达到监听的效果。</p>
+<p><img src="http://img3.tbcdn.cn/L1/461/1/14830039350289177a948fc2a1c3af4f84ed07d2" alt="ob"></p>
+<p>不过数组可能会有点麻烦，Vue.js 采取的是对几乎每一个可能改变数据的方法进行 prototype 更改：</p>
+<p><img src="http://img1.tbcdn.cn/L1/461/1/82d90098f1f2f8c0d6499e950d6f42a1ed3d64b1" alt="ob_array1"></p>
+<p>但这个策略主要面临两个问题：</p>
+<ol>
+<li>无法监听数据的 <code>length</code>，导致 <code>arr.length</code> 这样的数据改变无法被监听</li>
+<li>通过角标更改数据，即类似 <code>arr[2] = 1</code> 这样的赋值操作，也无法被监听</li>
+</ol>
+<p>为此 Vue.js 在文档中明确提示不建议直接角标修改数据</p>
+<p><img src="http://img4.tbcdn.cn/L1/461/1/d26e450e3d6cf2e9dfb85be44bb4d61a058fa43a" alt="ob_array2"></p>
+<p>同时 Vue.js 提供了两个额外的“糖方法” <code>$set</code> 和 <code>$remove</code> 来弥补这方面限制带来的不便。整体上看这是个取舍有度的设计。我个人之前在设计数据绑定库的时候也采取了类似的设计 (一个半途而废的内部项目就不具体献丑了)，所以比较认同也有共鸣。</p>
+<h4 id="path-解析器的状态机设计"><a href="#path-解析器的状态机设计" class="headerlink" title="path 解析器的状态机设计"></a>path 解析器的状态机设计</h4><p>首先要说 <code>parsers</code> 文件夹里有各种“财宝”等着大家挖掘！认真看一看一定不会后悔的</p>
+<p><code>parsers/path.js</code> 主要的职责是可以把一个 JSON 数据里的某一个“路径”下的数据取出来，比如：</p>
+<pre><code>var path = &apos;a.b[1].v&apos;
+var obj = &#123;
+  a: &#123;
+    b: [
+      &#123;v: 1&#125;,
+      &#123;v: 2&#125;,
+      &#123;v: 3&#125;
+    ]
+  &#125;
+&#125;
+parse(obj, path) // 2
+</code></pre><p>所以对 <code>path</code> 字符串的解析成为了它的关键。Vue.js 是通过状态机管理来实现对路径的解析的：</p>
+<p><img src="http://img2.tbcdn.cn/L1/461/1/192c0ee1f09e39da97f478ac487fff1a7f41ee30" alt="state1"></p>
+<p>咋一看很头大，不过如果再稍微梳理一下：</p>
+<p><img src="http://img2.tbcdn.cn/L1/461/1/3acfc1236df2d6cd068dd8540e0b0baeb4b8916b" alt="state graph"></p>
+<p>也许看得更清楚一点了，当然也能发现其中有一点小问题，就是源代码中 <code>inIdent</code> 这个状态是具有二义性的，它对应到了图中的三个地方，即 <code>in ident</code> 和两个 <code>in (quoted) ident</code>。</p>
+<p>实际上，我在看代码的过程中<a target="_blank" rel="noopener" href="https://github.com/yyx990803/vue/issues/1063">顺手提交了这个 bug</a>，作者眼明手快，当天就进行了修复，现在最新的代码里已经不是这个样子了：</p>
+<p><img src="http://img2.tbcdn.cn/L1/461/1/c3d6fbfe3fd1fec5d8bbb582b8785244107c1ce6" alt="state2"></p>
+<p>而且状态机标识由字符串换成了数字常量，解析更准确的同时执行效率也会更高。</p>
+<h3 id="一点自己的思考"><a href="#一点自己的思考" class="headerlink" title="一点自己的思考"></a>一点自己的思考</h3><p>首先是视图的解析过程，Vue.js 的策略是把 element 或 template string 先统一转换成 document fragment，然后再分解和解析其中的子组件和 directives。我觉得这里有一定的性能优化空间，毕竟 DOM 操作相比之余纯 JavaScript 运算还是会慢一些。</p>
+<p>然后是基于移动端的思考，Vue.js 虽确实已经非常非常小巧了 (min+gzip 之后约 22 kb)，但它是否可以更小，继续抽象出常用的核心功能，同时更快速，也是个值得思考的问题。</p>
+<p>第三我非常喜欢通过 Vue.js 进行模块化开发的模式，Vue 是否也可以借助类似 web components + virtual dom 的形态把这样的开发模式带到更多的领域，也是件很有意义的事情。</p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>Vue.js 里的代码细节还不仅于此，比如：</p>
+<ul>
+<li><code>cache.js</code> 里的缓存机制设计和场景运用 (如在 <code>parsers/path.js</code> 中)</li>
+<li><code>parsers/template.js</code> 里的 <code>cloneNode</code> 方法重写和对 HTML 自动补全机制的兼容</li>
+<li>在开发和生产环境分别用注释结点和不可见文本结点作为视图的“占位符”等等</li>
+</ul>
+<p>自己也在阅读代码，了解 Vue.js 的同时学到了很多东西，同时我觉得代码实现只是 Vue.js 优秀的要素之一，整体的程序设计、API 设计、细节的取舍、项目的工程考量都非常棒！</p>
+<p>总之，分享一些自己的收获和代码的细节，希望可以帮助大家开阔思路，提供灵感。</p>
+
+</div>
+
+<p align="right">
+  <small>
+    <a href="https://github.com/Jinjiang/jinjiang.github.io/edit/dev/source/_posts/vue-code-review.md" target="_blank">
+      向本文提出修改或勘误建议
+    </a>
+  </small>
+</p>
+
+
+
+<div id="comments">
+  <h2>早期评论</h2>
+  <ul>
+  
+    <li id="comment-104559" style="margin-left: 0em;">
+      <p>
+        <strong>
+        <a href="http://fuxiaohei.me" target="_blank" title="傅小黑">傅小黑</a>
+        
+        </strong>
+        <small>2015/07/26 11:48:17</small></p>
+      赞
+    </li>
+  
+    <li id="comment-104649" style="margin-left: 0em;">
+      <p>
+        <strong>
+        chaoren1641
+        
+        </strong>
+        <small>2015/07/28 11:32:03</small></p>
+      32个赞
+    </li>
+  
+    <li id="comment-118306" style="margin-left: 2em;">
+      <p>
+        <strong>
+        <a href="http://regsehs.com" target="_blank" title="的">的</a>
+        
+        </strong>
+        <small>2017/09/12 09:50:53</small></p>
+      发
+    </li>
+  
+    <li id="comment-105247" style="margin-left: 0em;">
+      <p>
+        <strong>
+        kid
+        
+        </strong>
+        <small>2015/08/07 11:05:05</small></p>
+      码下以后仔细看
+    </li>
+  
+    <li id="comment-108740" style="margin-left: 0em;">
+      <p>
+        <strong>
+        comver
+        
+        </strong>
+        <small>2015/09/27 03:37:52</small></p>
+      学习了！
+    </li>
+  
+    <li id="comment-111082" style="margin-left: 0em;">
+      <p>
+        <strong>
+        cxczy
+        
+        </strong>
+        <small>2015/11/16 05:27:36</small></p>
+      总结的很好，Vue如此小巧却又这么多优点
+    </li>
+  
+    <li id="comment-111936" style="margin-left: 0em;">
+      <p>
+        <strong>
+        <a href="http://simplyy.space" target="_blank" title="SimplyY">SimplyY</a>
+        
+        </strong>
+        <small>2016/02/22 09:13:55</small></p>
+      文件结构梳理 标题下有错别字<br/>
+<br/>
+这些目录之前也是有更立体的关系的：<br/>
+<br/>
+之前应该是之间
+    </li>
+  
+    <li id="comment-112302" style="margin-left: 0em;">
+      <p>
+        <strong>
+        <a href="http://jiongks.name/blog/vue-code-review/" target="_blank" title="我">我</a>
+        
+        </strong>
+        <small>2016/04/28 11:22:42</small></p>
+      恩，这篇文章写的挺好，去年收藏的，今天才看也是醉醉的。
+    </li>
+  
+    <li id="comment-112428" style="margin-left: 0em;">
+      <p>
+        <strong>
+        <a href="http://www.shellsec.com/news/17522.html" target="_blank" title="Vue ES6 Jade Scss Webpack Gulp | 神刀安全网">Vue ES6 Jade Scss Webpack Gulp | 神刀安全网</a>
+        
+        </strong>
+        <small>2016/05/09 02:30:48</small></p>
+      [...]Vue篇  Vue.js：轻量高效的前端组件化方案 来自Vue作者 尤雨溪  Vue官方教程  Vue.js 源码学习笔记 来自 囧克斯  vue-router文档  Vue 组件化开发实践  mvvm学习&amp;vue实践小结[...]
+    </li>
+  
+    <li id="comment-112442" style="margin-left: 0em;">
+      <p>
+        <strong>
+        张三
+        
+        </strong>
+        <small>2016/05/10 02:39:47</small></p>
+      看到代码里面一会儿 $，一会儿 _，我就再也没有兴趣学这个框架了
+    </li>
+  
+    <li id="comment-112520" style="margin-left: 0em;">
+      <p>
+        <strong>
+        李思葱
+        
+        </strong>
+        <small>2016/05/18 05:55:47</small></p>
+      请问博主这么漂亮的图是如何画出来的？
+    </li>
+  
+    <li id="comment-112820" style="margin-left: 2em;">
+      <p>
+        <strong>
+        <a href="http://www.coderyin.com/" target="_blank" title="coderYin">coderYin</a>
+        
+        </strong>
+        <small>2016/07/17 11:24:22</small></p>
+      思维导图
+    </li>
+  
+    <li id="comment-121418" style="margin-left: 4em;">
+      <p>
+        <strong>
+        <a href="https://colliot.me" target="_blank" title="Colliot">Colliot</a>
+        
+        </strong>
+        <small>2018/02/24 01:10:04</small></p>
+      那对源码的批注图呢？
+    </li>
+  
+    <li id="comment-112850" style="margin-left: 0em;">
+      <p>
+        <strong>
+        <a href="http://www.luobotang.cn/" target="_blank" title="luobotang">luobotang</a>
+        
+        </strong>
+        <small>2016/07/20 05:23:37</small></p>
+      文章和Vue的作者都很棒！
+    </li>
+  
+    <li id="comment-112934" style="margin-left: 0em;">
+      <p>
+        <strong>
+        <a href="http://lxchuan12.github.io" target="_blank" title="轩辕Rowboat">轩辕Rowboat</a>
+        
+        </strong>
+        <small>2016/08/22 12:43:25</small></p>
+      感谢博主，暂时还没到阅读源码的阶段。
+    </li>
+  
+    <li id="comment-112954" style="margin-left: 0em;">
+      <p>
+        <strong>
+        <a href="http://www.jinpeng.site/2016/08/29/vue-js%e5%85%a5%e9%97%a8%e5%8f%82%e8%80%83%e8%b5%84%e6%96%99/" target="_blank" title="Vue.js入门参考资料 R11; 鹏仔">Vue.js入门参考资料 R11; 鹏仔</a>
+        
+        </strong>
+        <small>2016/08/29 06:12:26</small></p>
+      [...]Vue.js 源码学习笔记[...]
+    </li>
+  
+    <li id="comment-112994" style="margin-left: 0em;">
+      <p>
+        <strong>
+        刘成
+        
+        </strong>
+        <small>2016/09/05 05:24:33</small></p>
+      阿姨的网站字好大，看得眼睛发胀。。。
+    </li>
+  
+    <li id="comment-113353" style="margin-left: 0em;">
+      <p>
+        <strong>
+        <a href="http://xn--vkuk.org" target="_blank" title="睡觉">睡觉</a>
+        
+        </strong>
+        <small>2016/10/04 08:57:21</small></p>
+      底部after伪元素看着很烦。。要么黑色，要么删掉行么。。。
+    </li>
+  
+    <li id="comment-113354" style="margin-left: 2em;">
+      <p>
+        <strong>
+        <a href="http://xn--vkuk.org" target="_blank" title="睡觉">睡觉</a>
+        
+        </strong>
+        <small>2016/10/04 11:03:22</small></p>
+      窗口没有滚动到底部的时候，那个fixed还是稍微影响阅读的。。<br/>
+不过，直接到底部看着确实不错
+    </li>
+  
+    <li id="comment-114004" style="margin-left: 0em;">
+      <p>
+        <strong>
+        <a href="http://getcrx.cn" target="_blank" title="dodo">dodo</a>
+        
+        </strong>
+        <small>2016/11/09 01:58:45</small></p>
+      感谢分享~<br/>
+请问，这篇博文是基于哪个版本的产出？
+    </li>
+  
+    <li id="comment-114204" style="margin-left: 0em;">
+      <p>
+        <strong>
+        金山
+        
+        </strong>
+        <small>2016/11/28 03:56:17</small></p>
+      虽然对于我这种的初级程序来说。貌似很吊。点赞66666666666666666666666666666666666666666666666666666666666666666
+    </li>
+  
+    <li id="comment-114214" style="margin-left: 0em;">
+      <p>
+        <strong>
+        yuguangde
+        
+        </strong>
+        <small>2016/11/29 09:56:28</small></p>
+      这是vue的哪个版本啊，感觉目录结构和我看的不一样
+    </li>
+  
+    <li id="comment-118004" style="margin-left: 2em;">
+      <p>
+        <strong>
+        Nine
+        
+        </strong>
+        <small>2017/08/24 06:14:05</small></p>
+      vue官方github仓库切换branch就能看到了！
+    </li>
+  
+    <li id="comment-114343" style="margin-left: 0em;">
+      <p>
+        <strong>
+        <a href="http://null.com" target="_blank" title="茄果">茄果</a>
+        
+        </strong>
+        <small>2016/12/12 11:09:39</small></p>
+      文字好大，我猜现在四爷有点老花了？
+    </li>
+  
+    <li id="comment-115111" style="margin-left: 0em;">
+      <p>
+        <strong>
+        nobrokenboy
+        
+        </strong>
+        <small>2017/02/20 04:05:35</small></p>
+      请问博主分析的是vue1.0的还是vue2.0的呢，博主写的好深奥，菜鸟表示看不懂，
+    </li>
+  
+    <li id="comment-116459" style="margin-left: 0em;">
+      <p>
+        <strong>
+        <a href="http://www.xuxihai.top" target="_blank" title="x373241884y">x373241884y</a>
+        
+        </strong>
+        <small>2017/06/02 12:33:06</small></p>
+      讲的不错！
+    </li>
+  
+    <li id="comment-118003" style="margin-left: 0em;">
+      <p>
+        <strong>
+        Nine
+        
+        </strong>
+        <small>2017/08/24 06:07:53</small></p>
+      厉害！
+    </li>
+  
+    <li id="comment-118505" style="margin-left: 2em;">
+      <p>
+        <strong>
+        frank
+        
+        </strong>
+        <small>2017/09/27 07:48:20</small></p>
+      厉害了
+    </li>
+  
+    <li id="comment-119487" style="margin-left: 0em;">
+      <p>
+        <strong>
+        <a href="http://www.worktle.com/articles/2467/" target="_blank" title="VueJS学习资料大全 | Worktle.com">VueJS学习资料大全 | Worktle.com</a>
+        
+        </strong>
+        <small>2017/11/24 11:28:56</small></p>
+      [...]Vue.js 源码学习笔记[...]
+    </li>
+  
+    <li id="comment-119896" style="margin-left: 0em;">
+      <p>
+        <strong>
+        <a href="http://www.it448.com" target="_blank" title="vuejs">vuejs</a>
+        
+        </strong>
+        <small>2017/12/05 10:59:06</small></p>
+      Vue.js视频教程www.it448.com/forum.php?mod=forumdisplay&fid=43
+    </li>
+  
+    <li id="comment-120493" style="margin-left: 0em;">
+      <p>
+        <strong>
+        <a href="http://xiaoyueyue.org/wordpress/2018/01/11/%e4%bc%98%e8%b4%a8%e5%89%8d%e7%ab%af%e5%8d%9a%e5%ae%a2/" target="_blank" title="优质前端博客 R11; 小越越的blog">优质前端博客 R11; 小越越的blog</a>
+        
+        </strong>
+        <small>2018/01/11 10:11:57</small></p>
+      [...]《Vue.js 源码学习笔记》[...]
+    </li>
+  
+    <li id="comment-120797" style="margin-left: 0em;">
+      <p>
+        <strong>
+        zuank
+        
+        </strong>
+        <small>2018/02/02 11:54:30</small></p>
+      便利 -> 遍历
+    </li>
+  
+    <li id="comment-120835" style="margin-left: 2em;">
+      <p>
+        <strong>
+        <a href="http://jiongks.name/" target="_blank" title="囧克斯">囧克斯</a>
+        
+        </strong>
+        <small>2018/02/06 01:18:04</small></p>
+      <a href="#comment-120797">@zuank</a><br/>
+<br/>
+已更正，感谢
+    </li>
+  
+    <li id="comment-122417" style="margin-left: 0em;">
+      <p>
+        <strong>
+        阅夏
+        
+        </strong>
+        <small>2018/03/29 11:33:16</small></p>
+      请问，这篇文章分析的是v0.11版本吗？
+    </li>
+  
+    <li id="comment-124311" style="margin-left: 0em;">
+      <p>
+        <strong>
+        <a href="https://photo.itmeseji.com/archives/2241" target="_blank" title="Vue源码解读相关（读完后会做一些总结） R11; x">Vue源码解读相关（读完后会做一些总结） R11; x</a>
+        
+        </strong>
+        <small>2018/06/06 05:39:17</small></p>
+      [...]1.Vue.js 源码学习笔记&nbsp;http://jiongks.name/blog/vue-code-review/[...]
+    </li>
+  
+    <li id="comment-124438" style="margin-left: 0em;">
+      <p>
+        <strong>
+        <a href="https://com-it.tech/archives/67017" target="_blank" title="Vue原始碼解讀相關（讀完後會做一些總結） - 程序員的後花園">Vue原始碼解讀相關（讀完後會做一些總結） - 程序員的後花園</a>
+        
+        </strong>
+        <small>2018/06/08 09:16:49</small></p>
+      [...]1.Vue.js 原始碼學習筆記&nbsp;http://jiongks.name/blog/vue-code-review/[...]
+    </li>
+  
+    <li id="comment-124621" style="margin-left: 0em;">
+      <p>
+        <strong>
+        <a href="https://www.qqwenda.com/wenda/22399.html" target="_blank" title="ja&lt;x&gt;vasc&lt;x&gt;ript 进阶之深入理解数据双向绑定 - 奇奇问答">ja&lt;x&gt;vasc&lt;x&gt;ript 进阶之深入理解数据双向绑定 - 奇奇问答</a>
+        
+        </strong>
+        <small>2018/06/12 09:15:29</small></p>
+      [...]Vue.js 源码学习笔记[...]
+    </li>
+  
+    <li id="comment-124641" style="margin-left: 0em;">
+      <p>
+        <strong>
+        <a href="https://www.qqwenda.com/wenda/25775.html" target="_blank" title="Vue.js资源分享 - 奇奇问答">Vue.js资源分享 - 奇奇问答</a>
+        
+        </strong>
+        <small>2018/06/13 02:32:56</small></p>
+      [...]Vue.js 源码学习笔记[...]
+    </li>
+  
+    <li id="comment-124917" style="margin-left: 0em;">
+      <p>
+        <strong>
+        <a href="https://codertw.com/%e5%89%8d%e7%ab%af%e9%96%8b%e7%99%bc/189088/" target="_blank" title="VueJS原始碼學習——專案結構&amp;amp;目錄 | 程式前沿">VueJS原始碼學習——專案結構&amp;amp;目錄 | 程式前沿</a>
+        
+        </strong>
+        <small>2018/06/23 06:33:41</small></p>
+      [...]囧克斯的一篇原始碼解析文章[...]
+    </li>
+  
+    <li id="comment-126384" style="margin-left: 0em;">
+      <p>
+        <strong>
+        <a href="https://www.supermap.com/cn/" target="_blank" title="薛恒飞">薛恒飞</a>
+        
+        </strong>
+        <small>2018/07/24 10:07:24</small></p>
+      明人不说暗话 我真的看不懂，虽然我已经看了好几天vue了
+    </li>
+  
+  </ul>
+</div>
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+
+<div id="gitalk-container"></div>
+
+<script>
+  const gitalk = new Gitalk({
+    clientID: 'c99e23053fc1bba6a58c',
+    clientSecret: '64efe1cd1438e77ae2bf8eba92b51c90d0cc2b9f',
+    repo: 'jinjiang.github.io',
+    owner: 'jinjiang',
+    admin: ['jinjiang'],
+    id: location.pathname,      // Ensure uniqueness and length less than 50
+    distractionFreeMode: false  // Facebook-like distraction free mode
+  })
+
+  gitalk.render('gitalk-container')
+</script>
+</div>
+
+    <div id="footer">
+      <a href="/">囧克斯</a>
+      
+      |
+      <a href="/atom.xml" title="rss_feed">RSS</a>
+      
+      |
+      我是百度统计
+      <script src="https://hm.baidu.com/h.js?a0a2372d4b7621d0bfe71f33c58a4bd8"></script>
+      |
+      我会翻脸 <a href="#" onclick="document.body.classList.toggle('dark-mode'), event.preventDefault()" style="font-size: 1.25em;">🌚🌝</a>
+    </div>
+  </div>
+
+  
+<script src="/js/script.js"></script>
+
+</body>
+
+</html>

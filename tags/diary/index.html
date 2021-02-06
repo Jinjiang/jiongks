@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <!-- proud for contributing Vue.js -->
+  <meta charset="utf-8">
+  <meta name="format-detection" content="telephone=no" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-touch-fullscreen" content="yes" />
+
+  
+  <title>
+    
+    tag: diary -
+    
+    囧克斯
+  </title>
+
+  
+<link rel="stylesheet" href="/css/pure.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+
+  
+  <link rel="alternate" href="/atom.xml" title="囧克斯" type="application/atom+xml">
+  
+  
+  <link rel="icon" href="/favicon.ico">
+  
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+<body>
+  <script>(() => { if ((new Date().getHours() + 6) % 24 < 12) document.body.classList.add('dark-mode') })()</script>
+
+  <div class="dark-mode-helper"></div>
+
+  <div id="wrapper">
+
+    <div id="header">
+      <h1>
+        <a href="/" title="囧克斯">
+          囧克斯
+        </a>
+      </h1>
+      <p class="description">
+        这里是勾三股四的家
+      </p>
+    </div>
+
+    <div id="nav" class="pure-menu pure-menu-open pure-menu-horizontal">
+      <ul>
+        
+        <li>
+          <a href="/all-demos/">
+            线上
+          </a>
+        </li>
+        
+        <li>
+          <a href="/all-slides/">
+            线下
+          </a>
+        </li>
+        
+        <li>
+          <a href="/about/">
+            关于
+          </a>
+        </li>
+        
+        <li><a href="/archives">归档</li>
+      </ul>
+    </div>
+
+    <div id="main">
+<div class="content">
+  <h2>
+    <a href="/blog/website-building-diary-20120426/">
+      网站装修笔记20120426
+    </a>
+  </h2>
+  
+  <p>按照严计划，给我的网站加上了投票功能。他已经出现在了网站的侧边栏中。当然在<a href="/blog/website-building-diary-20120406/">某些media queries</a>条件下，这些内容不在侧边，而在网页的最下面。</p>
+<p>这从没有花太多时间在编码上。我直接引入了三方的问卷调查工具：<a target="_blank" rel="noopener" href="http://wufoo.com/">Wufoo</a>。等于嵌入了一个iframe。我会定期更换这里的投票内容，有些投票可能是为了我更了解大家，更好的优化我的网站为大家服务的，我会根据大家的反馈默默做出改变；而方便公开的统计数据和分析结果，我也会公布在这里跟大家分享。</p>
+<p>第一期的投票内容比较“肤浅” 囧</p>
+<p><img src="/uploads/2012/04/4080396881.png" alt="您觉得现在囧克斯的皮肤好看吗？"></p>
+<p>在添加投票功能的时候，我注意到Typecho的一个不足，就是在创建新的侧边栏面板的时候，不免需要修改主题模板的sidebar.php文件，因为Typecho本身并没有给侧边栏预留插件接口，所以不可以生成自定义的侧边栏面板。我觉得改进的方式可以是这样的：</p>
+<ol>
+<li>创建新的配置项，注明要显示的侧边栏面板和排序；</li>
+<li>同时封装面板的html结构，不允许自定义面板结构，只允许自定义内容；</li>
+<li>然后在Plugin一边加入自定义面板的接口。</li>
+</ol>
+<p>这样主题模板和插件就进一步解耦，开发者就可以在不改动主题模板的情况下调整侧边栏的内容了。</p>
+<p>一点个人心得，不知Typecho是否愿意接纳这个意见。</p>
+<p>以上</p>
+
+  
+</div>
+
+<div class="content">
+  <h2>
+    <a href="/blog/website-building-diary-20120414/">
+      网站装修笔记20120414
+    </a>
+  </h2>
+  
+  <p>这周主要把我的几个HTML5幻灯片做了一下整理，在<a href="/all-slides/">这里</a>。从这次播放器的实现上看，幻灯片数据的结构约定有所改变，同时适配了更多的浏览器和设备。</p>
+<p><img src="/uploads/2012/04/694138118.png" alt=""></p>
+<p>在这个过程中，我也尝试了更多CSS3的变换效果，让幻灯演示多一点精彩，所以最终我为每个幻灯演示分别使用了不同的幻灯片切换动画。有3d的、有2d的，也有WP7中的Metro风格动画等等。</p>
+<p>另外说到幻灯演示，我正在发起一个这方面的开源项目(估计经常关注我的朋友都已经听腻了)，本月之内会启动。</p>
+<p>接下来我想给网站做一个投票系统，放在侧边栏。</p>
+
+  
+</div>
+
+<div class="content">
+  <h2>
+    <a href="/blog/website-building-diary-20120406/">
+      网站装修笔记20120406
+    </a>
+  </h2>
+  
+  <p>今天为我的新网站做了两件事情：</p>
+<ul>
+<li>第一件事是为我的主题皮肤加入了侧边栏显示，并使用了css3 media queries技术进行了响应式设计，并借鉴了一些metro ui的思路</li>
+<li>第二件事是加入了友情链接插件，可以在侧边栏显示一些自定义的链接，方便将来和博友们交换链接</li>
+</ul>
+<h3 id="友情链接"><a href="#友情链接" class="headerlink" title="友情链接"></a>友情链接</h3><p>先说友情链接插件的事情吧，我在Typecho的插件站找到了一款友情链接的插件，名字就叫<a target="_blank" rel="noopener" href="http://typecho.us/plugins/links-for-imhan.html">Links</a>，非常方便实用。我现在随便放了3个链接，看看样子。大家希望跟我交换链接的，可暂时留言至此，回头我会另外做个交换链接的页面。</p>
+<p><img src="/uploads/2012/04/2077996433.png" alt="友情链接示意图"></p>
+<h3 id="响应式侧边栏"><a href="#响应式侧边栏" class="headerlink" title="响应式侧边栏"></a>响应式侧边栏</h3><p>然后是侧边栏，我把最近文章和最近评论两个侧边栏的widget加入了名为<code>large</code>的css class。这类widget会在条件允许的情况下占用更大的空间。一般情况下宽度是普通widget的两倍。在一些特殊的界面宽度下，widget的宽度是一样的，大家没有什么分别。</p>
+<p>对于css3 media queries的利用，我这里按窗口宽度分了5档1400px+/1050px+/650px+/400px+/400px-，进行响应式设计。每一档的内容宽度、侧边栏宽度和布局都不太一样。以适应不同的终端。举其中一个例子(1050px~1400px之间)：</p>
+<pre><code>@media all and (min-width: 1050px) and (max-width: 1400px) &#123;
+    #wrapper &#123;
+        position: relative;
+        padding-right: 280px;
+    &#125;
+    #sidebar &#123;
+        position: absolute;
+        width: 260px;
+        top: 160px;
+        right: 0;
+    &#125;
+    #sidebar .widget,
+    #sidebar .large &#123;
+        width: 98%;
+    &#125;
+&#125;
+</code></pre><p>最终效果如图：</p>
+<p><img src="/uploads/2012/04/394641605.jpg" alt="响应式设计预览"></p>
+<p>这款皮肤我会稍后更新共享在这里。</p>
+<p>另外我最近抽空研究过了SAE Storage，接下来的事情是做一些有趣的侧边栏小控件出来，比如投票、相册、之类的。</p>
+<p>先记下这么多</p>
+
+  
+</div>
+
+
+
+</div>
+
+    <div id="footer">
+      <a href="/">囧克斯</a>
+      
+      |
+      <a href="/atom.xml" title="rss_feed">RSS</a>
+      
+      |
+      我是百度统计
+      <script src="https://hm.baidu.com/h.js?a0a2372d4b7621d0bfe71f33c58a4bd8"></script>
+      |
+      我会翻脸 <a href="#" onclick="document.body.classList.toggle('dark-mode'), event.preventDefault()" style="font-size: 1.25em;">🌚🌝</a>
+    </div>
+  </div>
+
+  
+<script src="/js/script.js"></script>
+
+</body>
+
+</html>

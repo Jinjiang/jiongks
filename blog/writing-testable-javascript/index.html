@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <!-- proud for contributing Vue.js -->
+  <meta charset="utf-8">
+  <meta name="format-detection" content="telephone=no" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-touch-fullscreen" content="yes" />
+
+  
+  <title>
+    
+    [译]撰写可测试的 JavaScript -
+    
+    囧克斯
+  </title>
+
+  
+<link rel="stylesheet" href="/css/pure.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+
+  
+  <link rel="alternate" href="/atom.xml" title="囧克斯" type="application/atom+xml">
+  
+  
+  <link rel="icon" href="/favicon.ico">
+  
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+<body>
+  <script>(() => { if ((new Date().getHours() + 6) % 24 < 12) document.body.classList.add('dark-mode') })()</script>
+
+  <div class="dark-mode-helper"></div>
+
+  <div id="wrapper">
+
+    <div id="header">
+      <h1>
+        <a href="/" title="囧克斯">
+          囧克斯
+        </a>
+      </h1>
+      <p class="description">
+        这里是勾三股四的家
+      </p>
+    </div>
+
+    <div id="nav" class="pure-menu pure-menu-open pure-menu-horizontal">
+      <ul>
+        
+        <li>
+          <a href="/all-demos/">
+            线上
+          </a>
+        </li>
+        
+        <li>
+          <a href="/all-slides/">
+            线下
+          </a>
+        </li>
+        
+        <li>
+          <a href="/about/">
+            关于
+          </a>
+        </li>
+        
+        <li><a href="/archives">归档</li>
+      </ul>
+    </div>
+
+    <div id="main"><div class="content">
+  <h2>
+    [译]撰写可测试的 JavaScript
+  </h2>
+  <p><mark>译自：<a target="_blank" rel="noopener" href="http://alistapart.com/article/writing-testable-javascript">Writing Testable JavaScript - A List Apart</a></mark></p>
+<p>这篇文章算是 A List Apart 系列文章中，包括滑动门在内，令我印象最深刻的文章之一。最近有时间翻译了一下，分享给更多人，希望对大家有所帮助！</p>
+<hr>
+<p><strong>我们已经面对到了这一窘境：一开始我们写的 JavaScript 只有区区几行代码，但是它的代码量一直在增长，我们不断的加参数、加条件。最后，粗 bug 了…… 我们才不得不收拾这个烂摊子。</strong></p>
+<p>如上所述，今天的客户端代码确实承载了更多的责任，浏览器里的整个应用都越变越复杂。我们发现两个明显的趋势：1、我们没法通过单纯的鼠标定位和点击来检验代码是否正常工作，自动化的测试才会真正让我们放心；2、我们也许应该在撰写代码的时候就考虑到，让它变得可测试。</p>
+<p>神马？我们需要改变自己的编码方式？是的。因为即使我们意识到自动化测试的好，大部分人可能只是写写集成测试(integration tests)罢了。集成测试的侧重点是让整个系统的每一部分和谐共存，但是这并没有告诉我们每个独立的<em>功能单元</em>运转起来是否都和我们预期的一样。</p>
+<p>这就是为什么我们要引入单元测试。我们已经准备好经历一段痛苦的<em>撰写单元测试</em>的过程了，但最终我们能够<em>撰写可测试的 JavaScript</em>。</p>
+<a id="more"></a>
+<h3 id="单元与集成：有什么不同？"><a href="#单元与集成：有什么不同？" class="headerlink" title="单元与集成：有什么不同？"></a>单元与集成：有什么不同？</h3><p>撰写集成测试通常是相当直接的：我们单纯的撰写代码，描述用户如何和这个应用进行交互、会得到怎样的结果就好。<a target="_blank" rel="noopener" href="http://docs.seleniumhq.org/">Selenium</a> 是这类浏览器自动化工具中的佼佼者。而 <a target="_blank" rel="noopener" href="https://github.com/jnicklas/capybara">Capybara</a> 可以便于 Ruby 和 Selenium 取得联系。在其它语言中，这类工具也举不胜举。</p>
+<p>下面就是搜索应用的一部分集成测试：</p>
+<pre><code>def test_search
+    fill_in(&apos;q&apos;, :with =&gt; &apos;cat&apos;)
+    find(&apos;.btn&apos;).click
+    assert( find(&apos;#results li&apos;).has_content?(&apos;cat&apos;), &apos;Search results are shown&apos; )
+    assert( page.has_no_selector?(&apos;#results li.no-results&apos;), &apos;No results is not shown&apos; )
+end
+</code></pre><p>集成测试对用户的交互行为感兴趣，而单元测试往往仅专注于一小段代码：</p>
+<blockquote>
+<p>当我伴随特定的输入调用一个函数的时候，我是否收到了我预期中的结果？</p>
+</blockquote>
+<p>我们按照传统思路撰写的程序是很难进行单元测试的，同时也很难维护、调试和扩展。但是如果我们在撰写代码的时候就考虑到我将来要做单元测试，那么这样的思路不仅会让我们发现测试代码写起来很直接，也会让我们真正写出更优质的代码。</p>
+<p>我们通过一个简单的搜索应用的例子来做个示范：</p>
+<p><img src="http://alistapart.com/d/375/app.png" alt=""></p>
+<p>当用户搜索时，该应用会向服务器发送一个 XHR (Ajax 请求) 取得相应的搜索结果。并当服务器以 JSON 格式返回数据之后，通过前端模板把结果显示在页面中。用户在搜索结果中点“赞”，这个人的名字就会出现在右侧的点“赞”列表里。</p>
+<p>一个“传统”的 JavaScript 实现大概是这个样子的：</p>
+<pre><code>// 模板缓存，缓存的内容均为 jqXHR 对象
+var tmplCache = &#123;&#125;;
+
+/**
+ * 载入模板
+ * 从 &apos;/templates/&#123;name&#125;&apos; 载入模板，存入 tmplCache
+ * @param  &#123;string&#125; name 模板名称
+ * @return &#123;object&#125;      模板请求的 jqXHR 对象
+ */
+function loadTemplate (name) &#123;
+  if (!tmplCache[name]) &#123;
+    tmplCache[name] = $.get(&apos;/templates/&apos; + name);
+  &#125;
+  return tmplCache[name];
+&#125;
+
+/**
+ * 页面主要逻辑
+ * 1. 支持搜索行为并展示结果
+ * 2. 支持点“赞”，被赞过的人会出现在点“赞”列表里
+ */
+$(function () &#123;
+
+  var resultsList = $(&apos;#results&apos;);
+  var liked = $(&apos;#liked&apos;);
+  var pending = false; // 用来标识之前的搜索是否尚未结束
+
+  // 用户搜索行为，表单提交事件
+  $(&apos;#searchForm&apos;).on(&apos;submit&apos;, function (e) &#123;
+    // 屏蔽默认表单事件
+    e.preventDefault();
+
+    // 如果之前的搜索尚未结束，则不开始新的搜索
+    if (pending) &#123; return; &#125;
+
+    // 得到要搜索的关键字
+    var form = $(this);
+    var query = $.trim( form.find(&apos;input[name=&quot;q&quot;]&apos;).val() );
+
+    // 如果搜索关键字为空则不进行搜索
+    if (!query) &#123; return; &#125;
+
+    // 开始新的搜索
+    pending = true;
+
+    // 发送 XHR
+    $.ajax(&apos;/data/search.json&apos;, &#123;
+      data : &#123; q: query &#125;,
+      dataType : &apos;json&apos;,
+      success : function (data) &#123;
+        // 得到 people-detailed 模板
+        loadTemplate(&apos;people-detailed.tmpl&apos;).then(function (t) &#123;
+          var tmpl = _.template(t);
+
+          // 通过模板渲染搜索结果
+          resultsList.html( tmpl(&#123; people : data.results &#125;) );
+
+          // 结束本次搜索
+          pending = false;
+        &#125;);
+      &#125;
+    &#125;);
+
+    // 在得到服务器响应之前，清空搜索结果，并出现等待提示
+    $(&apos;&lt;li&gt;&apos;, &#123;
+      &apos;class&apos; : &apos;pending&apos;,
+      html : &apos;Searching &amp;hellip;&apos;
+    &#125;).appendTo( resultsList.empty() );
+  &#125;);
+
+  // 绑定点“赞”的行为，鼠标点击事件
+  resultsList.on(&apos;click&apos;, &apos;.like&apos;, function (e) &#123;
+    // 屏蔽默认点击事件
+    e.preventDefault();
+
+    // 找到当前人的名字
+    var name = $(this).closest(&apos;li&apos;).find(&apos;h2&apos;).text();
+
+    // 清除点“赞”列表的占位元素
+    liked.find(&apos;.no-results&apos;).remove();
+
+    // 在点“赞”列表加入新的项目
+    $(&apos;&lt;li&gt;&apos;, &#123; text: name &#125;).appendTo(liked);
+  &#125;);
+
+&#125;);
+</code></pre><p>我的朋友 Adam Sontag 称之为<em>“自己给自己挖坑”</em>的代码：展现、数据、用户交互、应用状态全部分散在了每一行代码里。这种代码是很容易进行集成测试的，但几乎不可能针对<em>功能单元</em>进行单独的测试。</p>
+<p>单元测试为什么这么难？有四大罪魁祸首：</p>
+<ul>
+<li>没有清晰的结构。几乎所有的工作都是在 <code>$(document).ready()</code> 回调里进行的，而这一切在一个匿名函数里，它在测试中无法暴露出任何接口。</li>
+<li>函数太复杂。如果一个函数超过了 10 行，比如提交表单的那个函数，估计大家都觉得它太忙了，一口气做了很多事。</li>
+<li>隐藏状态还是共享状态。比如，因为 <code>pending</code> 在一个闭包里，所以我们没有办法测试在每个步骤中这个状态是否正确。</li>
+<li>强耦合。比如这里 <code>$.ajax</code> 成功的回调函数不应该依赖 DOM 操作。</li>
+</ul>
+<h3 id="组织我们的代码"><a href="#组织我们的代码" class="headerlink" title="组织我们的代码"></a>组织我们的代码</h3><p>首当其冲的是把我们代码的逻辑缕一缕，根据职责的不同把整段代码分为几个方面：</p>
+<ul>
+<li>展现和交互</li>
+<li>数据管理和保存</li>
+<li>应用的状态</li>
+<li>把上述代码建立并串连起来</li>
+</ul>
+<p>在之前的“传统”实现里，这四类代码是混在一起的，前一行我们还在处理界面展现，后两行就在和服务器通信了。</p>
+<p><img src="http://alistapart.com/d/375/code-lines.png" alt=""></p>
+<p>我们绝对可以写出集成测试的代码，但我们应该很难写出单元测试了。在功能测试里，我们可以做出诸如“当用户搜索东西的时候，他会看到相应的搜索结果”的断言，但是无法再具体下去了。如果里面出了什么问题，我们还是得追踪进去，找到确切的出错位置。这样的话功能测试其实也没帮上什么忙。</p>
+<p>如果我们反思自己的代码，那不妨从单元测试写起，通过单元测试这个角度，更好的观察，是哪里出了问题。这进而会帮助我们改进代码，让代码变得更易于重用、易于维护、易于扩展。</p>
+<p>我们的新版代码遵循下面几个原则：</p>
+<ul>
+<li>根据上述四类职责，列出每个互不相干的行为，并分别用一个对象来表示。对象之前互不依赖，以避免不同的代码混在一起。</li>
+<li>用可配置的内容代替写死的内容，以避免我们为了测试而复刻整个 HTML 环境。</li>
+<li>保持对象方法的简单明了。这会把测试工作变得简单易懂。</li>
+<li>通过构造函数创建对象实例。这让我们可以根据测试的需要复刻每一段代码的内容。</li>
+</ul>
+<p>作为起步，我们有必要搞清楚，该如何把应用分解成不同的部分。我们有三块展现和交互的内容：搜索框、搜索结果和点“赞”列表。</p>
+<p><img src="http://alistapart.com/d/375/app-views.png" alt=""></p>
+<p>我们还有一块内容是从服务器获取数据的、一块内容是把所有的内容粘合在一起的。</p>
+<p>我们从整个应用最简单的一部分开始吧：点“赞”列表。在原版应用中，这部分代码的职责就是更新点“赞”列表：</p>
+<pre><code>var liked = $(&apos;#liked&apos;);
+var resultsList = $(&apos;#results&apos;);
+
+// ...
+
+resultsList.on(&apos;click&apos;, &apos;.like&apos;, function (e) &#123;
+  e.preventDefault();
+  var name = $(this).closest(&apos;li&apos;).find(&apos;h2&apos;).text();
+  liked.find( &apos;.no-results&apos; ).remove();
+  $(&apos;&lt;li&gt;&apos;, &#123; text: name &#125;).appendTo(liked);
+&#125;);
+</code></pre><p>搜索结果这部分是完全和点“赞”列表搅在一起的，并且需要很多 DOM 处理。更好的易于测试的写法是创建一个点“赞”列表的对象，它的职责就是封装点“赞”列表的 DOM 操作。</p>
+<pre><code>var Likes = function (el) &#123;
+  this.el = $(el);
+  return this;
+&#125;;
+
+Likes.prototype.add = function (name) &#123;
+  this.el.find(&apos;.no-results&apos;).remove();
+  $(&apos;&lt;li&gt;&apos;, &#123; text: name &#125;).appendTo(this.el);
+&#125;;
+</code></pre><p>这段代码提供了创建一个点“赞”列表对象的构造函数。它有 <code>.add()</code> 方法，可以在产生新的赞的时候使用。这样我们就可以写很多测试代码来保障它的正常工作了：</p>
+<pre><code>var ul;
+
+// 设置测试的初始状态：生成一个搜索结果列表
+setup(function()&#123;
+  ul = $(&apos;&lt;ul&gt;&lt;li class=&quot;no-results&quot;&gt;&lt;/li&gt;&lt;/ul&gt;&apos;);
+&#125;);
+
+test(&apos;测试构造函数&apos;, function () &#123;
+  var l = new Likes(ul);
+  // 断言对象存在
+  assert(l);
+&#125;);
+
+test(&apos;点一个“赞”&apos;, function () &#123;
+  var l = new Likes(ul);
+  l.add(&apos;Brendan Eich&apos;);
+
+  // 断言列表长度为1
+  assert.equal(ul.find(&apos;li&apos;).length, 1);
+  // 断言列表第一个元素的 HTML 代码是 &apos;Brendan Eich&apos;
+  assert.equal(ul.find(&apos;li&apos;).first().html(), &apos;Brendan Eich&apos;);
+  // 断言占位元素已经不存在了
+  assert.equal(ul.find(&apos;li.no-results&apos;).length, 0);
+&#125;);
+</code></pre><p>怎么样？并不难吧 :-) 我们这里用到了名为 <a target="_blank" rel="noopener" href="http://visionmedia.github.io/mocha/">Mocha</a> 的<em>测试框架</em>，以及名为 <a target="_blank" rel="noopener" href="http://chaijs.com/">Chai</a> 的<em>断言库</em>。Mocha 提供了 <code>test</code> 和 <code>setup</code> 函数；而 Chai 提供了 <code>assert</code>。测试框架和断言库的选择还有很多，我们出于介绍的目的给大家展示这两款。你可以找到属于适合自己的项目——除了 Mocha 之外，<a target="_blank" rel="noopener" href="http://qunitjs.com/">QUnit</a> 也比较流行。另外 <a target="_blank" rel="noopener" href="http://theintern.io/">Intern</a> 也是一个测试框架，它运用了大量的 promise 方式。</p>
+<p>我们的测试代码是从点“赞”列表这一容器开始的。然后它运行了两个测试：一个是确定点“赞”列表是存在的；另一个是确保 <code>.add()</code> 方法达到了我们预期的效果。有这些测试做后盾，我们就可以放心重构点“赞”列表这部分的代码了，即使代码被破坏了，我们也有信心把它修复好。</p>
+<p>我们新应用的代码现在看起来是这样的：</p>
+<pre><code>var liked = new Likes(&apos;#liked&apos;); // 新的点“赞”列表对象
+var resultsList = $(&apos;#results&apos;);
+
+// ...
+
+resultsList.on(&apos;click&apos;, &apos;.like&apos;, function (e) &#123;
+  e.preventDefault();
+  var name = $(this).closest(&apos;li&apos;).find(&apos;h2&apos;).text();
+  liked.add(name); // 新的点“赞”操作的封装
+&#125;);
+</code></pre><p>搜索结果这部分比点“赞”列表更复杂一些，不过我们也该拿它开刀了。和我们为点“赞”列表创建一个 <code>.add()</code> 方法一样，我们要创建一个与搜索结果有交互的方法。我们需要一个点“赞”的入口，向整个应用“广播”自己发生了什么变化——比如有人点了个“赞”。</p>
+<pre><code>// 为每一条搜索结果的点“赞”按钮绑定点击事件
+var SearchResults = function (el) &#123;
+  this.el = $(el);
+  this.el.on( &apos;click&apos;, &apos;.btn.like&apos;, _.bind(this._handleClick, this) );
+&#125;;
+
+// 展示搜索结果，获取模板，然后渲染
+SearchResults.prototype.setResults = function (results) &#123;
+  var templateRequest = $.get(&apos;people-detailed.tmpl&apos;);
+  templateRequest.then( _.bind(this._populate, this, results) );
+&#125;;
+
+// 处理点“赞”
+SearchResults.prototype._handleClick = function (evt) &#123;
+  var name = $(evt.target).closest(&apos;li.result&apos;).attr(&apos;data-name&apos;);
+  $(document).trigger(&apos;like&apos;, [ name ]);
+&#125;;
+
+// 对模板渲染数据的封装
+SearchResults.prototype._populate = function (results, tmpl) &#123;
+  var html = _.template(tmpl, &#123; people: results &#125;);
+  this.el.html(html);
+&#125;;
+</code></pre><p>现在我们旧版应用中管理搜索结果和点“赞”列表之间交互的代码如下：</p>
+<pre><code>var liked = new Likes(&apos;#liked&apos;);
+var resultsList = new SearchResults(&apos;#results&apos;);
+
+// ...
+
+$(document).on(&apos;like&apos;, function (evt, name) &#123;
+  liked.add(name);
+&#125;)
+</code></pre><p>这就更简单更清晰了，因为我们通过 <code>document</code> 在各个独立的组件之间进行消息传递，而组件之间是互不依赖的。(值得注意的是，在真正的应用当中，我们会使用一些诸如 <a target="_blank" rel="noopener" href="http://backbonejs.org/">Backbone</a> 或 <a target="_blank" rel="noopener" href="https://github.com/tildeio/rsvp.js">RSVP</a> 库来管理事件。我们出于让例子尽量简单的考虑，使用了 <code>document</code> 来触发事件) 我们同时隐藏了很多脏活累活：比如在搜索结果对象里寻找被点“赞”的人，要比放在整个应用的代码里更好。更重要的是，我们现在可以写出保障搜索结果对象正常工作的测试代码了：</p>
+<pre><code>var ul;
+var data = [ /* 填入假数据 */ ];
+
+// 确保点“赞”列表存在
+setup(function () &#123;
+  ul = $(&apos;&lt;ul&gt;&lt;li class=&quot;no-results&quot;&gt;&lt;/li&gt;&lt;/ul&gt;&apos;);
+&#125;);
+
+test(&apos;测试构造函数&apos;, function () &#123;
+  var sr = new SearchResults(ul);
+  // 断言对象存在
+  assert(sr);
+&#125;);
+
+test(&apos;测试收到的搜索结果&apos;, function () &#123;
+  var sr = new SearchResults(ul);
+  sr.setResults(data);
+
+  // 断言搜索结果占位元素已经不存在
+  assert.equal(ul.find(&apos;.no-results&apos;).length, 0);
+  // 断言搜索结果的子元素个数和搜索结果的个数相同
+  assert.equal(ul.find(&apos;li.result&apos;).length, data.length);
+  // 断言搜索结果的第一个子元素的 &apos;data-name&apos; 的值和第一个搜索结果相同
+  assert.equal(
+    ul.find(&apos;li.result&apos;).first().attr(&apos;data-name&apos;),
+    data[0].name
+  );
+&#125;);
+
+test(&apos;测试点“赞”按钮&apos;, function() &#123;
+  var sr = new SearchResults(ul);
+  var flag;
+  var spy = function () &#123;
+    flag = [].slice.call(arguments);
+  &#125;;
+
+  sr.setResults(data);
+  $(document).on(&apos;like&apos;, spy);
+
+  ul.find(&apos;li&apos;).first().find(&apos;.like.btn&apos;).click();
+
+  // 断言 `document` 收到了点“赞”的消息
+  assert(flag, &apos;事件被收到了&apos;);
+  // 断言 `document` 收到的点“赞”消息，其中的名字是第一个搜索结果
+  assert.equal(flag[1], data[0].name, &apos;事件里的数据被收到了&apos; );
+&#125;);
+</code></pre><p>和服务器直接的交互是另外一个有趣的话题。原版的代码包括一个 <code>$.ajax()</code> 的请求，以及一个直接操作 DOM 的回调函数：</p>
+<pre><code>$.ajax(&apos;/data/search.json&apos;, &#123;
+  data : &#123; q: query &#125;,
+  dataType : &apos;json&apos;,
+  success : function( data ) &#123;
+    loadTemplate(&apos;people-detailed.tmpl&apos;).then(function(t) &#123;
+      var tmpl = _.template( t );
+      resultsList.html( tmpl(&#123; people : data.results &#125;) );
+      pending = false;
+    &#125;);
+  &#125;
+&#125;);
+</code></pre><p>同样，我们很难为这样的代码撰写测试。因为很多不同的工作同时发生在这一小段代码中。我们可以重新组织一下数据处理的部分：</p>
+<pre><code>var SearchData = function () &#123; &#125;;
+
+SearchData.prototype.fetch = function (query) &#123;
+  var dfd;
+
+  // 如果搜索关键字为空，则不做任何事，立刻 `promise()`
+  if (!query) &#123;
+    dfd = $.Deferred();
+    dfd.resolve([]);
+    return dfd.promise();
+  &#125;
+
+  // 否则，向服务器请求搜索结果并把在得到结果之后对其数据进行包装
+  return $.ajax( &apos;/data/search.json&apos;, &#123;
+    data : &#123; q: query &#125;,
+    dataType : &apos;json&apos;
+  &#125;).pipe(function( resp ) &#123;
+    return resp.results;
+  &#125;);
+&#125;;
+</code></pre><p>现在我们改变了获得搜索结果这部分的代码：</p>
+<pre><code>var resultList = new SearchResults(&apos;#results&apos;);
+var searchData = new SearchData();
+
+// ...
+
+searchData.fetch(query).then(resultList.setResults);
+</code></pre><p>我们再一次简化了代码，并通过 <code>SearchData</code> 对象抛弃了之前应用程序主函数里杂乱的代码。同时我们已经让搜索接口变得可测试了，尽管现在和服务器通信这里还有事情要做。</p>
+<p>首先我们不是真的要跟服务器通信——不然这又变成集成测试了：诸如我们是有责任感的开发者，我们已经确保服务器一定不会犯错等等，是这样吗？为了替代这些东西，我们应该“mock”(伪造) 与服务器之间的通信。<a target="_blank" rel="noopener" href="http://sinonjs.org/">Sinon</a> 这个库就可以做这件事。第二个障碍是我们的测试应该覆盖非理想环境，比如关键字为空。</p>
+<pre><code>test(&apos;测试构造函数&apos;, function () &#123;
+  var sd = new SearchData();
+  assert(sd);
+&#125;);
+
+suite(&apos;取数据&apos;, function () &#123;
+  var xhr, requests;
+
+  setup(function () &#123;
+    requests = [];
+    xhr = sinon.useFakeXMLHttpRequest();
+    xhr.onCreate = function (req) &#123;
+      requests.push(req);
+    &#125;;
+  &#125;);
+
+  teardown(function () &#123;
+    xhr.restore();
+  &#125;);
+
+  test(&apos;通过正确的 URL 获取数据&apos;, function () &#123;
+    var sd = new SearchData();
+    sd.fetch(&apos;cat&apos;);
+
+    assert.equal(requests[0].url, &apos;/data/search.json?q=cat&apos;);
+  &#125;);
+
+  test(&apos;返回一个 promise&apos;, function () &#123;
+    var sd = new SearchData();
+    var req = sd.fetch(&apos;cat&apos;);
+
+    assert.isFunction(req.then);
+  &#125;);
+
+  test(&apos;如果关键字为空则不查询&apos;, function () &#123;
+    var sd = new SearchData();
+    var req = sd.fetch();
+    assert.equal(requests.length, 0);
+  &#125;);
+
+  test(&apos;如果关键字为空也会有 promise&apos;, function () &#123;
+    var sd = new SearchData();
+    var req = sd.fetch();
+
+    assert.isFunction( req.then );
+  &#125;);
+
+  test(&apos;关键字为空的 promise 会返回一个空数组&apos;, function () &#123;
+    var sd = new SearchData();
+    var req = sd.fetch();
+    var spy = sinon.spy();
+
+    req.then(spy);
+
+    assert.deepEqual(spy.args[0][0], []);
+  &#125;);
+
+  test(&apos;返回与搜索结果相对应的对象&apos;, function () &#123;
+    var sd = new SearchData();
+    var req = sd.fetch(&apos;cat&apos;);
+    var spy = sinon.spy();
+
+    requests[0].respond(
+      200, &#123; &apos;Content-type&apos;: &apos;text/json&apos; &#125;,
+      JSON.stringify(&#123; results: [ 1, 2, 3 ] &#125;)
+    );
+
+    req.then(spy);
+
+    assert.deepEqual(spy.args[0][0], [ 1, 2, 3 ]);
+  &#125;);
+&#125;);
+</code></pre><p>出于篇幅的考虑，这里对搜索框的重构及其相关的单元测试就不一一介绍了。完整的代码可以<a target="_blank" rel="noopener" href="https://github.com/rmurphey/testable-javascript">移步至此</a>查阅。</p>
+<p>当我们按照可测试的 JavaScript 的思路重构代码之后，我们最后用下面这段代码开启程序：</p>
+<pre><code>$(function() &#123;
+  var pending = false;
+
+  var searchForm = new SearchForm(&apos;#searchForm&apos;);
+  var searchResults = new SearchResults(&apos;#results&apos;);
+  var likes = new Likes(&apos;#liked&apos;);
+  var searchData = new SearchData();
+
+  $(document).on(&apos;search&apos;, function (event, query) &#123;
+    if (pending) &#123; return; &#125;
+
+    pending = true;
+
+    searchData.fetch(query).then(function (results) &#123;
+      searchResults.setResults(results);
+      pending = false;
+    &#125;);
+
+    searchResults.pending();
+  &#125;);
+
+  $(document).on(&apos;like&apos;, function (evt, name) &#123;
+    likes.add(name);
+  &#125;);
+&#125;);
+</code></pre><p>比干净整洁的代码更重要的，是我们的代码拥有了更健壮的测试基础作为后盾。这也意味着我们可以放心的重构任意部分的代码而不必担心程序遭到破坏。我们还可以继续为新功能撰写新的测试代码，并确保新的程序可以通过所有的测试。</p>
+<h3 id="测试会在宏观上让你变轻松"><a href="#测试会在宏观上让你变轻松" class="headerlink" title="测试会在宏观上让你变轻松"></a>测试会在宏观上让你变轻松</h3><p>看完这些的长篇大论你一定会说：“纳尼？我多写了这么多代码，结果还是做了这么一点事情？”</p>
+<p>关键在于，你做的东西早晚要放到网上的。同样是花时间解决问题，你会选择在浏览器里点来点去？还是自动化测试？还是直接在线上让你的用户做你的小白鼠？无论你写了多少测试，你写好代码，别人一用，多少会发现点 bug。</p>
+<p>至于测试，它可能会花掉你一些额外的时间，但是它到最后真的是为你省下了时间。写测试代码测出一个问题，总比你发布到线上之后才发现有问题要好。如果有一个系统能让你意识到它真的能避免一个 bug 的流出，你一定会心存感激。</p>
+<h3 id="额外的资源"><a href="#额外的资源" class="headerlink" title="额外的资源"></a>额外的资源</h3><p>这篇文章只能算是 JavaScript 测试的一点皮毛，但是如果你对此抱有兴趣，那么可以继续移步至：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="http://lanyrd.com/2012/full-frontal/sztqh/">幻灯演示</a> 2012 Full Frontal conference in Brighton, UK</li>
+<li><a target="_blank" rel="noopener" href="http://gruntjs.com/">Grunt</a> 一个可以进行自动化测试等诸多事情的工具</li>
+<li><a target="_blank" rel="noopener" href="https://www.amazon.com/dp/0321683919/">测试驱动的 JavaScript 开发</a> 及其 <a target="_blank" rel="noopener" href="https://www.amazon.cn/dp/B0077KA3J4/">中文版</a></li>
+</ul>
+
+</div>
+
+<p align="right">
+  <small>
+    <a href="https://github.com/Jinjiang/jinjiang.github.io/edit/dev/source/_posts/writing-testable-javascript.md" target="_blank">
+      向本文提出修改或勘误建议
+    </a>
+  </small>
+</p>
+
+
+
+<div id="comments">
+  <h2>早期评论</h2>
+  <ul>
+  
+    <li id="comment-71478" style="margin-left: 0em;">
+      <p>
+        <strong>
+        <a href="http://blog.csdn.net/jasondu264" target="_blank" title="伟">伟</a>
+        
+        </strong>
+        <small>2014/10/27 12:20:20</small></p>
+      太好了，终于找到一篇详细写怎么开发可测试代码了，谢谢博主
+    </li>
+  
+    <li id="comment-74480" style="margin-left: 0em;">
+      <p>
+        <strong>
+        辉
+        
+        </strong>
+        <small>2014/11/13 12:07:12</small></p>
+      赞一个，楼主写得很好啊
+    </li>
+  
+    <li id="comment-87690" style="margin-left: 0em;">
+      <p>
+        <strong>
+        <a href="http://ttour.sinaapp.com/posts/9861/%e6%92%b0%e5%86%99%e5%8f%af%e6%b5%8b%e8%af%95%e7%9a%84-javascript.html" target="_blank" title="撰写可测试的 ja&lt;x&gt;vasc&lt;x&gt;ript - ja&lt;x&gt;vasc&lt;x&gt;ript - 嗅探实事">撰写可测试的 ja&lt;x&gt;vasc&lt;x&gt;ript - ja&lt;x&gt;vasc&lt;x&gt;ript - 嗅探实事</a>
+        
+        </strong>
+        <small>2015/01/19 03:01:19</small></p>
+      [...]转自 勾三股四 &#8211; 撰写可测试的 JavaScript[...]
+    </li>
+  
+    <li id="comment-88092" style="margin-left: 0em;">
+      <p>
+        <strong>
+        <a href="http://top.css88.com/archives/602" target="_blank" title="撰写可测试的 ja&lt;x&gt;vasc&lt;x&gt;ript R11; 囧克斯 | 前端头条">撰写可测试的 ja&lt;x&gt;vasc&lt;x&gt;ript R11; 囧克斯 | 前端头条</a>
+        
+        </strong>
+        <small>2015/01/22 11:09:22</small></p>
+      [...]阅读详情 -&gt; 撰写可测试的 JavaScript &#8211; 囧克斯.[...]
+    </li>
+  
+    <li id="comment-92125" style="margin-left: 0em;">
+      <p>
+        <strong>
+        <a href="http://hao.jser.com/archive/4816/" target="_blank" title="撰写可测试的 ja&lt;x&gt;vasc&lt;x&gt;ript R12; 好JSER">撰写可测试的 ja&lt;x&gt;vasc&lt;x&gt;ript R12; 好JSER</a>
+        
+        </strong>
+        <small>2015/03/27 02:45:26</small></p>
+      [...]转自 勾三股四 &#8211; 撰写可测试的 JavaScript[...]
+    </li>
+  
+  </ul>
+</div>
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+
+<div id="gitalk-container"></div>
+
+<script>
+  const gitalk = new Gitalk({
+    clientID: 'c99e23053fc1bba6a58c',
+    clientSecret: '64efe1cd1438e77ae2bf8eba92b51c90d0cc2b9f',
+    repo: 'jinjiang.github.io',
+    owner: 'jinjiang',
+    admin: ['jinjiang'],
+    id: location.pathname,      // Ensure uniqueness and length less than 50
+    distractionFreeMode: false  // Facebook-like distraction free mode
+  })
+
+  gitalk.render('gitalk-container')
+</script>
+</div>
+
+    <div id="footer">
+      <a href="/">囧克斯</a>
+      
+      |
+      <a href="/atom.xml" title="rss_feed">RSS</a>
+      
+      |
+      我是百度统计
+      <script src="https://hm.baidu.com/h.js?a0a2372d4b7621d0bfe71f33c58a4bd8"></script>
+      |
+      我会翻脸 <a href="#" onclick="document.body.classList.toggle('dark-mode'), event.preventDefault()" style="font-size: 1.25em;">🌚🌝</a>
+    </div>
+  </div>
+
+  
+<script src="/js/script.js"></script>
+
+</body>
+
+</html>

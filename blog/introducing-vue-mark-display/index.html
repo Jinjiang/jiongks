@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <!-- proud for contributing Vue.js -->
+  <meta charset="utf-8">
+  <meta name="format-detection" content="telephone=no" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-touch-fullscreen" content="yes" />
+
+  
+  <title>
+    
+    vue-mark-display：用 markdown 语法轻松撰写幻灯片 -
+    
+    囧克斯
+  </title>
+
+  
+<link rel="stylesheet" href="/css/pure.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+
+  
+  <link rel="alternate" href="/atom.xml" title="囧克斯" type="application/atom+xml">
+  
+  
+  <link rel="icon" href="/favicon.ico">
+  
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+<body>
+  <script>(() => { if ((new Date().getHours() + 6) % 24 < 12) document.body.classList.add('dark-mode') })()</script>
+
+  <div class="dark-mode-helper"></div>
+
+  <div id="wrapper">
+
+    <div id="header">
+      <h1>
+        <a href="/" title="囧克斯">
+          囧克斯
+        </a>
+      </h1>
+      <p class="description">
+        这里是勾三股四的家
+      </p>
+    </div>
+
+    <div id="nav" class="pure-menu pure-menu-open pure-menu-horizontal">
+      <ul>
+        
+        <li>
+          <a href="/all-demos/">
+            线上
+          </a>
+        </li>
+        
+        <li>
+          <a href="/all-slides/">
+            线下
+          </a>
+        </li>
+        
+        <li>
+          <a href="/about/">
+            关于
+          </a>
+        </li>
+        
+        <li><a href="/archives">归档</li>
+      </ul>
+    </div>
+
+    <div id="main"><div class="content">
+  <h2>
+    vue-mark-display：用 markdown 语法轻松撰写幻灯片
+  </h2>
+  <p>为大家介绍一个刚刚开源，但其实自己已经使用超过 5 年的小工具：<code>vue-mark-display</code>。你可以用它把 <a target="_blank" rel="noopener" href="https://commonmark.org/help/">markdown</a> 格式的文本转换成幻灯片并在浏览器中播放和控制。</p>
+<h3 id="开发背景"><a href="#开发背景" class="headerlink" title="开发背景"></a>开发背景</h3><p>我自己工作中经常需要准备各式各样的幻灯片，所以逐渐觉得用 PowerPoint 或 Keynote 来做幻灯演示略微显得有些笨重。这体现在板式和样式设计、文件大小、打开、编辑和播放的方式等很多方面。加上我从事的就是前端开发的工作，对语义化的信息格式非常敏感，深刻的认为，那些你表面上想编辑的“样式”其实是信息的“类型”+“配套的样式”罢了。所以决定用 markdown 外加自己扩展的一些小功能，来撰写幻灯片，并研发了相应的工具，也就是最近开源的 <code>vue-mark-display</code>。</p>
+<p>最早这个工具是用 vue v0.10 写的，当时源代码里还有像 <code>v-attr</code>, <code>v-repeat</code>, <code>v-transition</code> 这样的“古董级”语法，而且还在依赖 Zepto。最近准备开源这个项目的时候，我也基于最新的前端知识和技能进行了重构。所以大家看到的是比较新的版本。</p>
+<p>其实在此之前，我也写过很多类似的小工具了，但都没有坚持使用很久，这次开源的 <code>vue-mark-display</code> 我差不多持续使用了 5 年。经历了差不多这 5 年时间，准备过了无数的幻灯片和公开演讲，我想说基于 markdown 以及这些小功能撰写幻灯片真的很酷。如果你也有兴趣试一试用 markdown 为主体来撰写自己的幻灯片，那么不妨了解并体验一下 <code>vue-mark-display</code>。</p>
+<p><strong>另外，事实上，如果只是想使用它，你是不需要学习任何关于 Vue 的知识的</strong> —— <strong>文章最后会提供一个不需要 Vue 知识的开箱即用的办法</strong> —— 所以它也对 React、Angular 等社区的同学友好 —— 只要你会写 markdown 和简单的 HTML5 代码，你就可以使用 <code>vue-mark-display</code> 制作出非常精美的幻灯片。</p>
+<a id="more"></a>
+<h3 id="基本语法"><a href="#基本语法" class="headerlink" title="基本语法"></a>基本语法</h3><p>首先，我们在 markdown 语法的基础上做了一个扩展：通过 <code>----</code> 分割线把一整篇 markdown 文档划分成为若干张幻灯片。</p>
+<figure class="highlight md"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="section"># 这里是第一页</span></span><br><span class="line"></span><br><span class="line">以及一些基本的自我介绍</span><br><span class="line"></span><br><span class="line">----</span><br><span class="line"></span><br><span class="line"><span class="section">### 这里是第二页</span></span><br><span class="line"></span><br><span class="line"><span class="bullet">-</span> 这里有内容</span><br><span class="line"><span class="bullet">-</span> 这里有内容</span><br><span class="line"><span class="bullet">-</span> 这里有内容</span><br><span class="line"></span><br><span class="line">----</span><br><span class="line"></span><br><span class="line">没了，讲完了</span><br><span class="line"></span><br><span class="line"><span class="strong">__谢谢__</span></span><br></pre></td></tr></table></figure>
+<p>例如上面的例子就会被生成为三张幻灯片。</p>
+<iframe src="https://codesandbox.io/embed/moxv1k071y?fontsize=14&module=%2Fsrc%2FApp.vue" title="Vue Mark Display Demo 1" style="width:100%; height:500px; border:0; border-radius: 4px; overflow:hidden;" sandbox="allow-modals allow-forms allow-popups allow-scripts allow-same-origin"></iframe>
+
+<p>这样你就可以利用 markdown 支持的 h1 - h6 标题、列表、表格、图片、链接、加粗等格式加分页符用极快的速度写出幻灯片了。</p>
+<p>通常情况下，你再为自己的幻灯片设置一套全局的 CSS 样式并固化下来成为你的样式风格，基本就可以拿来演示了。以下是我自己喜欢的样式风格：</p>
+<iframe src="https://codesandbox.io/embed/61jorw0703?fontsize=14&module=%2Fsrc%2FApp.vue" title="Vue Mark Display Demo 2" style="width:100%; height:500px; border:0; border-radius: 4px; overflow:hidden;" sandbox="allow-modals allow-forms allow-popups allow-scripts allow-same-origin"></iframe>
+
+<h4 id="自定义样式"><a href="#自定义样式" class="headerlink" title="自定义样式"></a>自定义样式</h4><p>在这个基础上，我们对 markdown 格式做了一点点进一步的扩展 —— 通过在每一页幻灯片开头撰写 html 注释来设置这页幻灯片的特殊样式。</p>
+<p>比如我们为第二页幻灯片换一个不一样的背景，同时正文文字颜色变成白色：</p>
+<figure class="highlight md"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="section"># 这里是第一页</span></span><br><span class="line"></span><br><span class="line">以及一些基本的自我介绍</span><br><span class="line"></span><br><span class="line">----</span><br><span class="line"></span><br><span class="line">&lt;!-- style: background: #4fc08d; color: white; --&gt;</span><br><span class="line"></span><br><span class="line"><span class="section">### 这里是第二页</span></span><br><span class="line"></span><br><span class="line"><span class="bullet">-</span> 这里有内容</span><br><span class="line"><span class="bullet">-</span> 这里有内容</span><br><span class="line"><span class="bullet">-</span> 这里有内容</span><br><span class="line"></span><br><span class="line">----</span><br><span class="line"></span><br><span class="line">没了，讲完了</span><br><span class="line"></span><br><span class="line"><span class="strong">__谢谢__</span></span><br></pre></td></tr></table></figure>
+<p>现在翻到第二页看看，背景和文字的颜色就已经改变了</p>
+<iframe src="https://codesandbox.io/embed/n734wvx92m?fontsize=14&module=%2Fsrc%2FApp.vue" title="Vue Mark Display Demo 3" style="width:100%; height:500px; border:0; border-radius: 4px; overflow:hidden;" sandbox="allow-modals allow-forms allow-popups allow-scripts allow-same-origin"></iframe>
+
+<p>当然在 markdown 中你也可以撰写任意 HTML5 代码，比如嵌入一段 HTML 甚至全局有效的 <code>&lt;style&gt;</code> 标签，都可以被解析：</p>
+<figure class="highlight md"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="section"># 这里是第一页</span></span><br><span class="line"></span><br><span class="line">以及一些基本的自我介绍</span><br><span class="line"></span><br><span class="line"><span class="xml"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;notification&quot;</span>&gt;</span></span>Welcome!<span class="xml"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line"></span><br><span class="line">----</span><br><span class="line"></span><br><span class="line">&lt;!-- style: background: #4fc08d; color: white; --&gt;</span><br><span class="line"></span><br><span class="line"><span class="section">### 这里是第二页</span></span><br><span class="line"></span><br><span class="line"><span class="bullet">-</span> 这里有内容</span><br><span class="line"><span class="bullet">-</span> 这里有内容</span><br><span class="line"><span class="bullet">-</span> 这里有内容</span><br><span class="line"></span><br><span class="line">----</span><br><span class="line"></span><br><span class="line">没了，讲完了</span><br><span class="line"></span><br><span class="line"><span class="xml"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;notification&quot;</span>&gt;</span></span>Thanks!<span class="xml"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="xml"><span class="tag">&lt;<span class="name">style</span>&gt;</span></span></span><br><span class="line">.notification &#123;</span><br><span class="line">  position: absolute;</span><br><span class="line">  top: 20px;</span><br><span class="line">  right: 20px;</span><br><span class="line">  border-radius: 3px;</span><br><span class="line">  padding: 0.25em 1em;</span><br><span class="line">  background-color: yellow;</span><br><span class="line">  color: #666;</span><br><span class="line">&#125;</span><br><span class="line"><span class="xml"><span class="tag">&lt;/<span class="name">style</span>&gt;</span></span></span><br></pre></td></tr></table></figure>
+<iframe src="https://codesandbox.io/embed/1z941rj65l?fontsize=14&module=%2Fsrc%2FApp.vue" title="Vue Mark Display Demo 4" style="width:100%; height:500px; border:0; border-radius: 4px; overflow:hidden;" sandbox="allow-modals allow-forms allow-popups allow-scripts allow-same-origin"></iframe>
+
+<h4 id="其它自定义选项"><a href="#其它自定义选项" class="headerlink" title="其它自定义选项"></a>其它自定义选项</h4><p><code>vue-mark-display</code> 还提供了一些方便的 prop 配置项和 event 组件事件，如：</p>
+<ul>
+<li><code>@setTitle(&#123; title &#125;)</code> 方便从组件外部获取当前幻灯片的主标题，也就是第一页幻灯片的第一行文字，你可以用这个事件来设置 <code>document.title</code></li>
+<li><code>autoFontSize</code> 根据屏幕大小自动调节默认字号，这个字号是根据自己的演示经验设置的。保证不论屏幕大小，一页幻灯片可以放下的字数是相对稳定的，这样就基本杜绝了因为演示现场屏幕分辨率不一致而导致的适配问题。当然你如果对这个默认的适配结果不满意，也可以自己手动设置组件的 <code>font-size</code> 样式。</li>
+<li><code>supportPreview</code> 可以在点击链接的时候，按住键盘上的 <kbd>Alt</kbd> 键，这样链接会从当前屏幕的一个 <code>&lt;iframe&gt;</code> 打开，并悬浮在屏幕上方，同时右上角有个关闭按钮可以将其关掉。如果你希望整个幻灯演示过程不被中途访问链接而打断，相信这个功能你会非常喜欢。</li>
+<li>还有一些选项包括：<code>urlHashCtrl</code> 能自动把当前页码和网页的 URL hash 对应、<code>keyboardCtrl</code> 可以支持默认键盘左右键翻页、<code>autoBlankTarget</code> 所有链接都默认在新标签打开、<code>baseUrl</code> 能将链接和图片的相对路径改成你自己的网站等。</li>
+</ul>
+<p>同时 <code>vue-mark-display</code> 还可以方面得利用第三方手势库支持触摸屏的左右滑动翻页。</p>
+<p>上述比较完整的用例可以看这里：</p>
+<iframe src="https://codesandbox.io/embed/300xq1mlkp?fontsize=14&module=%2Fsrc%2FApp.vue" title="Vue Mark Display Demo 5" style="width:100%; height:500px; border:0; border-radius: 4px; overflow:hidden;" sandbox="allow-modals allow-forms allow-popups allow-scripts allow-same-origin"></iframe>
+
+<h3 id="One-More-Thing"><a href="#One-More-Thing" class="headerlink" title="One More Thing"></a>One More Thing</h3><p><code>vue-mark-display</code> 还支持直接导出成为 PDF 格式文件。因为我们的幻灯片有可能通过各式各样的方式进行传播：有可能是一个链接，也可能是一个文件。所以 <code>vue-mark-display</code> 利用 W3C 的 CSS Page Media 相关规范满足了这一需求，你只需要简单的打开浏览器的打印对话框，然后选择导出成为 PDF，就可以轻松的把自己的幻灯片发到钉钉好友、微信群、邮件附件等各个地方。</p>
+<p><img src="https://github.com/Jinjiang/vue-mark-display/raw/master/pdf.png" alt=""></p>
+<h3 id="最后想说-vue-mark-display-已经开源了"><a href="#最后想说-vue-mark-display-已经开源了" class="headerlink" title="最后想说 vue-mark-display 已经开源了"></a>最后想说 <code>vue-mark-display</code> 已经开源了</h3><p>欢迎大家试用并提出宝贵的意见，如能一同参与建设和维护，我会更加感激。</p>
+<ul>
+<li>Homepage: <a target="_blank" rel="noopener" href="https://jinjiang.github.io/vue-mark-display/">https://jinjiang.github.io/vue-mark-display/</a></li>
+<li>GitHub：<a target="_blank" rel="noopener" href="https://github.com/jinjiang/vue-mark-display">https://github.com/jinjiang/vue-mark-display</a></li>
+<li>npm: <a target="_blank" rel="noopener" href="https://www.npmjs.com/package/vue-mark-display">https://www.npmjs.com/package/vue-mark-display</a></li>
+</ul>
+<p>同时我也把自己最近在社区分享过的幻灯片全部整理到了这个地址：</p>
+<p><a target="_blank" rel="noopener" href="https://jinjiang.github.io/slides/">https://jinjiang.github.io/slides/</a></p>
+<p>接下里这个项目还有一些规划中的特性会逐步实现并发布，尽请关注。</p>
+<h3 id="最后的最后"><a href="#最后的最后" class="headerlink" title="最后的最后"></a>最后的最后</h3><p><strong>如果你不想学 Vue，希望开箱即用，直接把 markdown 导出成在线幻灯片：</strong></p>
+<p>来用 <code>mark2slides</code> 吧，一键导出！</p>
+<p><a target="_blank" rel="noopener" href="https://www.npmjs.com/package/mark2slides">https://www.npmjs.com/package/mark2slides</a></p>
+<p>用法：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">npm install --global mark2slides</span><br><span class="line">m2s my-slides.md</span><br></pre></td></tr></table></figure>
+<p>然后去 <code>dist</code> 目录开启一个 web server：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> dist</span><br><span class="line">npx serve</span><br></pre></td></tr></table></figure>
+<p>打开 <code>http://localhost:5000/</code>，完毕。</p>
+<p>不过这个工具非常初期，还请大家多多提意见，接下来我也会逐步为这个工具增加更多贴心的功能。</p>
+
+</div>
+
+<p align="right">
+  <small>
+    <a href="https://github.com/Jinjiang/jinjiang.github.io/edit/dev/source/_posts/introducing-vue-mark-display.md" target="_blank">
+      向本文提出修改或勘误建议
+    </a>
+  </small>
+</p>
+
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+
+<div id="gitalk-container"></div>
+
+<script>
+  const gitalk = new Gitalk({
+    clientID: 'c99e23053fc1bba6a58c',
+    clientSecret: '64efe1cd1438e77ae2bf8eba92b51c90d0cc2b9f',
+    repo: 'jinjiang.github.io',
+    owner: 'jinjiang',
+    admin: ['jinjiang'],
+    id: location.pathname,      // Ensure uniqueness and length less than 50
+    distractionFreeMode: false  // Facebook-like distraction free mode
+  })
+
+  gitalk.render('gitalk-container')
+</script>
+</div>
+
+    <div id="footer">
+      <a href="/">囧克斯</a>
+      
+      |
+      <a href="/atom.xml" title="rss_feed">RSS</a>
+      
+      |
+      我是百度统计
+      <script src="https://hm.baidu.com/h.js?a0a2372d4b7621d0bfe71f33c58a4bd8"></script>
+      |
+      我会翻脸 <a href="#" onclick="document.body.classList.toggle('dark-mode'), event.preventDefault()" style="font-size: 1.25em;">🌚🌝</a>
+    </div>
+  </div>
+
+  
+<script src="/js/script.js"></script>
+
+</body>
+
+</html>

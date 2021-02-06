@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <!-- proud for contributing Vue.js -->
+  <meta charset="utf-8">
+  <meta name="format-detection" content="telephone=no" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-touch-fullscreen" content="yes" />
+
+  
+  <title>
+    
+    囧克斯
+  </title>
+
+  
+<link rel="stylesheet" href="/css/pure.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+
+  
+  <link rel="alternate" href="/atom.xml" title="囧克斯" type="application/atom+xml">
+  
+  
+  <link rel="icon" href="/favicon.ico">
+  
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+<body>
+  <script>(() => { if ((new Date().getHours() + 6) % 24 < 12) document.body.classList.add('dark-mode') })()</script>
+
+  <div class="dark-mode-helper"></div>
+
+  <div id="wrapper">
+
+    <div id="header">
+      <h1>
+        <a href="/" title="囧克斯">
+          囧克斯
+        </a>
+      </h1>
+      <p class="description">
+        这里是勾三股四的家
+      </p>
+    </div>
+
+    <div id="nav" class="pure-menu pure-menu-open pure-menu-horizontal">
+      <ul>
+        
+        <li>
+          <a href="/all-demos/">
+            线上
+          </a>
+        </li>
+        
+        <li>
+          <a href="/all-slides/">
+            线下
+          </a>
+        </li>
+        
+        <li>
+          <a href="/about/">
+            关于
+          </a>
+        </li>
+        
+        <li><a href="/archives">归档</li>
+      </ul>
+    </div>
+
+    <div id="main">
+<div class="content">
+  <h2>
+    <a href="/blog/introducing-zhlint/">
+      中文格式化小工具 zhlint 及其开发心得
+    </a>
+  </h2>
+  
+  <p>介绍要给小工具给大家：<strong><a target="_blank" rel="noopener" href="https://github.com/Jinjiang/zhlint">zhlint</a></strong></p>
+<p><img src="https://raw.githubusercontent.com/Jinjiang/zhlint/master/logo.svg" alt="zhlint logo"></p>
+<p>这个工具可以帮助你快速格式化中文或中英混排的文本。比如常见的中英文之间要不要用空格、标点符号要用全角字符之类的。</p>
+<p>看上去这工具似乎和自己的工作和职业关系不大，但其实也是有一定由来的。</p>
+<h3 id="项目的由来"><a href="#项目的由来" class="headerlink" title="项目的由来"></a>项目的由来</h3><p>自己之前参与过一些 <a target="_blank" rel="noopener" href="https://www.w3.org/html/ig/zh/wiki/%E7%BF%BB%E8%AF%91">W3C 规范的翻译工作</a>，这其中除了需要一定的词汇量、语法知识和表达技巧之外，最主要的部分应该就是格式了。因为大家对诸如空格、标点符号等细节的使用其实不太统一，这在团队协作的时候其实会变成问题，大家都花了一些不必要的时间在格式讨论和校对上。感觉这部分工作比较枯燥且机械，但又不得不做。只能花更多时间在上面。</p>
+<p>后来因为接触 <a target="_blank" rel="noopener" href="https://vuejs.org/">Vue.js</a> 的关系。这个项目在早期并没有太多人知道它，而且当时社区普遍比较迷信像 Google 这种大厂官方推出的技术方案，对“野生”项目都不是很有兴趣，所以我希望可以把这个项目介绍给更多人认识。结合我之前的翻译经验，我觉得翻译文档是一个比较好的途径，于是就发起了 <a target="_blank" rel="noopener" href="https://github.com/vuejs/cn.vuejs.org/">Vue 中文文档</a>的翻译，结果没想到这件事一发不可收拾，我就不知不觉从 2014/2015 年做到了今天。随着 Vue 的不断发展，关注文档的人也越来越多，中间发生了很多故事，这些故事也让我自己逐步对翻译和中文格式的细节有了更多的认识。</p>
+<p>真正触发我做这个项目的事情，是去年的一个翻译讨论：<a target="_blank" rel="noopener" href="https://github.com/vuejs/cn.vuejs.org/issues/480">如何</a><a target="_blank" rel="noopener" href="https://github.com/vuejs/cn.vuejs.org/issues/544">翻译</a> <a target="_blank" rel="noopener" href="https://github.com/vuejs/cn.vuejs.org/issues/630">attribute</a> 和 <a target="_blank" rel="noopener" href="https://github.com/vuejs/cn.vuejs.org/issues/646">property</a>。这个问题几乎从我接触技术翻译的第一天起就一直是个噩梦。我和周围的小伙伴尝试了各种译法，都不能让所有人满意，无奈之下通过刻意的区分和强化教育，把它们分别译成“特性”和“属性”。这个状态持续了很长一段时间，Vue 的文档也基本都是这么翻译的。直到去年的一段时间，我逐步意识到，也许这两个词不翻译会更好，索性直接保留英文原词，这样不会有歧义，同时随着整个社区的英文程度在提高，像这样的词不翻译大家应该也能顺畅的理解了，中英文混着读也逐渐可以接受了。所以就在 GitHub 开了个 <a target="_blank" rel="noopener" href="https://github.com/vuejs/cn.vuejs.org/issues/895">issue</a>，同时也扩散到了 <a target="_blank" rel="noopener" href="https://lists.w3.org/Archives/Public/public-chinese-web/2019Apr/0000.html">W3C Web 中文兴趣组</a>。没想到这次讨论大家的意见出奇的一致，几乎“全票通过”。看上去困扰我多年的问题终于要解开了……</p>
+<p>然而在这之后，我意识到，如何对已经翻译好的大量文档做关键词批量替换并不是一件容易的事情——主要还是格式细节太多了。不能做简单粗暴的文本批量替换。</p>
+<p>比如把“特性”换回“attribute”之后，如果“特性”一词的两边也都还是中文，那么“attribute”两边就都需要加一个空格，而如果是标点符号就不需要，而如果是英文，那理论上这个空格已经加过了。所以情况很多很复杂。你读到这里可能觉得那我们稍微加个正则表达式也许可以解决，那我会在告诉你，如果这个词的边上还可能有 HTML 标记或 Markdown 标记，那这个正则该如何写呢？或许也不那么容易了。</p>
+<p>因此这个译法改动在去年就已经有定论了，但是实际上到今年上半年我才真正改好。原因是我觉得这次我不打算再靠蛮力去解决问题了，而打算通过工具来解决——这就是我做这个项目的由来和动机——没错我陆陆续续做了一年左右，最近终于做出一个比较文档的版本了，然后才完成了这次译法的替换。</p>
+<p>另外一个促使我做这个工具的原因其实是我个人希望尝试一些语法分析之类的技术，因为觉得作为一个前端工程师，未来这个方向的可能性和空间比较大。如之前和很多人都聊到过的，现如今的前端框架全部都开始在编辑器这个环节大做文章。因为它可以帮助你突破一些 JS 语言的限制。所以大家武装到牙齿之后这部分是一定会碰的。我预测接下来这个趋势会从框架往上发展，逐步延申到前端工作的更多环节。做这个工具看上去似乎有那么一点可以积累到的知识和经验，于是就想先做个这个试试看。</p>
+  <p class="more">
+    <a href="/blog/introducing-zhlint/">
+      阅读剩余部分...
+    </a>
+  </p>
+  
+</div>
+
+<div class="content">
+  <h2>
+    <a href="/blog/introducing-vue-mark-display/">
+      vue-mark-display：用 markdown 语法轻松撰写幻灯片
+    </a>
+  </h2>
+  
+  <p>为大家介绍一个刚刚开源，但其实自己已经使用超过 5 年的小工具：<code>vue-mark-display</code>。你可以用它把 <a target="_blank" rel="noopener" href="https://commonmark.org/help/">markdown</a> 格式的文本转换成幻灯片并在浏览器中播放和控制。</p>
+<h3 id="开发背景"><a href="#开发背景" class="headerlink" title="开发背景"></a>开发背景</h3><p>我自己工作中经常需要准备各式各样的幻灯片，所以逐渐觉得用 PowerPoint 或 Keynote 来做幻灯演示略微显得有些笨重。这体现在板式和样式设计、文件大小、打开、编辑和播放的方式等很多方面。加上我从事的就是前端开发的工作，对语义化的信息格式非常敏感，深刻的认为，那些你表面上想编辑的“样式”其实是信息的“类型”+“配套的样式”罢了。所以决定用 markdown 外加自己扩展的一些小功能，来撰写幻灯片，并研发了相应的工具，也就是最近开源的 <code>vue-mark-display</code>。</p>
+<p>最早这个工具是用 vue v0.10 写的，当时源代码里还有像 <code>v-attr</code>, <code>v-repeat</code>, <code>v-transition</code> 这样的“古董级”语法，而且还在依赖 Zepto。最近准备开源这个项目的时候，我也基于最新的前端知识和技能进行了重构。所以大家看到的是比较新的版本。</p>
+<p>其实在此之前，我也写过很多类似的小工具了，但都没有坚持使用很久，这次开源的 <code>vue-mark-display</code> 我差不多持续使用了 5 年。经历了差不多这 5 年时间，准备过了无数的幻灯片和公开演讲，我想说基于 markdown 以及这些小功能撰写幻灯片真的很酷。如果你也有兴趣试一试用 markdown 为主体来撰写自己的幻灯片，那么不妨了解并体验一下 <code>vue-mark-display</code>。</p>
+<p><strong>另外，事实上，如果只是想使用它，你是不需要学习任何关于 Vue 的知识的</strong> —— <strong>文章最后会提供一个不需要 Vue 知识的开箱即用的办法</strong> —— 所以它也对 React、Angular 等社区的同学友好 —— 只要你会写 markdown 和简单的 HTML5 代码，你就可以使用 <code>vue-mark-display</code> 制作出非常精美的幻灯片。</p>
+  <p class="more">
+    <a href="/blog/introducing-vue-mark-display/">
+      阅读剩余部分...
+    </a>
+  </p>
+  
+</div>
+
+<div class="content">
+  <h2>
+    <a href="/blog/thoughts-about-tech-conf/">
+      我对技术会议的一些看法
+    </a>
+  </h2>
+  
+  <p>如题，今年陆续参加了一些技术会议，有些新的感触，尤其是今年第一次尝试多参加了一些境外的会议，有在 <a target="_blank" rel="noopener" href="https://www.webconf.asia">HK</a> 的，有在 <a target="_blank" rel="noopener" href="https://modernweb.tw/2018/">TW</a> 的，有在 <a target="_blank" rel="noopener" href="https://vuefes.jp">JP</a> 的，感受很不一样，当然也参加了年初的厦门 CSSConfCN 和刚结束的 VueConfCN。另外网上越来越多人在讨论或是质疑参加技术会议到底有什么意义、好的技术会议应该是什么样子的，我也以写这篇博客的方式参与一下。</p>
+  <p class="more">
+    <a href="/blog/thoughts-about-tech-conf/">
+      阅读剩余部分...
+    </a>
+  </p>
+  
+</div>
+
+<div class="content">
+  <h2>
+    <a href="/blog/vueconf-hangzhou/">
+      VueConf Hangzhou 见闻
+    </a>
+  </h2>
+  
+  <p><s>先说</s>分享一些自己参加 <a target="_blank" rel="noopener" href="https://vueconf.cn/">VueConf Hangzhou</a> 的流水账见闻。</p>
+<p><img src="/images/vueconf-hangzhou.jpg" alt=""></p>
+  <p class="more">
+    <a href="/blog/vueconf-hangzhou/">
+      阅读剩余部分...
+    </a>
+  </p>
+  
+</div>
+
+<div class="content">
+  <h2>
+    <a href="/blog/cssconf-cn-4/">
+      第四届 CSSConf CN 见闻
+    </a>
+  </h2>
+  
+  <p>上周末作为一名分享者参加了 <a target="_blank" rel="noopener" href="https://css.w3ctech.com/">CSSConf CN</a>，在厦门。</p>
+<p>其实除了自己的分享内容，这次我是带着很明确的目的参会的，因为有两个主题我特别关注，就是：</p>
+<ul>
+<li>第一个：响应式的组件</li>
+<li>第三个：从 API 的角度看组件的 CSS</li>
+</ul>
+<p>(两个分享的标题都被我稍微“演绎”了一下)</p>
+<p>这两件事都是自己工作上正在特别关注的事情，一方面，我们很少从 API 的角度去理解一个组件的 CSS 该如何组织和管理，所以这个标题就特别吸引我，另一方面响应式组件的分享者是来自新加坡的前端工程师 Zell (我个人一直觉得国内的响应式都是在瞎搞，看了很多周围团队都没有认真做这件事，甚至不相信响应式的价值，从设计师到工程师)，因此非常珍惜这个机会能近距离学习一些国外的同行们是怎么看待和实践响应式的。</p>
+<p>所以尽管我们团队的差旅经费已经用完了，还是决定自费来厦门近距离交流一下。</p>
+<p>现在证明这次真的不虚此行。</p>
+<p>当然参加这种线下活动，“面基”的目的是一定有的……恩，这个不值一提。</p>
+  <p class="more">
+    <a href="/blog/cssconf-cn-4/">
+      阅读剩余部分...
+    </a>
+  </p>
+  
+</div>
+
+<div class="content">
+  <h2>
+    <a href="/blog/the-future-of-web-forms/">
+      [译]Web 表单的未来
+    </a>
+  </h2>
+  
+  <p><mark>译自：<a target="_blank" rel="noopener" href="https://blog.prototypr.io/the-future-of-web-forms-4578485e1461">https://blog.prototypr.io/the-future-of-web-forms-4578485e1461</a> Matt West 的 The Future of Web Forms</mark></p>
+<p>license: <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a></p>
+<hr>
+<p>如何通过会话式的界面让数据收集更加人性化。</p>
+<p>Web 表单是从纸质媒介进化而来的。即设计一组标签和线框来限制输入，同时让数据处理变得跟容易。</p>
+<p>毕竟，表单的目的是收集数据，以便执行操作。为了执行该操作，我们需要把收集的数据统一汇总。我们在界面上设计了一些约束以便达到统一汇总的目的。表单旨在符合流程上的需求，而非用户本身。</p>
+<p>表单经常给人的感觉是冷冰冰的，没有人情味。因此，我们得到的回应往往也是冷酷和不人性的。我们不深入细节，如果一个朋友问你相同的问题，你可能会多一些回复，但这是一台电脑。他想要的只是数据，别的不在乎。就好像你在跟人说话但是人家并没有在听。为什么没人听的话说出来会让人觉得烦呢？</p>
+<p><img src="/uploads/2017/08/3710637212.jpg" alt=""><br>Image by <a target="_blank" rel="noopener" href="https://www.flickr.com/photos/teegardin/5512347305/in/photolist-9p7dNM-nfdbBe-cDphCL-9xSJ1E-4ygMXx-6jXLSo-9oAgas-nytcFV-aXPWKv-2rxaS-6jXZNW-oTkWEk-iYYsDH-pMeotq-5SLAGV-6jERwK-6jBcih-iq2oUj-9c36uA-6wAbW4-7vWrZv-dRsLkh-99N1pk-g1vCAm-g4P8w-eSo6V4-biaFTP-6jk9td-J9DyZ-cQay4s-6jXYcS-9PSLHY-iYKUVr-h5Eh26-6jBXaA-7vTL6V-pMfC4t-5u8Nod-7b3sfu-fdPdkW-7vVobi-5Tscj8-7vUV6p-bDw2PE-6jxKBi-5Tww8J-89GCkF-6jxKTi-6jBWUG-eiwixk">Ken Teegardin</a>.</p>
+<p>和许多数字化的东西一样，表单已经被之前的形态严重影响。我们之所以往线框里填东西是因为我们以前在纸上就是这么画的。</p>
+  <p class="more">
+    <a href="/blog/the-future-of-web-forms/">
+      阅读剩余部分...
+    </a>
+  </p>
+  
+</div>
+
+<div class="content">
+  <h2>
+    <a href="/blog/apple-is-about-to-do-something-their-programmers-definitely-dont-want/">
+      [译]苹果正在做一些他们的程序员明摆着不想要的东西
+    </a>
+  </h2>
+  
+  <p><mark>译自: <a target="_blank" rel="noopener" href="https://medium.com/make-better-software/apple-is-about-to-do-something-their-programmers-definitely-dont-want-fc19f5f4487">https://medium.com/make-better-software/apple-is-about-to-do-something-their-programmers-definitely-dont-want-fc19f5f4487</a></mark></p>
+<p>Jul 29, 2017</p>
+<p>作者 <a target="_blank" rel="noopener" href="http://anildash.com/">Anil Dash</a> 是 Fog Creek Software 的 CEO，致力于让科技变得更人性和道德一些，同时他也是 Medium 的顾问。</p>
+<hr>
+<blockquote>
+<p>苹果在 Apple Park 这个漂亮的新办公楼上花了 50 亿美金，却犯了一个完全可以避免的极其昂贵的错误：让他们的程序员工作在一个开放式的格局中。这真让人惊讶。</p>
+</blockquote>
+<p><img src="/uploads/2017/08/2254787802.jpg" alt=""></p>
+<p>我在 Fog Creek Software 工作，我们的联合创始人兼前 CEO <a target="_blank" rel="noopener" href="https://medium.com/u/869c7e626b83">Joel Spolsky</a> 在<a target="_blank" rel="noopener" href="https://www.joelonsoftware.com/2000/04/19/where-do-these-people-get-their-unoriginal-ideas/">至少 17 年前</a>就已经针对开放式办公室对于程序员产能的糟糕影响撰文了。他在这方面的洞察基于了 Tom DeMarco 和 Tim Lister 的经典书籍<a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Peopleware:_Productive_Projects_and_Teams">《Peopleware》</a>——该书已经出版了三十年。所以这其实不是什么全新的观点。当然在这数十年里，也已经有无数的<a target="_blank" rel="noopener" href="http://theconversation.com/open-plan-offices-attract-highest-levels-of-worker-dissatisfaction-study-18246">学术研究确认</a>了同一个结论：人们在开放式空间办公是烦躁的、注意力不集中的、常常不开心的。</p>
+<p>这不是说开放式办公环境一无是处——它能够营造很好的协作和联络的氛围。对于市场或销售团队来说，共享空间是非常有意义的。但是对于需要身处某种工作流状态的任务来说呢？这个问题从科学的角度是有定论的。</p>
+<p>那就是把门关上。</p>
+  <p class="more">
+    <a href="/blog/apple-is-about-to-do-something-their-programmers-definitely-dont-want/">
+      阅读剩余部分...
+    </a>
+  </p>
+  
+</div>
+
+<div class="content">
+  <h2>
+    <a href="/blog/why-i-dont-unpaid-overtime-and-neither-should-you/">
+      [译]为什么我不会无偿加班且你也不应该
+    </a>
+  </h2>
+  
+  <p><mark>译自：<a target="_blank" rel="noopener" href="http://thecodist.com/article/why_i_don_39_t_do_unpaid_overtime_and_neither_should_you">http://thecodist.com/article/why_i_don_39_t_do_unpaid_overtime_and_neither_should_you</a></mark></p>
+<p>原文写于 2012 年，至今已经有一段时间了，前段时间这篇文章又被大家翻出来热烈讨论，看过之后有些感触，所以翻译了一下</p>
+<hr>
+<p>我是一个在美国待了 30 年的程序员，我有过一周工作超过 40 小时的经历，这在行业里面并不常见，但是我<a target="_blank" rel="noopener" href="http://dict.cn/rarely">很难</a>因此而得到更多的薪水。</p>
+<p>总之，我现在发现整个做法<a target="_blank" rel="noopener" href="http://dict.cn/nauseating">很恶心</a>。</p>
+<p>我并不是针对自营或创业等多干活儿就能得到更多回报的情况。我曾经在 80 年代中期到 90 年代开过两个小的软件公司，并且工作时间也很长，但是我们会共享全部的成果，而第二家公司我们在合同里就定好了多劳多得的规矩。当然这不是我们今天讨论的重点。</p>
+<p>如果我为一家大公司工作并且谈好了薪水，那我的预期就是我在标准的时间内，即公认的 (至少在美国) 一天 8 小时一周 5 天，尽我所能完成工作。如果他们希望我每周工作 70 个小时或有些主管期望团队每天都来上班，现在的我是会拒绝的。为什么呢？</p>
+<p>当我们决定工作赚钱的时候，我们假定工作的主要原因是为了换取我们生活所需的开销。雇员的预期是他们会获得等价于这笔薪水的产出。但问题在于，雇主概念中的价值经常和雇员的不一样，尤其在美国和亚洲。许多公司期望薪水是固定的，但是他们创造这些价值需要完成的工作是不确定的。雇主觉得只要提高对雇员的预期和要求，就能够获得更大的回报，这样他们就可以通过为每份薪水延长工作时间来降低实质的劳动成本。</p>
+<p>这对于雇员来说意味着什么？如果你同意了，那么你实际上就认同了自己的工作更廉价。甚至这种工作其实就是无偿的。那么作为雇员你在这样的无偿工作中收获了什么呢？在绝大多数雇主面前，你什么也没有得到。如果你是一个主管，也许会得到晋升，但是作为程序员你职业发展的道路不只是做管理这一条。如果你连续几个月每周编码超过 80 个小时，通常情况下得到的回报和一周努力工作 40 小时差不多。</p>
+  <p class="more">
+    <a href="/blog/why-i-dont-unpaid-overtime-and-neither-should-you/">
+      阅读剩余部分...
+    </a>
+  </p>
+  
+</div>
+
+<div class="content">
+  <h2>
+    <a href="/blog/for-after-college/">
+      寄语应届生：走出校园的几个人生转变
+    </a>
+  </h2>
+  
+  <p>最近收到个邀请，<a target="_blank" rel="noopener" href="https://weibo.com/2724465062/ECaVuAyZk">有机会和大学生的在线互动交流</a>，体裁不限。我选了上面这个题目，整理了一些心得感想，虽然活动很快就结束了，但是这些想法我打算还是以文字形式备忘一下。如果能给更多人帮助或参考，我会倍感欣慰。</p>
+<h3 id="目标的转变"><a href="#目标的转变" class="headerlink" title="目标的转变"></a>目标的转变</h3><p>作为学生，毫无疑问是以学业为重。在校园里，大家不出意外都会把学习定为最大的目标，围着功课转。但是工作之后，你可能面对很多事情要处理，怎么有所成就？怎么赚钱？怎么照顾好自己？怎么照顾好家庭……除了目标本身不同之外，我觉得更大的不一样在于，在相当长且连续的学生生涯中，我们没有太多选择的余地和必要，即便是有什么目标，也基本上是被动接受或被灌输的。但是走出校园之后，你面对的是一个无比自由开放的社会。这个时候你需要的不是意见，而是主见。甚至你是否做好了准备，有了足够的本事从事一项工作，还是继续学习深造修炼自我，直到自己准备好为止再工作？这也需要你的主见 (并为这个主见承担相应的后果，某种角度上)。最终很多选择是开放的，权衡的，遵从自己内心的结果。</p>
+<p>还有一点我想说的是，因为你拥有了新的目标，而且不再会有人逼着你学习，从外部给你学习上的压力，所以客观上学习的环境也没有那么好那么纯粹了，学习这件事情会逐渐变得让你渴望、珍惜、喜欢。希望你还没有因为繁重的学业对新事物新知识，尤其是表面上枯燥但实际上对你有很多帮助的东西，失去动力。我们在校园里更多的是学习知识，然后推导这些知识可以用在什么地方；走出校园之后更多的需要思考，我遇到一个问题想解决它，究竟有多少知识哪些知识可以为我所用？也许在未来的某一天你会突然觉得，当时在校园里，学习环境那么好，怎么没有多看两本书，多做些训练。所以最好不要丢下自己看书学习的习惯，给自己定个长期的学习计划，有空就多看两本书。</p>
+<h3 id="学会社交"><a href="#学会社交" class="headerlink" title="学会社交"></a>学会社交</h3><p>坦白地讲我觉得这在校园里并不是必备的技能。但是走出校园之后，它非常非常重要。这也是为什么几乎所有的公司都会给员工做沟通培训 (尽管那并不一定管用)。社交并不只是沟通而已，也不只是表达，更是聆听，是待人接物的每一个细节。我发现很多人在工作中，最简单的两件事情做不好，也不知道该怎么做，那就是：1 如何写邮件、2 如何开会。这表面上是职场礼数的范畴，也有很多文章介绍这些职场礼数，看上去就是个知识点罢了。但实际上一个人在理解和实践它的背后，反映的是修养，甚至是教养。这不是一两篇文章能够教会你的，是你平时为人处事方式的积累和感悟。</p>
+<p>另外社交能力的重要性不止体现在工作中，体现在你步入社会之后可能会面对的各种场合的各种人，比如和同事下班之后一起组织些活动放松消遣一下，和老乡或老同学叙叙旧——这些也都是我刚毕业的时候经常会做的事情。但是这里我认为更重要的场景是：学会如何跟陌生人打交道，如何更主动的和陌生人交流，和这个社会交流。从最简单的跟陌生人问路、跟陌生的房东租房子、甚至搭讪对吧 ^_^，到跟不同性格的服务员、乘务员、售票员、公交车司机、出租车司机沟通或寻求帮助，再到你如何主动但又不会让对方和周围人尴尬的帮助别人，包括你是否会本能的路见不平挺身而出……抱歉这可能有点超出社交这个话题了。但这些都是有关联的不是吗？每个人在这个社会中都是一个独立的个体，但又是相互依赖相互依靠的一个集体社会。想真正融入这个社会，我觉得这些都是必须的。</p>
+<p>最后，关于社交，还有一点很重要，就是在你刚刚加入一个公司或团队的时候，你周围的人一开始对你来说都是陌生人。这个社会上可能有很多适合你的机会，但它们不会主动找到你头上，这个时候需要你学会跟陌生人打交道。好的社交能力会让你的人生更有安全感，对自己办好一件事更有信心。和别人交流同样是一个完善自我认知的过程，尝试接受更多不同的观点，发现并理解不同的看问题的角度，有助于更认清自己，避免自以为是 (相信我，这种事情别人帮不上忙的，只能你自己领悟)。</p>
+<h3 id="个人发展"><a href="#个人发展" class="headerlink" title="个人发展"></a>个人发展</h3><p>我觉得找工作这件事情，更多的要从兴趣出发，而不是所谓的“前途”。我逐渐越来越认同和相信一句老话：“三百六十行，行行出状元”。首先，如果对这件事情没有兴趣，你很难“用心”做好它，这样的状态也不是长久的；第二，我们已经看得见摸得着的“前途”和“机会”，往往已经不是什么好机会了，尤其是如今互联网时代事情变化发展这么快。而且那些真正抓住机会的人往往都是在完全没人看好的时候就开始全身心的投入在这个行业或方向上，才能在“机会”来临的时候抓住它，我不觉得这些人只是更厉害的“投机主义者”，如果没有兴趣在背后趋势着这些人，他们又是怎样才能在枯燥 (往往还伴随着高风险和不确定性) 的领域里这么坚定的做到今天呢？所以我的个人建议是，找工作，就完全追随自己的兴趣和内心就好了，不要想太多“这个行业比较赚钱比较有前途”之类的——它最多是你的一个参考项。找到自己的兴趣所在，相信它，相信自己，保持专注，一定有最好的回报，剩下的东西交给运(时)气(间)就好了。</p>
+<p>再有就是要相信专业的力量，对学问保有“敬畏之心”。这里的学问不只是纯职业技术，也包括做事方式方法等等一切社科类的研究。<!--虽然我们看到今天很多行业存在这样一种不健康的现象：做 X 不赚钱，然后免费做 X 出了名，靠走穴之类的“不专注”来赚钱；再接下来大家发现 X 方面不专业也没关系，只要“出了名”，后面的“商演走穴赚钱”也行得通，而“出名”的方法又有很多，所以渐渐的没有人相信专业 X 的价值。我不知道这个 X 换成音乐、演技、技术之类的名次是不是都适用，但是这种成功只是少数个体的成功，而且是很短暂的，更重要的是这并不是一个行业和社会的成功。-->如果一个行业的专业性丢掉了，整个行业也就被毁掉了，最后大家会一起丢掉工作，一起失败。</p>
+<p>这种东西我觉得跟很多已经被一份工作或长期不良型的环境所固化思想的“老家伙”们讲已经不一定有意义和效果了。但是对于打算或刚刚从校园步入社会，有理想，有抱负，承载着社会的未来的大学生们来说，我希望有机会在这方面多呼吁一下。尊重和相信专业的力量，耐得住性子，不要被一时的挫折、不走运或委屈左右，多多磨练自己，你一定不会后悔。</p>
+<h3 id="So-Are-You-Ready？"><a href="#So-Are-You-Ready？" class="headerlink" title="So Are You Ready？"></a>So Are You Ready？</h3><p>：）</p>
+
+  
+</div>
+
+<div class="content">
+  <h2>
+    <a href="/blog/if-management-is-the-only-way-up-we-are-all-fd/">
+      [译]如果管理是唯一可走的路，那就完蛋了
+    </a>
+  </h2>
+  
+  <p><mark>译自：<a target="_blank" rel="noopener" href="https://moz.com/rand/if-management-is-the-only-way-up-were-all-fd/">https://moz.com/rand/if-management-is-the-only-way-up-were-all-fd/</a></mark></p>
+<p>注：作者 Rand 是 Moz 的 CEO，文中反复出现两个词：IC (Individual Contributor) 和 PW (People Wrangler)，分别翻译成了一线员工和经理人。</p>
+<hr>
+<p><a target="_blank" rel="noopener" href="http://everywhereist.com/">Geraldine</a> 很喜欢她曾经在 Cranium 的工作 (西雅图的<a target="_blank" rel="noopener" href="http://dict.cn/board%20game">桌游</a>初创公司，在 Hasbro 收购他们并<a target="_blank" rel="noopener" href="http://dict.cn/layoffs">裁员</a><a target="_blank" rel="noopener" href="http://dict.cn/prior">之前</a>)。她为桌游撰写问题，并为包装盒和营销材料撰写<a target="_blank" rel="noopener" href="http://dict.cn/copy">文案</a>。她很擅长这个。但是发生了一些奇怪的事情——他们想让她晋升。我记得她晚上回家后<a target="_blank" rel="noopener" href="http://dict.cn/endlessly">非常的</a><a target="_blank" rel="noopener" href="http://dict.cn/fretting">苦恼</a>。她不想让人们向她汇报。她不想在团队中拥有更大的责任。她只想写写东西。</p>
+<p>这很奇怪。当我们审视一家公司的结构时，很容易发现团队需要很多高质量的一线员工 (IC) 以及少数高质量的<a target="_blank" rel="noopener" href="http://dict.cn/wrangler">经理人</a>。然而我们的<a target="_blank" rel="noopener" href="http://dict.cn/corporate">公司</a>文化和这个世界的“模式”已经让我觉得除非你要带人，否则你的影响力、薪水、利益、职位和自我价值都不会增长。</p>
+<p><a target="_blank" rel="noopener" href="http://www.urbandictionary.com/define.php?term=I%20call%20bullshit">这都什么乱七八糟的。</a></p>
+<p>我过去写过关于多样化成长轨迹的重要性——<a target="_blank" rel="noopener" href="https://moz.com/rand/whats-the-right-team-structure/">一线员工和经理人</a>——但是我们最近在 Moz 花了大量的时间碰撞想法，很快会实施一个新的职位/团队的结构，最终付诸实践，我对此充满期待。</p>
+<p>现在我会为一个在其工作岗位上做的很优秀的一线员工表达对管理的兴趣而担心。我担心这种渴望的很<a target="_blank" rel="noopener" href="http://dict.cn/significant">重要的</a><a target="_blank" rel="noopener" href="http://dict.cn/portion">一部分</a>不源自真正的管理责任感，而是因为他们想要在职业生涯和/或影响力上得到提高，并且认为这是唯一的办法。</p>
+<p>我画了这张图来辅助<a target="_blank" rel="noopener" href="http://dict.cn/illustrate">说明</a>两种角色之间的不同：</p>
+<p><img src="https://images.sparktoro.com/blog/wp-content/uploads/2017/10/ics-vs-pws-small.gif" alt="ics-vs-pws-small"><br>(<a target="_blank" rel="noopener" href="https://images.sparktoro.com/blog/wp-content/uploads/2017/10/ics-vs-pws-large.gif">大图</a>)</p>
+  <p class="more">
+    <a href="/blog/if-management-is-the-only-way-up-we-are-all-fd/">
+      阅读剩余部分...
+    </a>
+  </p>
+  
+</div>
+
+
+
+<ol class="page-navigator">
+  <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><a class="page-number" href="/page/6/">6</a><a class="page-number" href="/page/7/">7</a><a class="page-number" href="/page/8/">8</a><a class="page-number" href="/page/9/">9</a><a class="page-number" href="/page/10/">10</a><a class="page-number" href="/page/11/">11</a><a class="page-number" href="/page/12/">12</a><a class="page-number" href="/page/13/">13</a><a class="page-number" href="/page/14/">14</a><a class="page-number" href="/page/15/">15</a><a class="page-number" href="/page/16/">16</a><a class="page-number" href="/page/17/">17</a><a class="page-number" href="/page/18/">18</a><a class="page-number" href="/page/19/">19</a><a class="page-number" href="/page/20/">20</a><a class="extend next" rel="next" href="/page/2/">»</a>
+</ol>
+
+</div>
+
+    <div id="footer">
+      <a href="/">囧克斯</a>
+      
+      |
+      <a href="/atom.xml" title="rss_feed">RSS</a>
+      
+      |
+      我是百度统计
+      <script src="https://hm.baidu.com/h.js?a0a2372d4b7621d0bfe71f33c58a4bd8"></script>
+      |
+      我会翻脸 <a href="#" onclick="document.body.classList.toggle('dark-mode'), event.preventDefault()" style="font-size: 1.25em;">🌚🌝</a>
+    </div>
+  </div>
+
+  
+<script src="/js/script.js"></script>
+
+</body>
+
+</html>

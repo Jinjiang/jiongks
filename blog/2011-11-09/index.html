@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <!-- proud for contributing Vue.js -->
+  <meta charset="utf-8">
+  <meta name="format-detection" content="telephone=no" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-touch-fullscreen" content="yes" />
+
+  
+  <title>
+    
+    今天又被chrome给伤了 -
+    
+    囧克斯
+  </title>
+
+  
+<link rel="stylesheet" href="/css/pure.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+
+  
+  <link rel="alternate" href="/atom.xml" title="囧克斯" type="application/atom+xml">
+  
+  
+  <link rel="icon" href="/favicon.ico">
+  
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+<body>
+  <script>(() => { if ((new Date().getHours() + 6) % 24 < 12) document.body.classList.add('dark-mode') })()</script>
+
+  <div class="dark-mode-helper"></div>
+
+  <div id="wrapper">
+
+    <div id="header">
+      <h1>
+        <a href="/" title="囧克斯">
+          囧克斯
+        </a>
+      </h1>
+      <p class="description">
+        这里是勾三股四的家
+      </p>
+    </div>
+
+    <div id="nav" class="pure-menu pure-menu-open pure-menu-horizontal">
+      <ul>
+        
+        <li>
+          <a href="/all-demos/">
+            线上
+          </a>
+        </li>
+        
+        <li>
+          <a href="/all-slides/">
+            线下
+          </a>
+        </li>
+        
+        <li>
+          <a href="/about/">
+            关于
+          </a>
+        </li>
+        
+        <li><a href="/archives">归档</li>
+      </ul>
+    </div>
+
+    <div id="main"><div class="content">
+  <h2>
+    今天又被chrome给伤了
+  </h2>
+  
+<p><mark>本文摘自 勾三股四 更早时期的 <a target="_blank" rel="noopener" href="http://bulaoge.net/?g3g4">不老歌</a> 博客。</mark></p>
+
+<a id="more"></a>
+<p>今天为了实验一个file api的效果，不得不放弃mac下自带的safari浏览器，装上了chrome——在这之前我觉得safari应该足够了，因为从开发者的角度看，我一直觉得chrome在内核方面的改造步伐过于激进，而safari相对稳妥一些，不过file api，这个东东safari确实没有支持，很纠结。在深思熟虑之后，还是决定把chrome装上了。<br />
+<br />
+结果初次试用 chrome for mac 非常沮丧，再一次以无尽的崩溃为代价在尝试着新技术。具体问题是这样的：<br />
+<br />
+我想实现的效果，是拖拽一个图片到页面上指定的矩形区域，然后把这个图片作为背景显示出来。这分为了两步：第一步，用ondrop捕获外部图片文件拖入的事件；第二步，可以从该事件的event.target.result中获取图片的base64编码，然后把这段编码赋值给background-image属性，格式为url(...)即可。<br />
+<br />
+网上有一个现成的例子：<a href="http://html5demos.com/file-api" target="_blank">http://html5demos.com/file-api</a>，其实我做的效果跟这个大同小异。<br />
+<br />
+这件事情chrome for mac完成的很好，但接下来，我想把这个程序稍作改进，就遇到了问题<br />
+<br />
+由于被拖拽进去的文件不见得是图片文件，这导致有些情况下，文件拖进去了，却无法正常显示成图片，我想加入一个智能判断的环节，如果图片生成失败，就进行提示。其实现成的方案是存在的，就是先把base64编码赋值给一个img标签的src属性，然后分别通过捕获这个img标签的onload和onerror事件来判断图片是否可以正常显示。<br />
+<br />
+这样我的实现方案就变成了3个步骤，4段代码：<br />
+<br />
+  * 第一步，用ondrop捕获外部图片文件拖入的事件，和刚开始一样；<br />
+  * 第二步，可以从该事件的event.target.result中获取图片的base64编码，然后把这段编码赋值给一个img标签的src属性，监听onload和onerror事件；<br />
+  * 第三步，如果onload事件触发，则再把这段base64编码赋值给background-image属性；而如果on error事件触发，则提示图片生成失败。<br />
+<br />
+把代码写好以后，刷新网页，把图片文件再次拖入定义好的矩形区域，这时chrome for mac就崩溃了……<br />
+<br />
+问题基本定位在了img标签在onload中再次处理这段base64编码的时候，更具体的原因就不得而知了。无奈之下，我只好把这个新加入的功能又去掉。<br />
+<br />
+这件事情就算这样过去了，但是我更觉得chrome越来越不靠谱了，除了这次的问题，我之前还遇到过或亲眼目睹周围的开发者遭遇web socket协议更改导致之前写好的程序不能工作、Audio内存管理不善导致播放大量音频时内存不能释放直至崩溃等等——更何况我这次安装的不是beta版也不是dev版，而是面向大众的正式版。如果未来的chrome一直是一个“千疮百孔”的产品，恐怕会给前端开发者带来又一轮的灾难。</p>
+
+</div>
+
+<p align="right">
+  <small>
+    <a href="https://github.com/Jinjiang/jinjiang.github.io/edit/dev/source/_posts/2011-11-09.md" target="_blank">
+      向本文提出修改或勘误建议
+    </a>
+  </small>
+</p>
+
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+
+<div id="gitalk-container"></div>
+
+<script>
+  const gitalk = new Gitalk({
+    clientID: 'c99e23053fc1bba6a58c',
+    clientSecret: '64efe1cd1438e77ae2bf8eba92b51c90d0cc2b9f',
+    repo: 'jinjiang.github.io',
+    owner: 'jinjiang',
+    admin: ['jinjiang'],
+    id: location.pathname,      // Ensure uniqueness and length less than 50
+    distractionFreeMode: false  // Facebook-like distraction free mode
+  })
+
+  gitalk.render('gitalk-container')
+</script>
+</div>
+
+    <div id="footer">
+      <a href="/">囧克斯</a>
+      
+      |
+      <a href="/atom.xml" title="rss_feed">RSS</a>
+      
+      |
+      我是百度统计
+      <script src="https://hm.baidu.com/h.js?a0a2372d4b7621d0bfe71f33c58a4bd8"></script>
+      |
+      我会翻脸 <a href="#" onclick="document.body.classList.toggle('dark-mode'), event.preventDefault()" style="font-size: 1.25em;">🌚🌝</a>
+    </div>
+  </div>
+
+  
+<script src="/js/script.js"></script>
+
+</body>
+
+</html>

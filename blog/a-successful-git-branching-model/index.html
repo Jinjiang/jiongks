@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <!-- proud for contributing Vue.js -->
+  <meta charset="utf-8">
+  <meta name="format-detection" content="telephone=no" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-touch-fullscreen" content="yes" />
+
+  
+  <title>
+    
+    [译]Git 分支的最佳实践 -
+    
+    囧克斯
+  </title>
+
+  
+<link rel="stylesheet" href="/css/pure.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+
+  
+  <link rel="alternate" href="/atom.xml" title="囧克斯" type="application/atom+xml">
+  
+  
+  <link rel="icon" href="/favicon.ico">
+  
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+<body>
+  <script>(() => { if ((new Date().getHours() + 6) % 24 < 12) document.body.classList.add('dark-mode') })()</script>
+
+  <div class="dark-mode-helper"></div>
+
+  <div id="wrapper">
+
+    <div id="header">
+      <h1>
+        <a href="/" title="囧克斯">
+          囧克斯
+        </a>
+      </h1>
+      <p class="description">
+        这里是勾三股四的家
+      </p>
+    </div>
+
+    <div id="nav" class="pure-menu pure-menu-open pure-menu-horizontal">
+      <ul>
+        
+        <li>
+          <a href="/all-demos/">
+            线上
+          </a>
+        </li>
+        
+        <li>
+          <a href="/all-slides/">
+            线下
+          </a>
+        </li>
+        
+        <li>
+          <a href="/about/">
+            关于
+          </a>
+        </li>
+        
+        <li><a href="/archives">归档</li>
+      </ul>
+    </div>
+
+    <div id="main"><div class="content">
+  <h2>
+    [译]Git 分支的最佳实践
+  </h2>
+  <p><mark>译自：<a target="_blank" rel="noopener" href="https://nvie.com/posts/a-successful-git-branching-model/">A successful Git branching model» nvie.com</a></mark></p>
+<hr>
+<p>本文将展示我一年前在自己的项目中成功运用的开发模型。我一直打算把这些东西写出来，但总是没有抽出时间，现在终于写好了。这里介绍的不是任何项目的细节，而是有关分支的策略以及对发布的管理。</p>
+<p><img src="https://nvie.com/img/git-model@2x.png" alt=""></p>
+<p>在我的演示中，所有的操作都是通过 git 完成的。</p>
+<a id="more"></a>
+<h3 id="为什么选择-git-？"><a href="#为什么选择-git-？" class="headerlink" title="为什么选择 git ？"></a>为什么选择 git ？</h3><p>为了了断 git 和中心源代码控制系统的比较和争论，请移步这里看看 <a target="_blank" rel="noopener" href="http://whygitisbetterthanx.com/">链接1</a> <a target="_blank" rel="noopener" href="https://git.wiki.kernel.org/index.php/GitSvnComparsion">链接2</a>。作为一个开发者，我喜欢 git 超过其它任何现有的工具。Git 真正改变了开发者对于合并和分支的认识。在传统的 CVS/SVN 里，合并/分支总是有点令人害怕的(“注意合并冲突，它们会搞死你的”)。</p>
+<p>但是 git 中的这些操作是如此的简单有效，它们真正作为你每天工作流程的一部分。比如，在 CVS/SVN 的书籍里，分支和合并总是最后一个章节的讨论重点(对于高级用户)，而在每一本 git 的书里 <a target="_blank" rel="noopener" href="https://book.git-scm.com/">链接1</a> <a target="_blank" rel="noopener" href="http://pragprog.com/titles/tsgit/pragmatic-version-control-using-git">链接2</a> <a target="_blank" rel="noopener" href="https://github.com/progit/progit">链接3</a>，这些内容已经被包含在第三章(基础)里了。</p>
+<p>因为它的简单直接和重复性，分支和合并不再令人害怕。版本控制工具比其它任何东西都支持分支/合并。</p>
+<p>有关工具就介绍到这里，我们现在进入开发模型这个正题。我要展现的模型本质上无外乎是一个流程的集合，每个团队成员都有必要遵守这些流程，来达到管理软件开发流程的目的。</p>
+<h3 id="分散但也集中"><a href="#分散但也集中" class="headerlink" title="分散但也集中"></a>分散但也集中</h3><p>我们的分支模型中使用良好的代码库的设置方式，是围绕一个真实的中心代码库的。注意，这里的代码库仅仅被看做是一个中心代码库(因为 git 是 DVCS，即分散版本控制系统，从技术层面看，是没有所谓的中心代码库的)。我们习惯于把这个中心代码库命名为 <code>origin</code>，这同时也是所有 git 用户的习惯。</p>
+<p><img src="https://nvie.com/img/centr-decentr@2x.png" alt=""></p>
+<p>每一位开发者都向 <code>origin</code> 这个中心结点 pull 和 push。但是除此之外，每一位开发者也可以向其它结点 pull 改变形成子团队。比如，对于两个以上开发者同时开发一项大的新特性来说，为了不必过早向 <code>origin</code> 推送开发进度，这就非常有用。在上面的这个例子中，Alice 和 Bob、Alice 和 David、Clair 和 David 都是这样的子团队。</p>
+<p>从技术角度，这无非意味着 Alice 定义一个名为 <code>Bob</code> 的 git remote，指向 Bob 的代码库，反之亦然。</p>
+<h3 id="主分支"><a href="#主分支" class="headerlink" title="主分支"></a>主分支</h3><p><img src="https://nvie.com/img/main-branches@2x.png" alt=""></p>
+<p>该开发模型的核心基本和现有的模型是一样的。中心代码库永远维持着两个主要的分支：</p>
+<ul>
+<li><code>master</code></li>
+<li><code>develop</code></li>
+</ul>
+<p>在 <code>origin</code> 上的 <code>master</code> 分支和每个 git 用户的保持一致。而和 <code>master</code> 分支并行的另一个分支叫做 <code>develop</code>。</p>
+<p>我们认为 <code>origin/master</code> 是其 <code>HEAD</code> 源代码总是代表了<em>生产环境准备就绪</em>的状态的主分支。</p>
+<p>我们认为 <code>origin/develop</code> 是其 <code>HEAD</code> 源代码总是代表了最后一次交付的可以赶上下一次发布的状态的主分支。有人也把它叫做“集成分支”。该源代码还被作为了 nightly build 自动化任务的来源。</p>
+<p>每当 <code>develop</code> 分支到达一个稳定的阶段，可以对外发布时，所有的改变都会被合并到 <code>master</code> 分支，并打一个发布版本的 tag。具体操作方法我们稍后讨论。</p>
+<p>因此，每次改动被合并到 <code>master</code> 的时候，这就是一个<em>真正的</em>新的发布产品。我们建议对此进行严格的控制，因此理论上我们可以为每次 <code>master</code> 分支的提交都挂一个钩子脚本，向生产环境自动化构建并发布我们的软件。</p>
+<h3 id="支持型分支"><a href="#支持型分支" class="headerlink" title="支持型分支"></a>支持型分支</h3><p>我们的开发模型里，紧接着 <code>master</code> 和 <code>develop</code> 主分支的，是多种多样的支持型分支。它们的目的是帮助团队成员并行处理每次追踪特性、准备发布、快速修复线上问题等开发任务。和之前的主分支不同，这些分支的生命周期都是有限的，它们最终都会被删除掉。</p>
+<p>我们可能会用到的不同类型的分支有：</p>
+<ul>
+<li>feature 分支</li>
+<li>release 分支</li>
+<li>hotfix 分支</li>
+</ul>
+<p>每一种分支都有一个特别的目的，并且有严格的规则，诸如哪些分支是它们的起始分支、哪些分支必须是它们合并的目标等。我们快速把它们过一遍。</p>
+<p>这些“特殊”的分支在技术上是没有任何特殊的。分支的类型取决于我们如何<em>运用</em>它们。它们完完全全都是普通而又平凡的 git 分支。</p>
+<h4 id="feature-分支"><a href="#feature-分支" class="headerlink" title="feature 分支"></a>feature 分支</h4><p><img src="https://nvie.com/img/fb@2x.png" alt=""></p>
+<ul>
+<li>可能派发自：<code>develop</code></li>
+<li>必须合并回：<code>develop</code></li>
+<li>分支命名规范：除了 <code>master</code>、<code>develop</code>、<code>release-*</code> 或 <code>hotfix-*</code> 的任何名字</li>
+</ul>
+<p>Feature 分支(有时也被称作 topic 分支)用来开发包括即将发布或远期发布的新的特性。当我们开始开发一个特性的时候，发布合并的目标可能还不太确定。Feature 分支的生命周期会和新特性的开发周期保持同步，但是最终会合并回 <code>develop</code> (恩，下次发布的时候把这个新特性带上)或被抛弃(真是一次杯具的尝试啊)。</p>
+<p>Feature 分支通常仅存在于开发者的代码库中，并不出现在 <code>origin</code> 里。</p>
+<h5 id="创建一个-feature-分支"><a href="#创建一个-feature-分支" class="headerlink" title="创建一个 feature 分支"></a>创建一个 feature 分支</h5><p>当开始一个新特性的时候，从 <code>develop</code> 分支派发出一个分支</p>
+<pre><code>$ git checkout -b myfeature develop
+Switched to a new branch &quot;myfeature&quot;
+</code></pre><h5 id="把完成的特性合并回-develop"><a href="#把完成的特性合并回-develop" class="headerlink" title="把完成的特性合并回 develop"></a>把完成的特性合并回 develop</h5><p>完成的特性可以合并回 <code>develop</code> 分支并赶上下一次发布：</p>
+<pre><code>$ git checkout develop
+Switched to a new branch &quot;develop&quot;
+$ git merge --no-ff myfeature
+Updating ea1b82a..05e9557
+(Summary of changes)
+$ git branch -d myfeature
+Deleted branch myfeature (was 05e9557)
+$ git push origin develop
+</code></pre><p><code>-no-ff</code> 标记使得合并操作总是产生一次新的提交，哪怕合并操作可以快速完成。这个标记避免将 feature 分支和团队协作的所有提交的历史信息混在主分支的其它提交之后。比较一下：</p>
+<p><img src="https://nvie.com/img/merge-without-ff@2x.png" alt=""></p>
+<p>在右边的例子里，我们不可能从 git 的历史记录中看出来哪些提交实现了这一特性——你可能不得不查看每一笔提交日志。恢复一个完整的特性(比如通过一组提交)在右边变成了一个头疼事情，而如果使用了 <code>--no-ff</code> 之后，就变得简单了。</p>
+<p>是的，这会创造一些没有必要的(空的)提交记录，但是得到的是大量的好处。</p>
+<p>不幸的是，我还没有找到一个在 <code>git merge</code> 时默认就把 <code>--no-ff</code> 标记打上的办法，但这很重要。</p>
+<h4 id="release-分支"><a href="#release-分支" class="headerlink" title="release 分支"></a>release 分支</h4><ul>
+<li>可能派发自：<code>develop</code></li>
+<li>必须合并回：<code>develop</code> 和 <code>master</code></li>
+<li>分支命名规范：<code>release-*</code></li>
+</ul>
+<p>Release 分支用来支持新的生产环境发布的准备工作。允许在最后阶段产生提交点(dotting i’s)和交汇点(crossing t’s)。而且允许小幅度的问题修复以及准备发布时的meta数据(比如版本号、发布日期等)。在 <code>release</code> 分支做了上述这些工作之后，<code>develop</code> 分支会被“翻篇儿”，开始接收下一次发布的新特性。</p>
+<p>我们选择(几近)完成所有预期的开发的时候，作为从 <code>develop</code> 派发出 <code>release</code> 分支的时机。最起码所有准备构建发布的功能都已经及时合并到了 <code>develop</code> 分支。而往后才会发布的功能则不应该合并到 <code>develop</code> 分支——他们必须等到 <code>release</code> 分支派发出去之后再做合并。</p>
+<p>在一个 <code>release</code> 分支的开始，我们就赋予其一个明确的版本号。直到该分支创建之前，<code>develop</code> 分支上的描述都是“下一次”release 的改动，但这个“下一次”release 其实也没说清楚是 0.3 release 还是 1.0 release。而在一个 release 分支的开始时这一点就会确定。这将成为有关项目版本号晋升的一个守则。</p>
+<h5 id="创建一个-release-分支"><a href="#创建一个-release-分支" class="headerlink" title="创建一个 release 分支"></a>创建一个 release 分支</h5><p>Release 分支派发自 <code>develop</code> 分支。比如，我们当前的生产环境发布的版本是 1.1.5，马上有一个 release 要发布了。<code>develop</code> 分支已经为“下一次”release 做好了准备，并且我们已经决定把新的版本号定为 1.2 (而不是 1.1.6 或 2.0)。所以我们派发一个 release 分支并以新的版本号为其命名：</p>
+<pre><code>$ git checkout -b release-1.2 develop
+Switched to a new branch &quot;release-1.2&quot;
+$ ./bump-version.sh 1.2
+Files modified successfully, version bumped to 1.2.
+$ git commit -a -m &quot;Bumped version number to 1.2&quot;
+[release-1.2 74d9424] Bumped version number to 1.2
+1 files changed, 1 insertions(+), 1 deletions(-)
+</code></pre><p>创建好并切换到新的分支之后，我们完成对版本号的晋升。这里的 <code>bump-version.sh</code> 是一个虚构的用来改变代码库中某些文件以反映新版本的 shell 脚本。(当然你也可以手动完成这些改变——重点是<em>有些</em>文件发生了改变)然后，晋升了的版本号会被提交。</p>
+<p>这个新的分支会存在一段时间，直到它确实发布出去了为止。期间可能会有 bug 修复(这比在 <code>develop</code> 做更合理)。但我们严格禁止在此开发庞大的新特性，它们应该合并到 <code>develop</code> 分支，并放入下次发布。</p>
+<h5 id="完成一个-release-分支"><a href="#完成一个-release-分支" class="headerlink" title="完成一个 release 分支"></a>完成一个 release 分支</h5><p>当 release 分支真正发布成功之后，还有些事情需要收尾。首先，release 分支会被合并到 <code>master</code> (别忘了，<code>master</code> 上的每一次提交都代表一个真正的新的发布)；然后，为 <code>master</code> 上的这次提交打一个 tag，以便作为版本历史的重要参考；最后，还要把 release 分支产生的改动合并回 <code>develop</code>，以便后续的发布同样包含对这些 bug 的修复。</p>
+<p>前两部在 git 下是这样操作的：</p>
+<pre><code>$ git checkout master
+Switched to branch &apos;master&apos;
+$ git merge --no-ff release-1.2
+Merge made by recursive
+(Summary of changes)
+$ git tag -a 1.2
+</code></pre><p>现在发布工作已经完成了，同时 tag 也打好了，用在未来做参考。</p>
+<p><strong>补充</strong>：你也可以通过 <code>-s</code> 或 <code>-u &lt;key&gt;</code> 标记打 tag。</p>
+<p>为了保留 release 分支里的改动记录，我们需要把这些改动合并回 <code>develop</code>。git 操作如下：</p>
+<pre><code>$ git checkout develop
+Switched to branch &apos;develop&apos;
+$ git merge --no-ff release-1.2
+Merge made by recursive.
+(Summary of changes)
+</code></pre><p>这一步有可能导致冲突的发生(只是有理论上的可能性，因为我们已经改变了版本号)，一旦发现，解决冲突然后提交就好了。</p>
+<p>现在我们真正完成了一个 release 分支，该把它删掉了，因为它的使命已经完成了：</p>
+<pre><code>$ git branch -d release-1.2
+Deleted branch release-1.2 (was ff452fe).
+</code></pre><h4 id="hotfix-分支"><a href="#hotfix-分支" class="headerlink" title="hotfix 分支"></a>hotfix 分支</h4><p><img src="https://nvie.com/img/hotfix-branches@2x.png" alt=""></p>
+<ul>
+<li>可能派发自：<code>master</code></li>
+<li>必须合并回：<code>develop</code> 和 <code>master</code></li>
+<li>分支命名规范：<code>hotfix-*</code></li>
+</ul>
+<p>Hotfix 分支和 release 分支非常类似，因为他们都意味着会产生一个新的生产环境的发布，尽管 hotfix 分支不是先前就计划好的。他们在实时的生产环境版本出现意外需要快速响应时，从 <code>master</code> 分支相应的 tag 被派发。</p>
+<p>我们这样做的根本原因，是为了让团队其中一个人来快速修复生产环境的问题，其他成员可以按工作计划继续工作下去而不受太大影响。</p>
+<h5 id="创建一个-hotfix-分支"><a href="#创建一个-hotfix-分支" class="headerlink" title="创建一个 hotfix 分支"></a>创建一个 hotfix 分支</h5><p>Hotfix 分支创建自 <code>master</code> 分支。例如，假设 1.2 版本是目前的生产环境且出现了一个严重的 bug，但是目前的 <code>develop</code> 并不足够稳定。那么我们可以派发出一个 hotfix 分支来开始我们的修复工作：</p>
+<pre><code>$ git checkout -b hotfix-1.2.1 master
+Switched to a new branch &quot;hotfix-1.2.1&quot;
+$ ./bump-version.sh 1.2.1
+Files modified successfully, version bumped to 1.2.1.
+$ git commit -a -m &quot;Bumped version number to 1.2.1&quot;
+[hotfix-1.2.1 41e61bb] Bumped version number to 1.2.1
+1 files changed, 1 insertions(+), 1 deletions(-)
+</code></pre><p>别忘了在派发出分支之后晋升版本号！</p>
+<p>然后，修复 bug，提交改动。通过一个或多个提交都可以。</p>
+<pre><code>$ git commit -m &quot;Fixed severe production problem&quot;
+[hotfix-1.2.1 abbe5d6] Fixed severe production problem
+5 files changed, 32 insertions(+), 17 deletions(-)
+</code></pre><h5 id="完成一个-hotfix-分支"><a href="#完成一个-hotfix-分支" class="headerlink" title="完成一个 hotfix 分支"></a>完成一个 hotfix 分支</h5><p>当我们完成之后，对 bug 的修复需要合并回 <code>master</code>，同时也需要合并回 <code>develop</code>，以保证接下来的发布也都已经解决了这个 bug。这和 release 分支的完成方式是完全一样的。</p>
+<p>首先，更新 <code>master</code> 并为本次发布打一个 tag：</p>
+<pre><code>$ git checkout master
+Switched to branch &apos;master&apos;
+$ git merge --no-ff hotfix-1.2.1
+Merge made by recursive
+(Summary of changes)
+$ git tag -a 1.2.1
+</code></pre><p><strong>补充</strong>：你也可以通过 <code>-s</code> 或 <code>-u &lt;key&gt;</code> 标记打 tag。</p>
+<p>然后，把已修复的 bug 合并到 <code>develop</code>：</p>
+<pre><code>$ git checkout develop
+Switched to branch &apos;develop&apos;
+$ git merge --no-ff hotfix-1.2.1
+Merge made by recursive
+(Summary of changes)
+</code></pre><p>这个规矩的一个额外之处是：<em>如果此时已经存在了一个 release 分支，那么 hotfix 的改变需要合并到这个 release 分支，而不是 <code>develop</code> 分支</em>。因为把对 bug 的修复合并回 release 分支之后，release 分支最终还是会合并回 <code>develop</code> 分支的。(如果在 <code>develop</code> 分支中立刻需要对这个 bug 的修复，且等不及 release 分支合并回来，则你还是可以直接合并回 <code>develop</code> 分支的，这是绝对没问题的)</p>
+<p>最后，删掉这个临时的分支：</p>
+<pre><code>$ git branch -d hotfix-1.2.1
+Deleted branch hotfix-1.2.1 (was abbe5d6).
+</code></pre><h3 id="摘要"><a href="#摘要" class="headerlink" title="摘要"></a>摘要</h3><p>其实这个分支模型里没有什么新奇的东西。文章开头的那张大图对我们的项目来说非常有用。它非常易于团队成员理解这个优雅有效的模型，并在团队内部达成共识。</p>
+<p>这里还有一份那张大图的 <a target="_blank" rel="noopener" href="https://nvie.com/files/Git-branching-model.pdf">高清PDF版本</a>，你可以把它当做手册放在手边快速浏览。</p>
+<p><strong>补充</strong>：还有，如果你们需要的话，这里还有一份 <a target="_blank" rel="noopener" href="https://github.com/downloads/nvie/gitflow/Git-branching-model-src.key.zip">Keynote 版本</a></p>
+
+</div>
+
+<p align="right">
+  <small>
+    <a href="https://github.com/Jinjiang/jinjiang.github.io/edit/dev/source/_posts/a-successful-git-branching-model.md" target="_blank">
+      向本文提出修改或勘误建议
+    </a>
+  </small>
+</p>
+
+
+
+<div id="comments">
+  <h2>早期评论</h2>
+  <ul>
+  
+    <li id="comment-54525" style="margin-left: 0em;">
+      <p>
+        <strong>
+        <a href="http://funwo.tk" target="_blank" title="咧威">咧威</a>
+        
+        </strong>
+        <small>2014/08/07 10:26:57</small></p>
+      git merge --on-ff  应该是 --no-ff
+    </li>
+  
+    <li id="comment-57996" style="margin-left: 2em;">
+      <p>
+        <strong>
+        <a href="http://jiongks.name/" target="_blank" title="囧克斯">囧克斯</a>
+        
+        </strong>
+        <small>2014/08/18 01:50:30</small></p>
+      <a href="#comment-54525">@咧威</a><br/>
+确实搞错了，已修正，谢谢：）
+    </li>
+  
+    <li id="comment-54983" style="margin-left: 0em;">
+      <p>
+        <strong>
+        jw
+        
+        </strong>
+        <small>2014/08/10 12:04:08</small></p>
+      用的不错的sourcetree飘过~
+    </li>
+  
+    <li id="comment-68519" style="margin-left: 0em;">
+      <p>
+        <strong>
+        CSS魔法
+        
+        </strong>
+        <small>2014/10/14 08:44:22</small></p>
+      勾股哥，原文的图片地址变了。
+    </li>
+  
+    <li id="comment-68639" style="margin-left: 2em;">
+      <p>
+        <strong>
+        <a href="http://jiongks.name/" target="_blank" title="囧克斯">囧克斯</a>
+        
+        </strong>
+        <small>2014/10/15 05:35:32</small></p>
+      嗷~ 赶紧修…… 囧
+    </li>
+  
+    <li id="comment-77080" style="margin-left: 0em;">
+      <p>
+        <strong>
+        Bin
+        
+        </strong>
+        <small>2014/11/26 12:23:48</small></p>
+      多谢楼主，很多帮助
+    </li>
+  
+    <li id="comment-93245" style="margin-left: 0em;">
+      <p>
+        <strong>
+        <a href="https://github.com/sinkcup" target="_blank" title="sinkcup">sinkcup</a>
+        
+        </strong>
+        <small>2015/04/11 10:20:06</small></p>
+      web项目用这个流程很合适，但多版本并行的软件项目怎么办？很困惑，请教博主。<br/>
+比如像ubuntu， 如果14.04在master里发布了，而开发的新版14.10 在develop里，当14.10开发完毕，打算发布时，合并到master，那14.04就不存在了，如果出问题，需要发布14.04.1怎么办？从哪里checkout？<br/>
+实际上，ubuntu的确发布了14.04.1、 14.04.2。<br/>
+解决办法：每个版本都重新创建一个项目？比如14.04 、 14.10 、 15.04 是3个项目，感觉很奇怪……
+    </li>
+  
+    <li id="comment-93838" style="margin-left: 2em;">
+      <p>
+        <strong>
+        <a href="http://jiongks.name/" target="_blank" title="囧克斯">囧克斯</a>
+        
+        </strong>
+        <small>2015/04/19 12:32:48</small></p>
+      可以在 14.04 的节点上打一个 tag，维护这个版本的时候，就从 14.04 的 tag 上 checkout 一个分支出来
+    </li>
+  
+    <li id="comment-105997" style="margin-left: 0em;">
+      <p>
+        <strong>
+        Adrian
+        
+        </strong>
+        <small>2015/08/19 04:01:49</small></p>
+      相当猛的教材！！
+    </li>
+  
+  </ul>
+</div>
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+
+<div id="gitalk-container"></div>
+
+<script>
+  const gitalk = new Gitalk({
+    clientID: 'c99e23053fc1bba6a58c',
+    clientSecret: '64efe1cd1438e77ae2bf8eba92b51c90d0cc2b9f',
+    repo: 'jinjiang.github.io',
+    owner: 'jinjiang',
+    admin: ['jinjiang'],
+    id: location.pathname,      // Ensure uniqueness and length less than 50
+    distractionFreeMode: false  // Facebook-like distraction free mode
+  })
+
+  gitalk.render('gitalk-container')
+</script>
+</div>
+
+    <div id="footer">
+      <a href="/">囧克斯</a>
+      
+      |
+      <a href="/atom.xml" title="rss_feed">RSS</a>
+      
+      |
+      我是百度统计
+      <script src="https://hm.baidu.com/h.js?a0a2372d4b7621d0bfe71f33c58a4bd8"></script>
+      |
+      我会翻脸 <a href="#" onclick="document.body.classList.toggle('dark-mode'), event.preventDefault()" style="font-size: 1.25em;">🌚🌝</a>
+    </div>
+  </div>
+
+  
+<script src="/js/script.js"></script>
+
+</body>
+
+</html>

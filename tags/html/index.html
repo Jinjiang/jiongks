@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <!-- proud for contributing Vue.js -->
+  <meta charset="utf-8">
+  <meta name="format-detection" content="telephone=no" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-touch-fullscreen" content="yes" />
+
+  
+  <title>
+    
+    tag: html -
+    
+    囧克斯
+  </title>
+
+  
+<link rel="stylesheet" href="/css/pure.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+
+  
+  <link rel="alternate" href="/atom.xml" title="囧克斯" type="application/atom+xml">
+  
+  
+  <link rel="icon" href="/favicon.ico">
+  
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+<body>
+  <script>(() => { if ((new Date().getHours() + 6) % 24 < 12) document.body.classList.add('dark-mode') })()</script>
+
+  <div class="dark-mode-helper"></div>
+
+  <div id="wrapper">
+
+    <div id="header">
+      <h1>
+        <a href="/" title="囧克斯">
+          囧克斯
+        </a>
+      </h1>
+      <p class="description">
+        这里是勾三股四的家
+      </p>
+    </div>
+
+    <div id="nav" class="pure-menu pure-menu-open pure-menu-horizontal">
+      <ul>
+        
+        <li>
+          <a href="/all-demos/">
+            线上
+          </a>
+        </li>
+        
+        <li>
+          <a href="/all-slides/">
+            线下
+          </a>
+        </li>
+        
+        <li>
+          <a href="/about/">
+            关于
+          </a>
+        </li>
+        
+        <li><a href="/archives">归档</li>
+      </ul>
+    </div>
+
+    <div id="main">
+<div class="content">
+  <h2>
+    <a href="/blog/html-or-id-or-class/">
+      标签？ID？还是CLASS？
+    </a>
+  </h2>
+  
+  <p>想谈一下几个基本的HTML问题，都是围绕着应该怎样使用HTML。</p>
+<h3 id="1-多用有语义的标签，少用div和span，避免使用没有class的div和span。"><a href="#1-多用有语义的标签，少用div和span，避免使用没有class的div和span。" class="headerlink" title="1. 多用有语义的标签，少用div和span，避免使用没有class的div和span。"></a>1. 多用有语义的标签，少用div和span，避免使用没有class的div和span。</h3><p>设想一下HTML的世界最初只有div和span这两个标签，其实网页依然可以写得出来。更多标签的出现，其实是为了替代利用率高但不好书写的 <code>&lt;div class=&quot;&#123;tagname&#125;&quot;&gt;</code> 和 <code>&lt;span class=&quot;&#123;tagname&#125;&quot;&gt;</code> 来的。</p>
+<p>想再接着多说一句的是，在HTML5里越来越多常见的div class组合或div id组合被直接命名为了新的标签。理由也是相同的，像header/footer/aside/nav/section/article都是我之前经常使用的class或id。我甚至觉得w3c创造新html标签的工作很简单，定期统计一下最常用的class和id，然后取前几名作为新的标签名就行了。</p>
+<p>上周还有人在微博上感慨那个“史上最牛的HTML代码”：</p>
+<pre><code>&lt;div class=&quot;mod&quot;&gt;
+    &lt;div class=&quot;hd&quot;&gt;&lt;/div&gt;
+    &lt;div class=&quot;bd&quot;&gt;&lt;/div&gt;
+&lt;/div&gt;
+</code></pre><p>再过几年它真的也许会消失的。</p>
+<p>反过来思考也可以，尽量使用有语义的标签名，实在想不出来合适的标签名了，再用div然后起个class或id。这样的思路也不错。</p>
+<h3 id="2-不要滥用class而回避id，该出手时就出手。"><a href="#2-不要滥用class而回避id，该出手时就出手。" class="headerlink" title="2. 不要滥用class而回避id，该出手时就出手。"></a>2. 不要滥用class而回避id，该出手时就出手。</h3><p>和问题1同理，设想一下HTML的世界最初只有class没有id，其实网页依然可以写得出来，语义依然表达得出来。无非就是会出现很多特殊的class呗。因此，我们也很好理解，id的出现，就是可以和class一起协作，使某些语义即使没有现成的标签可以表示它，但依然可以把一般性和唯一性完美的结合在一起。</p>
+<p>这里驳斥一个观点：“尽量都使用class，因为控制样式的时候class的优先级是同级的，id的优先级更高，它的出现会破坏样式优先级的平衡”。首先我觉得这是一个假命题，所谓的“平衡”是不存在的，也没有必要去刻意维护，通过id来表示的内容一定是相对特殊的，优先级自然高一些，这样的优先级设计是如此的自然。我能够接受的全部是class的适用范围仅是一些底层的css基础样式，如oocss里的基础样式，或很多网站都会有common.css文件或general.css文件，里面的东西尽量用class没问题。</p>
+<p>另一个更重要的理由是，在HTML5里，除了id和class这两个特性可以控制样式之外，还可以通过特性选择器来定义样式，类似E[attr=”…”]的写法。我们会发现可以控制样式的方式越来越灵活，选择越来越多。这是Web发展的必然趋势。当其他人已经在用id/class/data-*/tagname对样式展开多重维度攻势的时候，我们实在没有必要把自己还关在class的世界里。</p>
+<h3 id="3-尽量给每个表示布局的class或id换一个站在内容角度的合理的名字。"><a href="#3-尽量给每个表示布局的class或id换一个站在内容角度的合理的名字。" class="headerlink" title="3. 尽量给每个表示布局的class或id换一个站在内容角度的合理的名字。"></a>3. 尽量给每个表示布局的class或id换一个站在内容角度的合理的名字。</h3><p>比如两列布局的左右侧多半是正文和辅助信息的关系，那么就不建议用class=”left”和class=”right”而是倾向于class=”main-content”和class=”sidebar”，或者直接用article和aside。</p>
+<p>在自适应Web设计(responsive web design)如火如荼的今天，页面上的某个元素处在网页什么位置更像是个变量，所以通过位置来定义一个元素显然是会承受很多额外的维护成本和扩展成本。当改变发生的那一天，你发现自己的HTML代码变得文不对题。曾经的left跑到最上面去了，right变成了底部通栏，这都是很正常的变化。</p>
+<p>实在没什么语义的，比如为了给IE加圆角而增设的标签，或清除浮动用的额外的标签，再或者是基础样式的，和具体内容无关的，再用div加表象的class来描述。</p>
+<h3 id="4-尽量避免表示纯样式的class或id。"><a href="#4-尽量避免表示纯样式的class或id。" class="headerlink" title="4. 尽量避免表示纯样式的class或id。"></a>4. 尽量避免表示纯样式的class或id。</h3><p>比如class=”f14 red”。印象中网上有很多拙劣的例子，也有很多深刻批判这种用法的文章，我想说的是，如果你非要这样改样式，那不如直接写内联style来得直观。</p>
+<h3 id="最后想说的是……"><a href="#最后想说的是……" class="headerlink" title="最后想说的是……"></a>最后想说的是……</h3><p>互联网是一个快速发展的领域，<a target="_blank" rel="noopener" href="http://it.sohu.com/20110824/n317169919.shtml">它的快速发展甚至让人们忘却了很多传统领域的停滞不前</a>。在这样的领域里工作，勇敢尝试，关注新技术，把握新趋势是如此的重要。不要拒绝新事物，不要被不思进取的人拖累，不要对大千世界失去好奇心和求知欲，方可永葆青春。</p>
+
+  
+</div>
+
+
+
+</div>
+
+    <div id="footer">
+      <a href="/">囧克斯</a>
+      
+      |
+      <a href="/atom.xml" title="rss_feed">RSS</a>
+      
+      |
+      我是百度统计
+      <script src="https://hm.baidu.com/h.js?a0a2372d4b7621d0bfe71f33c58a4bd8"></script>
+      |
+      我会翻脸 <a href="#" onclick="document.body.classList.toggle('dark-mode'), event.preventDefault()" style="font-size: 1.25em;">🌚🌝</a>
+    </div>
+  </div>
+
+  
+<script src="/js/script.js"></script>
+
+</body>
+
+</html>

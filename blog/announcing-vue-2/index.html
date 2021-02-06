@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <!-- proud for contributing Vue.js -->
+  <meta charset="utf-8">
+  <meta name="format-detection" content="telephone=no" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-touch-fullscreen" content="yes" />
+
+  
+  <title>
+    
+    Vue 2.0 发布啦！ -
+    
+    囧克斯
+  </title>
+
+  
+<link rel="stylesheet" href="/css/pure.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+
+  
+  <link rel="alternate" href="/atom.xml" title="囧克斯" type="application/atom+xml">
+  
+  
+  <link rel="icon" href="/favicon.ico">
+  
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+<body>
+  <script>(() => { if ((new Date().getHours() + 6) % 24 < 12) document.body.classList.add('dark-mode') })()</script>
+
+  <div class="dark-mode-helper"></div>
+
+  <div id="wrapper">
+
+    <div id="header">
+      <h1>
+        <a href="/" title="囧克斯">
+          囧克斯
+        </a>
+      </h1>
+      <p class="description">
+        这里是勾三股四的家
+      </p>
+    </div>
+
+    <div id="nav" class="pure-menu pure-menu-open pure-menu-horizontal">
+      <ul>
+        
+        <li>
+          <a href="/all-demos/">
+            线上
+          </a>
+        </li>
+        
+        <li>
+          <a href="/all-slides/">
+            线下
+          </a>
+        </li>
+        
+        <li>
+          <a href="/about/">
+            关于
+          </a>
+        </li>
+        
+        <li><a href="/archives">归档</li>
+      </ul>
+    </div>
+
+    <div id="main"><div class="content">
+  <h2>
+    Vue 2.0 发布啦！
+  </h2>
+  <p>原文：<a target="_blank" rel="noopener" href="https://medium.com/the-vue-point/announcing-vue-js-2-0-8af1bde7ab9#.cyoou0ivk">https://medium.com/the-vue-point/announcing-vue-js-2-0-8af1bde7ab9#.cyoou0ivk</a></p>
+<p><img src="https://ww1.sinaimg.cn/mw1024/660d0cdfgw1f3bs1115fsj20ug0jiq6m.jpg" alt=""></p>
+<p>今天我们非常激动的首发 Vue 2.0 preview 版本，这个版本带来了很多激动人心的改进和新特性。我们来看看这里面都有些什么！</p>
+<a id="more"></a>
+<h3 id="更轻，更快"><a href="#更轻，更快" class="headerlink" title="更轻，更快"></a>更轻，更快</h3><p>Vue.js 始终聚焦在轻量和快速上面，而 2.0 把它做得更好。现在的渲染层基于一个轻量级的 virtual-DOM 实现，在大多数场景下初试化渲染速度和内存消耗都提升了 2~4 倍 (详见这里的 <a target="_blank" rel="noopener" href="https://github.com/vuejs/vue/tree/next/benchmarks">benchmarks</a>)。从模板到 virtuel-DOM 的编译器和运行时是可以独立开来的，所以你可以将模板预编译并只通过 Vue 的运行时让你的应用工作起来，而这份运行时的代码 min+gzip 之后只有不到 12kb (提一下，React 15 在 min+gzip 之后的大小是 44kb)。编译器同样可以在浏览器中工作，也就是说你也可以写一段 script 标签然后开始你的工作，就像以前一样。而即便你把编译器加进去，build 出来的文件 min+gzip 之后也仅有 17kb，仍然小于目前的 1.0 版本。</p>
+<h3 id="不是普通的-Virtual-DOM"><a href="#不是普通的-Virtual-DOM" class="headerlink" title="不是普通的 Virtual-DOM"></a>不是普通的 Virtual-DOM</h3><p>现在 virtual-DOM 有点让人听腻了，因为社区里有太多种实现，但是 Vue 2.0 的实现有与众不同的地方。和 Vue 的响应式系统结合在一起之后，它可以让你不必做任何事就获得完全优化的重渲染。由于每个组件都会在渲染时追踪其响应依赖，所以系统精确地知道应该何时重渲染、应该重渲染哪些组件。不需要 <code>shouldComponentUpdate</code>，也不需要 immutable 数据 - <strong>it just works</strong>.</p>
+<p>除此之外，Vue 2.0 从模板到 virtuel-DOM 的编译阶段使用了一些高阶优化：</p>
+<ol>
+<li><p>它会检测出静态的 class 名和 attributes 这样它们在初始化渲染之后就永远都不会再被比对。</p>
+</li>
+<li><p>它会检测出最大静态子树 (就是不需要动态性的子树) 并且从渲染函数中萃取出来。这样在每次重渲染的时候，它就会直接重用完全相同的 virtual nodes 同时跳过比对。</p>
+</li>
+</ol>
+<p>这些高阶优化通常只会在使用 JSX 时通过 Babel plugin 来做，但是 Vue 2.0 即使在使用浏览器内的编译器时也能做到。</p>
+<p>新的渲染系统同时允许你通过简单的冻结数据来禁用响应式转换，配以手动的强制更新，这意味着你对于重渲染的流程实际上有着完全的控制权。</p>
+<p>以上这些技术组合在一起，确保了 Vue 2.0 在每一个场景下都能够拥有高性能的表现，同时把开发者的负担和成本降到了最低。</p>
+<h3 id="Templates-JSX-or-Hyperscript"><a href="#Templates-JSX-or-Hyperscript" class="headerlink" title="Templates, JSX, or Hyperscript?"></a>Templates, JSX, or Hyperscript?</h3><p>开发者对于用模板还是 JSX 有很多的争执。一方面，模板更接近 HTML - 它能更好地反映你的 app 的语义结构，并且易于思考视觉上的设计、布局和样式。另一方面，模板作为一个 DSL 也有它的局限性 - 相比之下 JSX/hyperscript 的程序本质使得它们具有图灵完备的表达能力。</p>
+<p>作为一个兼顾设计和开发的人，我喜欢用模板来写大部分的界面，但在某些情况下我也希望能拥有 JSX/hyperscript 的灵活性。举例来说，当你想在一个组件中程序化的处理其子元素时，基于模板的 slot 机制会显得比较有局限性。</p>
+<p>那么，为什么不能同时拥有它们呢？在 Vue 2.0 中，你可以继续使用熟悉的模板语法，但当你觉得受限制的时候，你也可以直接写底层的 virtual-DOM 代码，只需用一个 <code>render</code> 函数替换掉 <code>template</code> 选项。你甚至可以直接在你的模板里使用一个特殊的 <code>&lt;render&gt;</code> 标签来嵌入渲染函数！一个框架，两全其美。</p>
+<h3 id="流式服务端渲染"><a href="#流式服务端渲染" class="headerlink" title="流式服务端渲染"></a>流式服务端渲染</h3><p>既然迁移到了 virtual-DOM，Vue 2.0 自然支持服务端渲染和客户端的 hydration（直接使用服务端渲染的 DOM 元素）。当前服务端渲染的实现有一个痛点，比如在 React 里，渲染是同步的，所以如果这个 app 比较复杂的话它会阻塞服务器的 event loop。同步的服务端渲染在优化不当的情况下甚至会对客户端获得内容的速度带来负面影响。Vue 2.0 提供了内建的流式服务端渲染 - 在渲染组件时返回一个可读的 stream，然后直接 pipe 到 HTTP response。流式渲染能够确保服务端的响应度，也能让用户更快地获得渲染内容。</p>
+<h3 id="解锁更多可能性"><a href="#解锁更多可能性" class="headerlink" title="解锁更多可能性"></a>解锁更多可能性</h3><p>基于新的架构，我们还有更多的可能性有待开发 - 比如在手机端渲染到 native 界面。目前我们正在探索一个 Vue.js 2.0 的端，它会用 <a target="_blank" rel="noopener" href="https://alibaba.github.io/weex/">weex</a>：一个由中国最大科技公司之一的阿里巴巴的工程师们维护的项目，作为一个 native 的渲染层。同时从技术角度 Vue 2.0 运行在 ReactNative 上也是可行的。让我们拭目以待！</p>
+<h3 id="兼容性以及接下来的计划"><a href="#兼容性以及接下来的计划" class="headerlink" title="兼容性以及接下来的计划"></a>兼容性以及接下来的计划</h3><p>Vue.js 2.0 仍然处在 pre-alpha 阶段，但是你可以来<a target="_blank" rel="noopener" href="https://github.com/vuejs/vue/tree/next/">这里</a> 查看源代码。尽管 2.0 是一个完全重写的项目，但是除了一些有意废弃掉的功能，API 和 1.0 是大部分兼容的。看看 <a target="_blank" rel="noopener" href="https://github.com/vuejs/vue/tree/next/examples">2.0 中一模一样的官方例子</a> - 你会发现几乎没有什么变化！</p>
+<p>对于部分功能的废弃，本质上是为了提供更简洁的 API 从而提高开发者的效率。你可以移步<a target="_blank" rel="noopener" href="https://github.com/vuejs/vue/wiki/2.0-features">这里</a> 查看 1.0 和 2.0 的特性比对。如果你在现有的项目中大量地使用着一些被废弃的特性，这意味着会有一定的迁移成本，不过我们在未来会提供更详实的升级指导。</p>
+<p>现在我们还有很多工作没有完成。一旦我们达到了令人满意的测试覆盖率，我们将会推出 alpha 版本，同时我们希望能在五月底六月初推出 beta 版。除了更多的测试之外，我们也需要更新相关库（如 vue-router, Vuex, vue-loader, vueify…）的支持。目前只有 Vuex 在 2.0 下可以直接使用，但是我们会确保在 2.0 正式发布时所有东西都会顺畅地工作。</p>
+<p>我们不会因此而忘记 1.x 哦！1.1 将会和 2.0 beta 独立发布，提供六个月 critical bug fixes 和九个月安全升级的长效服务 (LTS)。同时 1.1 还会包含可选的废弃特性警告，让你为升级到 2.0 做好充足的准备。尽请期待！</p>
+
+</div>
+
+<p align="right">
+  <small>
+    <a href="https://github.com/Jinjiang/jinjiang.github.io/edit/dev/source/_posts/announcing-vue-2.md" target="_blank">
+      向本文提出修改或勘误建议
+    </a>
+  </small>
+</p>
+
+
+
+<div id="comments">
+  <h2>早期评论</h2>
+  <ul>
+  
+    <li id="comment-112310" style="margin-left: 0em;">
+      <p>
+        <strong>
+        小a
+        
+        </strong>
+        <small>2016/04/29 02:26:26</small></p>
+      又是一个轮子。。。明明有react了，不明白意义何在
+    </li>
+  
+    <li id="comment-112313" style="margin-left: 2em;">
+      <p>
+        <strong>
+        <a href="http://jiongks.name/" target="_blank" title="囧克斯">囧克斯</a>
+        
+        </strong>
+        <small>2016/04/29 05:53:14</small></p>
+      <a href="#comment-112310">@小a</a><br/>
+<br/>
+这种问题就算是你提到的 React 出来的时候也有人这么说，Vue 有很多存在的意义都已经写在原文里了，希望你可以感受到
+    </li>
+  
+    <li id="comment-112315" style="margin-left: 2em;">
+      <p>
+        <strong>
+        transtone
+        
+        </strong>
+        <small>2016/04/29 12:04:37</small></p>
+      明明中国已经人口爆满了，还允许生二胎，不明白意义何在。
+    </li>
+  
+    <li id="comment-112816" style="margin-left: 4em;">
+      <p>
+        <strong>
+        Blue
+        
+        </strong>
+        <small>2016/07/15 05:25:29</small></p>
+      这个问题问的不是地方，哥们
+    </li>
+  
+    <li id="comment-112817" style="margin-left: 2em;">
+      <p>
+        <strong>
+        meteorice
+        
+        </strong>
+        <small>2016/07/16 01:22:42</small></p>
+      明明有了这中语言为什么还要有别的语言？
+    </li>
+  
+    <li id="comment-113162" style="margin-left: 4em;">
+      <p>
+        <strong>
+        cqk
+        
+        </strong>
+        <small>2016/09/22 05:33:00</small></p>
+      没有竞争，怎么发展
+    </li>
+  
+    <li id="comment-112317" style="margin-left: 0em;">
+      <p>
+        <strong>
+        rambo
+        
+        </strong>
+        <small>2016/04/29 01:59:09</small></p>
+      2.0 真的把过滤器干掉了吗？
+    </li>
+  
+    <li id="comment-112351" style="margin-left: 0em;">
+      <p>
+        <strong>
+        <a href="http://blog.kazaff.me" target="_blank" title="kazaff">kazaff</a>
+        
+        </strong>
+        <small>2016/05/02 11:45:53</small></p>
+      最近刚关注vue，之前ng和react都玩过，但我依然对vue很感兴趣，总之，持续关注更新进展。
+    </li>
+  
+    <li id="comment-112360" style="margin-left: 0em;">
+      <p>
+        <strong>
+        gun
+        
+        </strong>
+        <small>2016/05/03 10:57:22</small></p>
+      持续关注ing
+    </li>
+  
+    <li id="comment-112437" style="margin-left: 0em;">
+      <p>
+        <strong>
+        xiaobin
+        
+        </strong>
+        <small>2016/05/10 11:16:10</small></p>
+      一直关注着Vue的发展，现在要出vue2.0了，感觉vue1.X还没用多久呢，对于Weex，什么时候可以测试啊？上次提交申请后就没有消息了。
+    </li>
+  
+    <li id="comment-112441" style="margin-left: 0em;">
+      <p>
+        <strong>
+        zen_yue
+        
+        </strong>
+        <small>2016/05/10 02:14:52</small></p>
+      终于向Native进发了
+    </li>
+  
+    <li id="comment-112450" style="margin-left: 0em;">
+      <p>
+        <strong>
+        <a href="http://blog.designlinks.cn" target="_blank" title="Beach">Beach</a>
+        
+        </strong>
+        <small>2016/05/11 02:15:29</small></p>
+      学习了！
+    </li>
+  
+    <li id="comment-112470" style="margin-left: 0em;">
+      <p>
+        <strong>
+        <a href="http://www.99n9.com" target="_blank" title="colee">colee</a>
+        
+        </strong>
+        <small>2016/05/13 02:15:01</small></p>
+      持续关注，广阔天地，大有作为。VUE比react和ng都更了解前端痛点，ng明显技术强大，但前端实战经验相比其它框架略显不足。react总体很强大，就是有点剑走边锋，走火入魔，离HTML+CSS+JS越走越远。
+    </li>
+  
+    <li id="comment-112489" style="margin-left: 0em;">
+      <p>
+        <strong>
+        <a href="http://zhuangbi.info" target="_blank" title="zgldh">zgldh</a>
+        
+        </strong>
+        <small>2016/05/15 07:23:01</small></p>
+      用过AngularJS和VueJS。感觉VueJS给开发人员的思维负担更小一点。
+    </li>
+  
+    <li id="comment-112576" style="margin-left: 0em;">
+      <p>
+        <strong>
+        李超
+        
+        </strong>
+        <small>2016/05/24 10:18:43</small></p>
+      期待ing
+    </li>
+  
+    <li id="comment-112595" style="margin-left: 0em;">
+      <p>
+        <strong>
+        bestsl
+        
+        </strong>
+        <small>2016/05/26 01:00:58</small></p>
+      了解vue有段时间了，还很浅薄，期待2.0正式推出的时候用。<br/>
+Vue只适合做单页应用吗，传统的多页网站，每个页面里嵌入一个Vue不是也可以
+    </li>
+  
+    <li id="comment-112848" style="margin-left: 2em;">
+      <p>
+        <strong>
+        <a href="https://www.zhuyingda.com" target="_blank" title="朱英达">朱英达</a>
+        
+        </strong>
+        <small>2016/07/20 11:24:13</small></p>
+      传统多页网站也可以用vue，你可以把它当做一个纯view层做渲染，然后自己实现controller和model层。因为他比ng和react都要轻，所以在重构一个传统的$体系的复杂web页面时，用vue来做逐步替换是不错的选择。
+    </li>
+  
+    <li id="comment-112738" style="margin-left: 0em;">
+      <p>
+        <strong>
+        <a href="http://www.gor-c.com" target="_blank" title="gor-c">gor-c</a>
+        
+        </strong>
+        <small>2016/07/01 01:32:17</small></p>
+      学习
+    </li>
+  
+    <li id="comment-112857" style="margin-left: 0em;">
+      <p>
+        <strong>
+        <a href="http://joeray61.com" target="_blank" title="JoeRay61">JoeRay61</a>
+        
+        </strong>
+        <small>2016/07/22 10:48:10</small></p>
+      勾股哥，2.0的教程出了吗？
+    </li>
+  
+    <li id="comment-112887" style="margin-left: 0em;">
+      <p>
+        <strong>
+        exten
+        
+        </strong>
+        <small>2016/08/07 09:32:20</small></p>
+      我很支持国货，外国人的不一定是最好的。只是他们占领了定义权。Vue 我希望能一直维护下去，我担心的是这一点。
+    </li>
+  
+    <li id="comment-112921" style="margin-left: 0em;">
+      <p>
+        <strong>
+        zyj
+        
+        </strong>
+        <small>2016/08/17 10:47:33</small></p>
+      vue 如何通过el绑定到多个元素上面
+    </li>
+  
+    <li id="comment-112935" style="margin-left: 0em;">
+      <p>
+        <strong>
+        Lucifer
+        
+        </strong>
+        <small>2016/08/22 09:18:14</small></p>
+      个人感觉Vue的设计和使用非常优雅，从el这个属性就看出来了（这是个选择器）。这是真正从实用角度出发，而并非仅仅强调自己的标准。其他那些框架用起来都有点脱裤子放屁的感觉。<br/>
+当然如果绑定和展示可以同体，像这样value="{{xxx}}" ，那就更好了，污染会更少，让我们真正的把Validation这个功能用起来。
+    </li>
+  
+    <li id="comment-114576" style="margin-left: 2em;">
+      <p>
+        <strong>
+        Jser
+        
+        </strong>
+        <small>2016/12/23 05:01:13</small></p>
+      你可以试试 https://www.npmjs.com/package/yox
+    </li>
+  
+    <li id="comment-112948" style="margin-left: 0em;">
+      <p>
+        <strong>
+        <a href="http://www.fuck.com" target="_blank" title="FUCK">FUCK</a>
+        
+        </strong>
+        <small>2016/08/27 11:27:34</small></p>
+      用了虚拟dom，用了jsx，照着抄了react的这些东西，有意义吗？
+    </li>
+  
+    <li id="comment-112956" style="margin-left: 2em;">
+      <p>
+        <strong>
+        Huangyingjie
+        
+        </strong>
+        <small>2016/08/30 03:22:59</small></p>
+      React仅仅是View层，太薄了；而Vue则封装了额外的功能，且比React的那套工具链轻便好用。
+    </li>
+  
+    <li id="comment-113042" style="margin-left: 0em;">
+      <p>
+        <strong>
+        <a href="https://github.com/futurefeeling" target="_blank" title="Farzer">Farzer</a>
+        
+        </strong>
+        <small>2016/09/07 09:56:45</small></p>
+      请问下什么时候会出2的稳定版本？
+    </li>
+  
+    <li id="comment-113126" style="margin-left: 0em;">
+      <p>
+        <strong>
+        RYoui
+        
+        </strong>
+        <small>2016/09/13 11:47:05</small></p>
+      坐等正式版，在项目中使用过，表现还行。
+    </li>
+  
+    <li id="comment-113137" style="margin-left: 0em;">
+      <p>
+        <strong>
+        lhy1149
+        
+        </strong>
+        <small>2016/09/17 12:28:54</small></p>
+      欣赏，希望不断的琢磨，用更优雅的方式解决问题，这才是匠心，估计只会在CXDN上抄代码段混饭吃的人是理解不了的
+    </li>
+  
+    <li id="comment-113144" style="margin-left: 0em;">
+      <p>
+        <strong>
+        涂贤田
+        
+        </strong>
+        <small>2016/09/19 12:06:51</small></p>
+      vue是一个颠覆式的创新，前端编程的思维方式也要转变。我期望见到更多的vue示例项目，目前用vue开发还是很吃力。
+    </li>
+  
+    <li id="comment-113468" style="margin-left: 0em;">
+      <p>
+        <strong>
+        Pluto
+        
+        </strong>
+        <small>2016/10/12 11:15:18</small></p>
+      期待Vue 2.0，用过Angular、Vue 1、React，感觉Vue的优势就是轻、快，还有就是对于初学者来说更友好
+    </li>
+  
+    <li id="comment-113573" style="margin-left: 0em;">
+      <p>
+        <strong>
+        深蓝
+        
+        </strong>
+        <small>2016/10/17 04:29:17</small></p>
+      异步加载能考虑下requirejs这些吗？非常不想使用Webpack打包这样重的前端开发。
+    </li>
+  
+    <li id="comment-114577" style="margin-left: 2em;">
+      <p>
+        <strong>
+        Jser
+        
+        </strong>
+        <small>2016/12/23 05:17:08</small></p>
+      你可以试试 https://www.npmjs.com/package/yox
+    </li>
+  
+    <li id="comment-115050" style="margin-left: 2em;">
+      <p>
+        <strong>
+        zhaoxin
+        
+        </strong>
+        <small>2017/02/15 08:07:24</small></p>
+      就程序加载方式，你有很多选择，requireJS也是完全你自己可以用的，这个跟vue无关
+    </li>
+  
+    <li id="comment-113675" style="margin-left: 0em;">
+      <p>
+        <strong>
+        kevin
+        
+        </strong>
+        <small>2016/10/22 09:01:06</small></p>
+      有2.0的文档地址吗
+    </li>
+  
+    <li id="comment-113678" style="margin-left: 0em;">
+      <p>
+        <strong>
+        <a href="http://www.jingyaomin.com" target="_blank" title="Mark Jing">Mark Jing</a>
+        
+        </strong>
+        <small>2016/10/22 11:15:51</small></p>
+      我就是来冒个泡！
+    </li>
+  
+    <li id="comment-113726" style="margin-left: 0em;">
+      <p>
+        <strong>
+        snowfox
+        
+        </strong>
+        <small>2016/10/26 03:16:04</small></p>
+      你好，我想请教个问题，关于vue缓存机制的，我在使用vue+webpack进行开发的时候发现缓存机制只能通过在标签上加keep-alive来实现，但是这样做的话所有页面都会被缓存起来，我只希望对特定页面进行缓存，请问该怎么实现呢？
+    </li>
+  
+    <li id="comment-113727" style="margin-left: 0em;">
+      <p>
+        <strong>
+        snowfox
+        
+        </strong>
+        <small>2016/10/26 03:22:03</small></p>
+      你好，我想请教个问题，关于vue缓存机制的，我在使用vue+webpack进行开发的时候发现缓存机制只能通过在《router-view》标签上加keep-alive来实现，但是这样做的话所有页面都会被缓存起来，我只希望对特定页面进行缓存，请问该怎么实现呢？
+    </li>
+  
+    <li id="comment-113750" style="margin-left: 0em;">
+      <p>
+        <strong>
+        snowfox
+        
+        </strong>
+        <small>2016/10/29 02:55:32</small></p>
+      今天看了vue1.0的源码发现源码上面只使用了一个全局变量keepAlive来保存当前组件的是否进入缓存，就是说源码上面就不支持对单页面进行缓存，就是说要不就是所有页面都进行缓存要不就都不进行(子组件例外)，所以我只好在源码的bind和build里面添加了几句话增加了单页面缓存功能，希望勾股哥在2.0能完善单页面缓存功能。
+    </li>
+  
+    <li id="comment-114026" style="margin-left: 0em;">
+      <p>
+        <strong>
+        profk
+        
+        </strong>
+        <small>2016/11/14 11:00:58</small></p>
+      问下，vue在使用jsx的情况下，怎么添加事件绑定。。
+    </li>
+  
+  </ul>
+</div>
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+
+<div id="gitalk-container"></div>
+
+<script>
+  const gitalk = new Gitalk({
+    clientID: 'c99e23053fc1bba6a58c',
+    clientSecret: '64efe1cd1438e77ae2bf8eba92b51c90d0cc2b9f',
+    repo: 'jinjiang.github.io',
+    owner: 'jinjiang',
+    admin: ['jinjiang'],
+    id: location.pathname,      // Ensure uniqueness and length less than 50
+    distractionFreeMode: false  // Facebook-like distraction free mode
+  })
+
+  gitalk.render('gitalk-container')
+</script>
+</div>
+
+    <div id="footer">
+      <a href="/">囧克斯</a>
+      
+      |
+      <a href="/atom.xml" title="rss_feed">RSS</a>
+      
+      |
+      我是百度统计
+      <script src="https://hm.baidu.com/h.js?a0a2372d4b7621d0bfe71f33c58a4bd8"></script>
+      |
+      我会翻脸 <a href="#" onclick="document.body.classList.toggle('dark-mode'), event.preventDefault()" style="font-size: 1.25em;">🌚🌝</a>
+    </div>
+  </div>
+
+  
+<script src="/js/script.js"></script>
+
+</body>
+
+</html>

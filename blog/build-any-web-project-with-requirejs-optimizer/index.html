@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <!-- proud for contributing Vue.js -->
+  <meta charset="utf-8">
+  <meta name="format-detection" content="telephone=no" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-touch-fullscreen" content="yes" />
+
+  
+  <title>
+    
+    巧用 RequireJS Optimizer 给传统的前端项目打包 -
+    
+    囧克斯
+  </title>
+
+  
+<link rel="stylesheet" href="/css/pure.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+
+  
+  <link rel="alternate" href="/atom.xml" title="囧克斯" type="application/atom+xml">
+  
+  
+  <link rel="icon" href="/favicon.ico">
+  
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+<body>
+  <script>(() => { if ((new Date().getHours() + 6) % 24 < 12) document.body.classList.add('dark-mode') })()</script>
+
+  <div class="dark-mode-helper"></div>
+
+  <div id="wrapper">
+
+    <div id="header">
+      <h1>
+        <a href="/" title="囧克斯">
+          囧克斯
+        </a>
+      </h1>
+      <p class="description">
+        这里是勾三股四的家
+      </p>
+    </div>
+
+    <div id="nav" class="pure-menu pure-menu-open pure-menu-horizontal">
+      <ul>
+        
+        <li>
+          <a href="/all-demos/">
+            线上
+          </a>
+        </li>
+        
+        <li>
+          <a href="/all-slides/">
+            线下
+          </a>
+        </li>
+        
+        <li>
+          <a href="/about/">
+            关于
+          </a>
+        </li>
+        
+        <li><a href="/archives">归档</li>
+      </ul>
+    </div>
+
+    <div id="main"><div class="content">
+  <h2>
+    巧用 RequireJS Optimizer 给传统的前端项目打包
+  </h2>
+  <p><a target="_blank" rel="noopener" href="https://github.com/jrburke/r.js">r.js</a> 本是 <a target="_blank" rel="noopener" href="https://requirejs.org/">RequireJS</a> 的一个附属产品，支持在 NodeJS、Rhino 等环境下运行 <a target="_blank" rel="noopener" href="https://wiki.commonjs.org/wiki/Modules/AsynchronousDefinition">AMD</a> 程序，并且其包含了一个名为 RequireJS Optimizer 的工具，可以为项目完成合并脚本等优化操作。</p>
+<p>r.js 的介绍中明确写道它是 RequireJS 项目的一部分，和 RequireJS 协同工作。但我发现，RequireJS Optimizer 提供了丰富的配置参数，可以让我们完全跳出 AMD 和 RequireJS 程序的束缚，为我们的前端程序服务。</p>
+<a id="more"></a>
+<h3 id="RequireJS-Optimizer-常规用法"><a href="#RequireJS-Optimizer-常规用法" class="headerlink" title="RequireJS Optimizer 常规用法"></a>RequireJS Optimizer 常规用法</h3><p>首先，简单介绍一下 RequireJS Optimizer 的“正派”用法 (以 NodeJS 环境为例)：</p>
+<p>事先写好一个配置文件，比如 <code>config.js</code>，它是 JSON 格式的，常用属性有：</p>
+<pre><code>&#123;
+    // 程序的根路径
+    appDir: &quot;some/path/trunk&quot;,
+    // 脚本的根路径
+    // 相对于程序的根路径
+    baseUrl: &quot;./js&quot;,
+    // 打包输出到的路径
+    dir: &quot;../some/path/release&quot;,
+    // 需要打包合并的js模块，数组形式，可以有多个
+    // name 以 baseUrl 为相对路径，无需写 .js 后缀
+    // 比如 main 依赖 a 和 b，a 又依赖 c，则 &#123;name: &apos;main&apos;&#125; 会把 c.js a.js b.js main.js 合并成一个 main.js
+    modules: [
+        &#123;name: &apos;main&apos;&#125;
+        ...
+    ]
+    // 通过正则以文件名排除文件/文件夹
+    // 比如当前的正则表示排除 .svn、.git 这类的隐藏文件
+    fileExclusionRegExp: /^\./
+&#125;
+</code></pre><p>然后运行：</p>
+<pre><code>node r.js -o config.js
+</code></pre><p>这时 RequireJS Optimizer 就会：</p>
+<ol>
+<li>把配置信息的 <code>modules</code> 下的所有模块建立好完整的依赖关系，再把相应的文件打包合并到 <code>dir</code> 目录</li>
+<li>把所有的 <code>css</code> 文件中，使用 <code>@import</code> 语法的文件自动打包合并到 <code>dir</code> 目录</li>
+<li>把其它文件复制到 <code>dir</code> 目录，比如图片、附件等等</li>
+</ol>
+<p>我已经把 RequireJS 和 r.js 整套东西用到了 <a target="_blank" rel="noopener" href="https://github.com/jinjiang/h5slides/">H5Slides</a> 上。觉得蛮方便的。</p>
+<p>不过工作中的前端开发工作并不是绝对理想化的，有些旧的项目，并不是 AMD 的模块化开发方式，而是传统的 js 程序，开发一个页面时可能需要一口气引入三到五个 css 文件、十来个 js 文件…… 上线的时候为了减少流量及 HTTP 请求数又需要把代码尽可能重用和合并。这个时候就需要一个方便快捷的打包工具帮助我们了，下面就介绍一下 RequireJS Optimizer 是如何完成这项工作的。</p>
+<h3 id="用到的几个关键参数"><a href="#用到的几个关键参数" class="headerlink" title="用到的几个关键参数"></a>用到的几个关键参数</h3><p>说到这里，必须要额外介绍几个 RequireJS Optimizer 的参数了：</p>
+<h4 id="modules-i-include"><a href="#modules-i-include" class="headerlink" title="modules[i].include"></a>modules[i].include</h4><pre><code>modules: [
+    &#123;
+        name: &quot;main&quot;,
+        include: [&quot;d&quot;, &quot;e&quot;]
+    &#125;
+]
+</code></pre><p>这里的 include 字段提供了“强制建立依赖关系”的功能，也就是说，即使在 main.js 的代码里没有依赖 d.js 和 e.js，它们也会在合并代码的时候插入到 main.js 的前面</p>
+<h4 id="skipModuleInsertion"><a href="#skipModuleInsertion" class="headerlink" title="skipModuleInsertion"></a>skipModuleInsertion</h4><p>在介绍这个参数之前需要说明的是，RequireJS Optimizer 有一个很智能的功能，就是为没有写明 define(…) 函数的模块代码自动将其放入 define(…) 之中。如果我们写明：</p>
+<pre><code>skipModuleInsertion: true
+</code></pre><p>则这种处理将会被取消。</p>
+<h4 id="onBuildRead"><a href="#onBuildRead" class="headerlink" title="onBuildRead"></a>onBuildRead</h4><p>这个参数可以定义一个函数，在处理每个 js 文件之前，会先对文件的文本内容进行预处理。比如下面这个例子里，我会把 main.js 里的代码全部清除：</p>
+<pre><code>onBuildRead: function (moduleName, path, contents) &#123;
+    if (moduleName === &apos;main&apos;) &#123;
+        contents = &apos;/* empty code */&apos;;
+    &#125;
+    return contents;
+&#125;
+</code></pre><h3 id="巧妙应用到传统项目"><a href="#巧妙应用到传统项目" class="headerlink" title="巧妙应用到传统项目"></a>巧妙应用到传统项目</h3><p>这时，我们的资源已经足够了。比如我现在的项目有：</p>
+<p><strong>1 个 html</strong></p>
+<ul>
+<li>index.html</li>
+</ul>
+<p>代码：</p>
+<pre><code>&lt;!doctype html&gt;
+&lt;html&gt;
+    &lt;head&gt;
+        &lt;meta charset=&quot;utf-8&quot;&gt;
+        &lt;title&gt;Index&lt;/title&gt;
+        &lt;link rel=&quot;stylesheet&quot; href=&quot;css/a.css&quot;&gt;
+        &lt;link rel=&quot;stylesheet&quot; href=&quot;css/b.css&quot;&gt;
+    &lt;/head&gt;
+    &lt;body&gt;
+
+        ...
+
+        &lt;script src=&quot;js/a.js&quot;&gt;&lt;/script&gt;
+        &lt;script src=&quot;js/b.js&quot;&gt;&lt;/script&gt;
+        &lt;script src=&quot;js/c.js&quot;&gt;&lt;/script&gt;
+    &lt;/body&gt;
+&lt;/html&gt;
+</code></pre><p><strong>2 个 css</strong></p>
+<ul>
+<li>css/a.css</li>
+<li>css/b.css</li>
+</ul>
+<p><strong>3 个 js</strong></p>
+<ul>
+<li>js/a.js</li>
+<li>js/b.js</li>
+<li>js/c.js</li>
+</ul>
+<p><strong>1 个图片文件夹</strong></p>
+<ul>
+<li>images</li>
+</ul>
+<h4 id="合并-css-文件"><a href="#合并-css-文件" class="headerlink" title="合并 css 文件"></a>合并 css 文件</h4><p>新建一个 css 文件，叫 css/main.css，内容为：</p>
+<pre><code>@import url(a.css);
+@import url(b.css);
+</code></pre><p>然后把 index.html 中的 2 个 &lt;link&gt; 标签改成一个</p>
+<pre><code>&lt;link rel=&quot;stylesheet&quot; href=&quot;css/main.css&quot;&gt;
+</code></pre><h4 id="合并-js-文件"><a href="#合并-js-文件" class="headerlink" title="合并 js 文件"></a>合并 js 文件</h4><p>合并 js 文件的步骤略复杂些。首先也是新建一个 js 文件，叫 js/main.js：</p>
+<pre><code>document.write(&apos;&lt;script src=&quot;js/a.js&quot;&gt;&lt;/script&gt;&apos;);
+document.write(&apos;&lt;script src=&quot;js/b.js&quot;&gt;&lt;/script&gt;&apos;);
+document.write(&apos;&lt;script src=&quot;js/c.js&quot;&gt;&lt;/script&gt;&apos;);
+</code></pre><p>然后把 index.html 中的 3 个 &lt;script&gt; 标签改成一个</p>
+<pre><code>&lt;script src=&quot;js/main.js&quot;&gt;&lt;/script&gt;
+</code></pre><p>接下来就是配置打包工具的时间了。</p>
+<h4 id="禁止自动补齐-define-…-的头尾"><a href="#禁止自动补齐-define-…-的头尾" class="headerlink" title="禁止自动补齐 define(…) 的头尾"></a>禁止自动补齐 define(…) 的头尾</h4><pre><code>skipModuleInsertion: true
+</code></pre><h4 id="强制建立依赖"><a href="#强制建立依赖" class="headerlink" title="强制建立依赖"></a>强制建立依赖</h4><pre><code>modules: [&#123;name: &apos;main&apos;, include: [&apos;a&apos;, &apos;b&apos;, &apos;c&apos;]&#125;]
+</code></pre><p>这样打包出来的 main.js 是这样的：</p>
+<pre><code>// code from a.js
+// code from b.js
+// code from c.js
+document.write(&apos;&lt;script src=&quot;js/a.js&quot;&gt;&lt;/script&gt;&apos;);
+document.write(&apos;&lt;script src=&quot;js/b.js&quot;&gt;&lt;/script&gt;&apos;);
+document.write(&apos;&lt;script src=&quot;js/c.js&quot;&gt;&lt;/script&gt;&apos;);
+</code></pre><h4 id="打包时去掉多余的-js-main-js-的代码"><a href="#打包时去掉多余的-js-main-js-的代码" class="headerlink" title="打包时去掉多余的 js/main.js 的代码"></a>打包时去掉多余的 js/main.js 的代码</h4><pre><code>onBuildRead: function (moduleName, path, contents) &#123;
+    if (moduleName === &apos;main&apos;) &#123;
+        contents = &apos;/* empty code */&apos;;
+    &#125;
+    return contents;
+&#125;
+</code></pre><p>这样的话，打包工具就会把 <code>document.write(...)</code> 的代码去掉，得到干净的</p>
+<pre><code>// code from a.js
+// code from b.js
+// code from c.js
+/* empty code */
+</code></pre><p>运行 <code>node r.js -o config.js</code> 就可以得到一个打包成功的项目了，并且打包前后的代码都可以正常运行</p>
+<p>附件是这个项目例子的源代码：<a href="/uploads/2013/03/1894338901.zip">project.zip</a></p>
+
+</div>
+
+<p align="right">
+  <small>
+    <a href="https://github.com/Jinjiang/jinjiang.github.io/edit/dev/source/_posts/build-any-web-project-with-requirejs-optimizer.md" target="_blank">
+      向本文提出修改或勘误建议
+    </a>
+  </small>
+</p>
+
+
+
+<div id="comments">
+  <h2>早期评论</h2>
+  <ul>
+  
+    <li id="comment-11489" style="margin-left: 0em;">
+      <p>
+        <strong>
+        <a href="http://phperzj.sinaapp.com/" target="_blank" title="新人小丁">新人小丁</a>
+        
+        </strong>
+        <small>2013/04/01 11:18:01</small></p>
+      博主您好，我是在 http://ucren.com/blog/ 这里发现您的主题，非常喜欢，非常冒昧的问一句，我能讨得这个"字很大"的主题用用么？这个是我的博客地址http://phperzj.sinaapp.com/ 我一直在尝试将我的博客弄的字大点，简洁好看一点，如果您同意给我尝试用用  我保证1.不会涉及任何商业利益，并且在主页标明您的设计权 2.如果我有心想做任何相关修改并想发布看效果，我会提前征得您的同意。 在此，谢过，期待回复，敬礼！
+    </li>
+  
+    <li id="comment-11534" style="margin-left: 2em;">
+      <p>
+        <strong>
+        <a href="http://jiongks.name/" target="_blank" title="囧克斯">囧克斯</a>
+        
+        </strong>
+        <small>2013/04/06 04:43:35</small></p>
+      <a href="#comment-11489">@新人小丁</a><br/>
+没问题！拿去用吧：）
+    </li>
+  
+    <li id="comment-11877" style="margin-left: 0em;">
+      <p>
+        <strong>
+        <a href="http://www.toobug.net" target="_blank" title="TooBug">TooBug</a>
+        
+        </strong>
+        <small>2013/04/25 09:26:26</small></p>
+      收藏了好久，今天终于拜读了！其实就是用RequireJS Optimizer来完全前端的自动合并对么？<br/>
+<br/>
+之前也在找Grunt.js的一些方案，发现用use-min也可以实现，或者自己用concat + text replace也可以实现，总之这个问题的解决方案还是挺多的。
+    </li>
+  
+    <li id="comment-11888" style="margin-left: 2em;">
+      <p>
+        <strong>
+        <a href="http://jiongks.name/" target="_blank" title="囧克斯">囧克斯</a>
+        
+        </strong>
+        <small>2013/04/27 10:08:30</small></p>
+      没错，回过头来看，方案是很多的，现在这个方案算是从require.js走过来的，呵呵：）
+    </li>
+  
+    <li id="comment-47050" style="margin-left: 2em;">
+      <p>
+        <strong>
+        <a href="http://jiongks.name/" target="_blank" title="囧克斯">囧克斯</a>
+        
+        </strong>
+        <small>2014/07/03 04:52:33</small></p>
+      现在即使换了Grunt.js，我还是同样是用document.write的方式hack打包过程的
+    </li>
+  
+    <li id="comment-45911" style="margin-left: 0em;">
+      <p>
+        <strong>
+        hadon
+        
+        </strong>
+        <small>2014/06/26 11:55:20</small></p>
+      楼主你好，问一个问题，在使用requirejs压缩合并的时候，遇到了一个问题，比如我在应用中引用jquery.js，但jquery.js只想压缩不想合并，因为jquery.js几乎每个页面都会引用，就没有必要合并压缩了，这样才能利用浏览器的缓存。<br/>
+所以我要怎么压缩合并才能达到这个功能呢？
+    </li>
+  
+    <li id="comment-47049" style="margin-left: 2em;">
+      <p>
+        <strong>
+        <a href="http://jiongks.name/" target="_blank" title="囧克斯">囧克斯</a>
+        
+        </strong>
+        <small>2014/07/03 04:51:01</small></p>
+      <a href="#comment-45911">@hadon</a><br/>
+如果是这样的话，建议把jquery.js从依赖关系中单独摘出来，然后单独引用、压缩、部署。独立成一个模块或干脆拿到requirejs的体系外面都是可以的。
+    </li>
+  
+    <li id="comment-108183" style="margin-left: 4em;">
+      <p>
+        <strong>
+        PA
+        
+        </strong>
+        <small>2015/09/17 08:26:37</small></p>
+      {<br/>
+excludeShallow: ['jquery'],<br/>
+}<br/>
+想问下谁知道在rhino环境下怎么运行？
+    </li>
+  
+    <li id="comment-87596" style="margin-left: 0em;">
+      <p>
+        <strong>
+        <a href="http://mc-zone.me" target="_blank" title="mc-zone">mc-zone</a>
+        
+        </strong>
+        <small>2015/01/18 11:43:35</small></p>
+      拜读文章，有问题想请教下:<br/>
+以您的文件为例，我在main.js中又使用了不少其他的项目，可能会有不同文件层次，于是都配置了path别名方便调取。但是在build的时候发现path还需要在config.js中再指定一遍。这样更改起来需要两边同步比较麻烦。有没有比较好的方法避免这一问题？
+    </li>
+  
+  </ul>
+</div>
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+
+<div id="gitalk-container"></div>
+
+<script>
+  const gitalk = new Gitalk({
+    clientID: 'c99e23053fc1bba6a58c',
+    clientSecret: '64efe1cd1438e77ae2bf8eba92b51c90d0cc2b9f',
+    repo: 'jinjiang.github.io',
+    owner: 'jinjiang',
+    admin: ['jinjiang'],
+    id: location.pathname,      // Ensure uniqueness and length less than 50
+    distractionFreeMode: false  // Facebook-like distraction free mode
+  })
+
+  gitalk.render('gitalk-container')
+</script>
+</div>
+
+    <div id="footer">
+      <a href="/">囧克斯</a>
+      
+      |
+      <a href="/atom.xml" title="rss_feed">RSS</a>
+      
+      |
+      我是百度统计
+      <script src="https://hm.baidu.com/h.js?a0a2372d4b7621d0bfe71f33c58a4bd8"></script>
+      |
+      我会翻脸 <a href="#" onclick="document.body.classList.toggle('dark-mode'), event.preventDefault()" style="font-size: 1.25em;">🌚🌝</a>
+    </div>
+  </div>
+
+  
+<script src="/js/script.js"></script>
+
+</body>
+
+</html>

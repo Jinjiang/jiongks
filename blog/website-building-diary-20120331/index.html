@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <!-- proud for contributing Vue.js -->
+  <meta charset="utf-8">
+  <meta name="format-detection" content="telephone=no" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-touch-fullscreen" content="yes" />
+
+  
+  <title>
+    
+    网站装修笔记20120331 -
+    
+    囧克斯
+  </title>
+
+  
+<link rel="stylesheet" href="/css/pure.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+
+  
+  <link rel="alternate" href="/atom.xml" title="囧克斯" type="application/atom+xml">
+  
+  
+  <link rel="icon" href="/favicon.ico">
+  
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+<body>
+  <script>(() => { if ((new Date().getHours() + 6) % 24 < 12) document.body.classList.add('dark-mode') })()</script>
+
+  <div class="dark-mode-helper"></div>
+
+  <div id="wrapper">
+
+    <div id="header">
+      <h1>
+        <a href="/" title="囧克斯">
+          囧克斯
+        </a>
+      </h1>
+      <p class="description">
+        这里是勾三股四的家
+      </p>
+    </div>
+
+    <div id="nav" class="pure-menu pure-menu-open pure-menu-horizontal">
+      <ul>
+        
+        <li>
+          <a href="/all-demos/">
+            线上
+          </a>
+        </li>
+        
+        <li>
+          <a href="/all-slides/">
+            线下
+          </a>
+        </li>
+        
+        <li>
+          <a href="/about/">
+            关于
+          </a>
+        </li>
+        
+        <li><a href="/archives">归档</li>
+      </ul>
+    </div>
+
+    <div id="main"><div class="content">
+  <h2>
+    网站装修笔记20120331
+  </h2>
+  <p>今天给我的网站加入了著名的百度统计。对，就是下面这个东西：</p>
+<p><img src="/uploads/2012/03/213230993.png" alt="页脚的百度统计"></p>
+<p>相信这个小家伙会帮我更加了解我的网站的读者。<br>虽然就是嵌入了一段脚本，不过幕后的工作不止于此。我在此做个备忘：</p>
+<ol>
+<li>更深入的了解了一下Typecho的插件机制，经过群友的提醒，才发现Typecho源码中有一组辅助插件开发的代码，它们被汇总放在了<code>/var/Helper.php</code>中。也弄清楚了Typecho中的Widget机制和命名规律。这让我决定通过插件的方式加入百度统计。</li>
+<li>我不在主题<code>footer.php</code>中直接加入百度统计，还有一层原因，就是为了保持主题的纯净，让主题可以被其他人也使用同时不被百度统计在内。</li>
+<li>通过插件加入百度统计之后，我又想到，可否让这个插件也分享给更多的百度统计的使用者。而不同的使用者，统计码都是不同的，这就需要我们把统计码做成一个插件的参数，而不是写死在插件里。于是又了解了一下插件的参数设置方式，把统计码做成了插件的参数。</li>
+<li>最后，我同时研究了一些Typecho的路由机制(Routing)和SAE的Storage服务接口，这为我给我的网站加入更多的单元或板块提供了更多想象空间。</li>
+</ol>
+<p>接下来的计划是把这个插件分享出来，然后重新梳理并设计一下网站的路由规则。</p>
+<p>以上</p>
+
+</div>
+
+<p align="right">
+  <small>
+    <a href="https://github.com/Jinjiang/jinjiang.github.io/edit/dev/source/_posts/website-building-diary-20120331.md" target="_blank">
+      向本文提出修改或勘误建议
+    </a>
+  </small>
+</p>
+
+
+
+<div id="comments">
+  <h2>早期评论</h2>
+  <ul>
+  
+    <li id="comment-22" style="margin-left: 0em;">
+      <p>
+        <strong>
+        <a href="http://www.luili.net" target="_blank" title="暮春">暮春</a>
+        
+        </strong>
+        <small>2012/04/01 12:56:13</small></p>
+      博主果然是牛人啊  必须支持
+    </li>
+  
+  </ul>
+</div>
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+
+<div id="gitalk-container"></div>
+
+<script>
+  const gitalk = new Gitalk({
+    clientID: 'c99e23053fc1bba6a58c',
+    clientSecret: '64efe1cd1438e77ae2bf8eba92b51c90d0cc2b9f',
+    repo: 'jinjiang.github.io',
+    owner: 'jinjiang',
+    admin: ['jinjiang'],
+    id: location.pathname,      // Ensure uniqueness and length less than 50
+    distractionFreeMode: false  // Facebook-like distraction free mode
+  })
+
+  gitalk.render('gitalk-container')
+</script>
+</div>
+
+    <div id="footer">
+      <a href="/">囧克斯</a>
+      
+      |
+      <a href="/atom.xml" title="rss_feed">RSS</a>
+      
+      |
+      我是百度统计
+      <script src="https://hm.baidu.com/h.js?a0a2372d4b7621d0bfe71f33c58a4bd8"></script>
+      |
+      我会翻脸 <a href="#" onclick="document.body.classList.toggle('dark-mode'), event.preventDefault()" style="font-size: 1.25em;">🌚🌝</a>
+    </div>
+  </div>
+
+  
+<script src="/js/script.js"></script>
+
+</body>
+
+</html>

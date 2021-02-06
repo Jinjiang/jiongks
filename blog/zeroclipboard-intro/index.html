@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <!-- proud for contributing Vue.js -->
+  <meta charset="utf-8">
+  <meta name="format-detection" content="telephone=no" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-touch-fullscreen" content="yes" />
+
+  
+  <title>
+    
+    ZeroClipboard 学习笔记 -
+    
+    囧克斯
+  </title>
+
+  
+<link rel="stylesheet" href="/css/pure.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+
+  
+  <link rel="alternate" href="/atom.xml" title="囧克斯" type="application/atom+xml">
+  
+  
+  <link rel="icon" href="/favicon.ico">
+  
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+<body>
+  <script>(() => { if ((new Date().getHours() + 6) % 24 < 12) document.body.classList.add('dark-mode') })()</script>
+
+  <div class="dark-mode-helper"></div>
+
+  <div id="wrapper">
+
+    <div id="header">
+      <h1>
+        <a href="/" title="囧克斯">
+          囧克斯
+        </a>
+      </h1>
+      <p class="description">
+        这里是勾三股四的家
+      </p>
+    </div>
+
+    <div id="nav" class="pure-menu pure-menu-open pure-menu-horizontal">
+      <ul>
+        
+        <li>
+          <a href="/all-demos/">
+            线上
+          </a>
+        </li>
+        
+        <li>
+          <a href="/all-slides/">
+            线下
+          </a>
+        </li>
+        
+        <li>
+          <a href="/about/">
+            关于
+          </a>
+        </li>
+        
+        <li><a href="/archives">归档</li>
+      </ul>
+    </div>
+
+    <div id="main"><div class="content">
+  <h2>
+    ZeroClipboard 学习笔记
+  </h2>
+  <p>如题，周末抽空学习了一下。</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/jonrohan/ZeroClipboard/">ZeroClipboard</a>是在桌面电脑的浏览器上，通过flash技术实现“复制到剪切板”功能的一个程序。它的好处是可以兼容所有浏览器，完成剪切板的操作。</p>
+<p>我们在使用的时候主要就用到两个文件：一个是js文件<code>ZeroClipboard.js</code>，用来引用在网页中；另一个则是swf文件<code>ZeroClipboard.swf</code>，它无需我们在代码里引用，而是被之前的那个<code>ZeroClipboard.js</code>二次调用的。</p>
+<p>ZeroClipboard的工作原理大概是，在网页的“复制”按钮上层遮罩一个透明的flash，这个flash在被点击之后，会调用其的剪切板处理功能，完成对特定文本的复制。这里有几件事需要我们来完成：</p>
+<ol>
+<li>创建一个透明的flash</li>
+<li>将这个flash浮在按钮上层</li>
+<li>确定要复制的文本是什么</li>
+<li>监听这个透明flash的鼠标点击事件</li>
+<li>该flash被点击之后，完成剪切板处理</li>
+</ol>
+<p>对于这几件事，ZeroClipboard分别提供了不同的api，来完成整个需求。</p>
+<a id="more"></a>
+<h3 id="创建flash"><a href="#创建flash" class="headerlink" title="创建flash"></a>创建flash</h3><p>创建的过程其实就是一个<code>var clip = new ZeroClipboard.Client()</code>的过程，这时<code>ZeroClipboard.swf</code>会被载入。值得注意的时，这里的swf文件默认需要放在和网页相同的目录下，且文件名固定。如果我们需要移动这个swf文件的位置或改名，则需要在创建swf文件之前运行：</p>
+<pre><code>ZeroClipboard.setMoviePath( &apos;http://YOURSERVER/path/ZeroClipboard.swf&apos; );
+或
+ZeroClipboard.setMoviePath( &apos;./src/ZeroClipboard.swf&apos; );
+</code></pre><p>里面的参数可以是相对地址也可以是绝对地址。</p>
+<h3 id="将透明flash浮在按钮上层"><a href="#将透明flash浮在按钮上层" class="headerlink" title="将透明flash浮在按钮上层"></a>将透明flash浮在按钮上层</h3><p>这里有一个很有趣的英文单词：<strong>glue</strong>。我们可以通过下面这个api，将flash和按钮重叠，且浮在按钮之上：</p>
+<pre><code>clip.glue( &apos;clip-button-id&apos; );
+或
+clip.glue( document.getElementById(&apos;clip-button-id&apos; ));
+</code></pre><p>即第一个参数为id或dom对象都可以。如果按钮在网页运行中位置发生了变化，flash是不会自动调整位置的，为此我们提供了另一个api可以手动更新flash的位置：</p>
+<pre><code>clip.reposition();
+</code></pre><h4 id="flash的相对浮动"><a href="#flash的相对浮动" class="headerlink" title="flash的相对浮动"></a>flash的相对浮动</h4><p>这里还提供了一种更巧妙的方式：如果按钮的上层有任何<code>position:relative</code>的块状元素，比如div，而按钮和这个块状元素的位置又是相对固定的，那么可以在调用<code>glue</code>函数时，将这个div的id作为第二个参数传进去，不过同时<code>reposition</code>这个api就失效了。比如：</p>
+<pre><code>clip.glue( &apos;clip-button-id&apos;, &apos;clip-container-id&apos; );
+</code></pre><h3 id="设置要复制的文本"><a href="#设置要复制的文本" class="headerlink" title="设置要复制的文本"></a>设置要复制的文本</h3><p>这一步很简单：</p>
+<pre><code>clip.setText(&apos;要复制的文本在这里&apos;);
+</code></pre><h3 id="监听事件"><a href="#监听事件" class="headerlink" title="监听事件"></a>监听事件</h3><p>通过addEventListener进行事件绑定，可以绑定的事件有以下几个：</p>
+<ul>
+<li><code>onload</code>：flash文件加载成功</li>
+<li><code>onmousedown</code>：鼠标在flash上按下</li>
+<li><code>onmouseup</code>：鼠标在flash上释放</li>
+<li><code>onmouseover</code>：鼠标经过flash</li>
+<li><code>onmouseout</code>：鼠标移开flash</li>
+<li><code>oncomplete</code>：剪切板操作完成 (用鼠标点击该flash浮层的时候会触发事件复制到剪切板)</li>
+</ul>
+<h3 id="剪切板操作完成之后可以通过api销毁flash"><a href="#剪切板操作完成之后可以通过api销毁flash" class="headerlink" title="剪切板操作完成之后可以通过api销毁flash"></a>剪切板操作完成之后可以通过api销毁flash</h3><pre><code>clip.destroy();
+</code></pre><p><a target="_blank" rel="noopener" href="http://bowser.effectgames.com/%7Ejhuckaby/zeroclipboard/">DEMO</a><br><a target="_blank" rel="noopener" href="https://github.com/jonrohan/ZeroClipboard/blob/master/docs/instructions.md">更多细节和高阶操作的介绍</a></p>
+
+</div>
+
+<p align="right">
+  <small>
+    <a href="https://github.com/Jinjiang/jinjiang.github.io/edit/dev/source/_posts/zeroclipboard-intro.md" target="_blank">
+      向本文提出修改或勘误建议
+    </a>
+  </small>
+</p>
+
+
+
+<div id="comments">
+  <h2>早期评论</h2>
+  <ul>
+  
+    <li id="comment-9815" style="margin-left: 0em;">
+      <p>
+        <strong>
+        <a href="http://www.truease.com" target="_blank" title="truease.com">truease.com</a>
+        
+        </strong>
+        <small>2012/11/30 10:18:07</small></p>
+      很久很久以前，我也写过这么个小功能。http://www.softwarematrix.cn/blog/ja<x>vasc<x>ript/xincopy-setclipboard-copy-to-memory-flash-plugin-jquery-plugin
+    </li>
+  
+    <li id="comment-10120" style="margin-left: 0em;">
+      <p>
+        <strong>
+        VC
+        
+        </strong>
+        <small>2013/01/23 08:36:24</small></p>
+      写的非常详细.    谢谢了.
+    </li>
+  
+    <li id="comment-10172" style="margin-left: 0em;">
+      <p>
+        <strong>
+        VC
+        
+        </strong>
+        <small>2013/01/24 09:50:15</small></p>
+      博主你好. 请教个问题.<br/>
+我有3个TAB ,   ZeroClipboard 在第一个tab ,  点击切换到第二个 TAB 后,  第一个TAB 的 ZeroClipboard  还停留在原位.     我JS新手, 实在没法去除第二个TAB上的 ZeroClipboard ,   恳请指教!
+    </li>
+  
+  </ul>
+</div>
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+
+<div id="gitalk-container"></div>
+
+<script>
+  const gitalk = new Gitalk({
+    clientID: 'c99e23053fc1bba6a58c',
+    clientSecret: '64efe1cd1438e77ae2bf8eba92b51c90d0cc2b9f',
+    repo: 'jinjiang.github.io',
+    owner: 'jinjiang',
+    admin: ['jinjiang'],
+    id: location.pathname,      // Ensure uniqueness and length less than 50
+    distractionFreeMode: false  // Facebook-like distraction free mode
+  })
+
+  gitalk.render('gitalk-container')
+</script>
+</div>
+
+    <div id="footer">
+      <a href="/">囧克斯</a>
+      
+      |
+      <a href="/atom.xml" title="rss_feed">RSS</a>
+      
+      |
+      我是百度统计
+      <script src="https://hm.baidu.com/h.js?a0a2372d4b7621d0bfe71f33c58a4bd8"></script>
+      |
+      我会翻脸 <a href="#" onclick="document.body.classList.toggle('dark-mode'), event.preventDefault()" style="font-size: 1.25em;">🌚🌝</a>
+    </div>
+  </div>
+
+  
+<script src="/js/script.js"></script>
+
+</body>
+
+</html>

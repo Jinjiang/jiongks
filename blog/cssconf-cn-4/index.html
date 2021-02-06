@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <!-- proud for contributing Vue.js -->
+  <meta charset="utf-8">
+  <meta name="format-detection" content="telephone=no" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-touch-fullscreen" content="yes" />
+
+  
+  <title>
+    
+    第四届 CSSConf CN 见闻 -
+    
+    囧克斯
+  </title>
+
+  
+<link rel="stylesheet" href="/css/pure.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+
+  
+  <link rel="alternate" href="/atom.xml" title="囧克斯" type="application/atom+xml">
+  
+  
+  <link rel="icon" href="/favicon.ico">
+  
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+<body>
+  <script>(() => { if ((new Date().getHours() + 6) % 24 < 12) document.body.classList.add('dark-mode') })()</script>
+
+  <div class="dark-mode-helper"></div>
+
+  <div id="wrapper">
+
+    <div id="header">
+      <h1>
+        <a href="/" title="囧克斯">
+          囧克斯
+        </a>
+      </h1>
+      <p class="description">
+        这里是勾三股四的家
+      </p>
+    </div>
+
+    <div id="nav" class="pure-menu pure-menu-open pure-menu-horizontal">
+      <ul>
+        
+        <li>
+          <a href="/all-demos/">
+            线上
+          </a>
+        </li>
+        
+        <li>
+          <a href="/all-slides/">
+            线下
+          </a>
+        </li>
+        
+        <li>
+          <a href="/about/">
+            关于
+          </a>
+        </li>
+        
+        <li><a href="/archives">归档</li>
+      </ul>
+    </div>
+
+    <div id="main"><div class="content">
+  <h2>
+    第四届 CSSConf CN 见闻
+  </h2>
+  <p>上周末作为一名分享者参加了 <a target="_blank" rel="noopener" href="https://css.w3ctech.com/">CSSConf CN</a>，在厦门。</p>
+<p>其实除了自己的分享内容，这次我是带着很明确的目的参会的，因为有两个主题我特别关注，就是：</p>
+<ul>
+<li>第一个：响应式的组件</li>
+<li>第三个：从 API 的角度看组件的 CSS</li>
+</ul>
+<p>(两个分享的标题都被我稍微“演绎”了一下)</p>
+<p>这两件事都是自己工作上正在特别关注的事情，一方面，我们很少从 API 的角度去理解一个组件的 CSS 该如何组织和管理，所以这个标题就特别吸引我，另一方面响应式组件的分享者是来自新加坡的前端工程师 Zell (我个人一直觉得国内的响应式都是在瞎搞，看了很多周围团队都没有认真做这件事，甚至不相信响应式的价值，从设计师到工程师)，因此非常珍惜这个机会能近距离学习一些国外的同行们是怎么看待和实践响应式的。</p>
+<p>所以尽管我们团队的差旅经费已经用完了，还是决定自费来厦门近距离交流一下。</p>
+<p>现在证明这次真的不虚此行。</p>
+<p>当然参加这种线下活动，“面基”的目的是一定有的……恩，这个不值一提。</p>
+<a id="more"></a>
+<h3 id="响应式组件"><a href="#响应式组件" class="headerlink" title="响应式组件"></a>响应式组件</h3><p>在谈这次分享内容给我的收获之前，我想说，实际上我不只是从几十分钟的分享中学习了响应式组件的东西。我这次去厦门的行程特地提前了两天，周四就到厦门了，就是希望能多一些分享的准备和现场交流。正好 Zell 也到的比较早，于是乎我在周末的会议之前就跟 Zell 聊了很多。真的是很难得的机会。</p>
+<p>回到分享的内容，我听过 Zell 的分享之后简单整理了一些要点：</p>
+<ol>
+<li>Proportional scaling：让所有的组件成比例<ul>
+<li>注意字号：<code>font-size</code> 尽量使用 <code>em</code> 单位，而不是如 <code>px</code> 的绝对单位</li>
+<li>注意视口/窗口大小 (viewport)：尽量使用 <code>vw</code>、<code>vh</code>、<code>vmin</code>、<code>vmax</code> 单位，必要的时候可以配合 <code>calc()</code></li>
+</ul>
+</li>
+<li>Responsive scaling：处理好响应式的断点<ul>
+<li>善用 media query</li>
+<li>尽可能使用 <code>min-width</code>，以小屏幕为基础</li>
+<li>必要的时候使用 <code>min-width</code> 和 <code>max-width</code> 的交集，避免样式间不必要的相互干扰</li>
+</ul>
+</li>
+<li>Modular scaling：像乐高一样拼合模块时的注意事项<ul>
+<li>不要在子元素上直接设置外边距</li>
+<li>取而代之的是在父元素上整体设置每个子元素的边距<ul>
+<li>巧用 <code>+</code> 选择器处理最后一个元素多余的边距</li>
+</ul>
+</li>
+<li>在需要对其的地方使用 <code>rem</code> 作为边距的单位以避免被组件的字号影响布局</li>
+</ul>
+</li>
+<li>Morphable blocks：尽可能透过不同的表象提炼相同结构的组件，以达到尽可能的复用和组件数最小化<ul>
+<li>找出相同点和不同点</li>
+<li>得出最佳的 HTML 结构</li>
+<li>通过设置不同的样式展示出不同的效果</li>
+<li>让 modifier (BEM 中的 M) 的数量尽可能的少</li>
+</ul>
+</li>
+<li>额外的小贴士：命名规范和约定、避免在选择器上使用 ID 从而使得选择器的权重失控</li>
+</ol>
+<p>实际上每一条都不是很难，也不是没有见到过，但是总结的非常有系统性，给了大家一些很好开始的着手点。</p>
+<p>另外 Zell 在聊天过程中也提到了很多我非常认同的观点和细节，想分享给大家：</p>
+<ul>
+<li>前端工程师是真正用户体验的“最后一道门”，身为前端工程师一定要有意识捍卫用户体验 (这句话后来跟 裕波 聊天的时候他说了一模一样的话，可见大家都十分认同)。</li>
+<li>前端工程师一定要跟设计师“坐在一起”工作，一定要强沟通，才能把工作做好。</li>
+<li>跟 Zell 聊到响应式在自己的工作中遇到很多困难的时候，Zell 出乎意料的大方对我说“你找我就对了”，即大方又自信。看得出来响应式在 Zell 看来已经是吃饭喝水一样了，我们自己包括周围的人却连一步都还没走出来，真是觉得惭愧。</li>
+</ul>
+<h3 id="从-API-的角度看组件的-CSS"><a href="#从-API-的角度看组件的-CSS" class="headerlink" title="从 API 的角度看组件的 CSS"></a>从 API 的角度看组件的 CSS</h3><p>我记录了一些要点和自己的理解：</p>
+<ul>
+<li>首先，通过 CSS 的发展史来看，我们一直试图通过一种特定的语法 (CSS) 来描述网页的样式，但在 web page -&gt; web app 的划时代趋势下，我们组织代码的方式也发生了变化，尤其是 CSS 的部分容易被人们忽视。</li>
+<li>分享者 E0 把今天的 CSS 设计问题，从 API 的角度划分成了三个层次：<ol>
+<li>对于组件的维护者来说：要把一部分 CSS 样式封装起来，供自己维护，同时也要避免被组件的使用者误修改或滥修改，通常这些样式会被内联或编译为无语义不可编辑的 CSS class</li>
+<li>对于组件的使用者来说：要把一部分 CSS 用法暴露出来，供开发者灵活配置或修改，很多组件库会在文档中列出可以配置和修改的 CSS class，但除此之外，还有一些库做了很巧妙的不一样的封装，比如通过扩展的伪类或伪元素。这种方式我之前没有留意到过，有点开眼界</li>
+<li>对于浏览器插件作者：这个角度也是我之前没有认真思考过的，就是说还有这样一群开发者，希望通过浏览器插件处理一些不同用户的特定需求。如果我们的组件希望对这些人友好，那么就多了一层考量。这时我们就想到了一些更加通用或规范化的，和具体工具、库、编译方式无关的设计，比如 CSS 自定义属性、无权重的选择器等</li>
+</ol>
+</li>
+</ul>
+<p>听过之后非常受启发。</p>
+<p>这两份 slides 我也第一时间分享给了我们团队组件库的同学们了解学习了：）</p>
+<h3 id="关于自己分享的-CSS-Houdini"><a href="#关于自己分享的-CSS-Houdini" class="headerlink" title="关于自己分享的 CSS Houdini"></a>关于自己分享的 CSS Houdini</h3><p>这些内容可能真的是有一点“超前”了，因为很多浏览器都还没实现，而且规范本身也没有稳定下来。但是我迫不及待的想分享出来，是因为我也听到了一些说法，说“CSS 很久没有什么新闻了”。那 CSS Houdini 绝对是一个可以让 CSS 更上一层楼的“重量级”的东西。希望可以通过分享 CSS Houdini 让大家对 CSS 更有信心和期待。</p>
+<p>同时很多技术的“风向”都是由最底层的东西决定的，我们从规范层面对 CSS 有更多的了解，一定会对我们的实际工作有很多指导和借鉴的价值。如果你同时还是一个有开源精神的人，那么你可以从今天开始就构思一些基于 CSS Houdini 的工具和库了对吧，用这些工具和库加速 CSS Houdini 的落地，同时也尽快把一些之前没有 CSS Houdini 的时候大家用起来很别扭很勉强的东西汰换掉，更在这个过程中体会 web 带给我们的乐趣：）</p>
+<h3 id="其它"><a href="#其它" class="headerlink" title="其它"></a>其它</h3><p>另外几个分享也各有特色，总体上，我觉得这次 CSSConf CN 同时包含了 CSS 的规范、理念、工具、技巧、动画、八卦、吐槽各个方面，应该是尽可能照顾到了大家的兴趣和需求了。还是觉得这样的会议非常的棒。</p>
+<p>我觉得 CSS 和动画、SVG、字体设计、3D 图形学、可访问性、语义化的 web 等话题有着非常紧密的联系，有很多有意义的延伸，并且这些话题也很难有独立的 Conf 了吧我估计。再加上 CSSConf 的主办者们，尤其是 裕波，是非常懂前端开发者们的，他们经营 CSSConf 的理念和方式我一直非常认同和欣赏，所以也许未来有一天，CSSConf 会比 JSConf 更受人关注。</p>
+<p>以上</p>
+
+</div>
+
+<p align="right">
+  <small>
+    <a href="https://github.com/Jinjiang/jinjiang.github.io/edit/dev/source/_posts/cssconf-cn-4.md" target="_blank">
+      向本文提出修改或勘误建议
+    </a>
+  </small>
+</p>
+
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+
+<div id="gitalk-container"></div>
+
+<script>
+  const gitalk = new Gitalk({
+    clientID: 'c99e23053fc1bba6a58c',
+    clientSecret: '64efe1cd1438e77ae2bf8eba92b51c90d0cc2b9f',
+    repo: 'jinjiang.github.io',
+    owner: 'jinjiang',
+    admin: ['jinjiang'],
+    id: location.pathname,      // Ensure uniqueness and length less than 50
+    distractionFreeMode: false  // Facebook-like distraction free mode
+  })
+
+  gitalk.render('gitalk-container')
+</script>
+</div>
+
+    <div id="footer">
+      <a href="/">囧克斯</a>
+      
+      |
+      <a href="/atom.xml" title="rss_feed">RSS</a>
+      
+      |
+      我是百度统计
+      <script src="https://hm.baidu.com/h.js?a0a2372d4b7621d0bfe71f33c58a4bd8"></script>
+      |
+      我会翻脸 <a href="#" onclick="document.body.classList.toggle('dark-mode'), event.preventDefault()" style="font-size: 1.25em;">🌚🌝</a>
+    </div>
+  </div>
+
+  
+<script src="/js/script.js"></script>
+
+</body>
+
+</html>

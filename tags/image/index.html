@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <!-- proud for contributing Vue.js -->
+  <meta charset="utf-8">
+  <meta name="format-detection" content="telephone=no" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-touch-fullscreen" content="yes" />
+
+  
+  <title>
+    
+    tag: image -
+    
+    囧克斯
+  </title>
+
+  
+<link rel="stylesheet" href="/css/pure.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+
+  
+  <link rel="alternate" href="/atom.xml" title="囧克斯" type="application/atom+xml">
+  
+  
+  <link rel="icon" href="/favicon.ico">
+  
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+<body>
+  <script>(() => { if ((new Date().getHours() + 6) % 24 < 12) document.body.classList.add('dark-mode') })()</script>
+
+  <div class="dark-mode-helper"></div>
+
+  <div id="wrapper">
+
+    <div id="header">
+      <h1>
+        <a href="/" title="囧克斯">
+          囧克斯
+        </a>
+      </h1>
+      <p class="description">
+        这里是勾三股四的家
+      </p>
+    </div>
+
+    <div id="nav" class="pure-menu pure-menu-open pure-menu-horizontal">
+      <ul>
+        
+        <li>
+          <a href="/all-demos/">
+            线上
+          </a>
+        </li>
+        
+        <li>
+          <a href="/all-slides/">
+            线下
+          </a>
+        </li>
+        
+        <li>
+          <a href="/about/">
+            关于
+          </a>
+        </li>
+        
+        <li><a href="/archives">归档</li>
+      </ul>
+    </div>
+
+    <div id="main">
+<div class="content">
+  <h2>
+    <a href="/blog/our-image-workflow/">
+      手机淘宝前端的图片相关工作流程梳理
+    </a>
+  </h2>
+  
+  <p>本文首发自<a target="_blank" rel="noopener" href="https://github.com/amfe/article/issues/8">阿里无线前端博客</a></p>
+<p><em>注：本文摘自阿里内网的无线前端博客《无线前端的图片相关工作流程梳理》。其实是一个月前写的，鉴于团队在<a target="_blank" rel="noopener" href="http://css.w3ctech.com/">中国第二届 CSS Conf</a> 上做了《手机淘宝 CSS 实践启示录》的分享，而图片工作流程梳理是其中的一个子话题，故在此一并分享出来，希望仍可以给大家一些经验和启发。另外，考虑到这是一篇公开分享，原版内容有部分删节和调整，里面有一些经验和产出是和我们的工作环境相关的，不完全具有普遍性，还请见谅。</em></p>
+<p>今天很荣幸的跟大家分享一件事情，就是经过差不多半年多的努力，尤其是最近 2 周的“突击扫尾”，无线前端团队又在工具流程方面有了一个不小的突破：我们暂且称其为“图片工作流”梳理。</p>
+<h3 id="图片！图片！图片！"><a href="#图片！图片！图片！" class="headerlink" title="图片！图片！图片！"></a>图片！图片！图片！</h3><p>要说最近 1 年里，无线前端开发的一线同学最“难搞”的几件事，图片处理绝对可以排在前三。</p>
+<ul>
+<li>首先，我们首先要从视觉稿 (绝大部分出自 photoshop) 里把图片合理的分解、测量、切割、导出——俗称“切图”</li>
+<li>然后，我们要把切好的图放入页面代码中，完成相关的本地调试</li>
+<li>第三步，把本地图片通过一个内部网站 (名叫 TPS) 上传到我们的图片 CDN 上，并复制图片的 CDN 地址，把本地调试用的相对路径替换掉</li>
+<li>第四步，不同的图片、不同的外部环境下 (比如 3g 还是 wifi)，我们需要给图片不一样的尺寸、画质展现，并有一系列的配置需要遵循</li>
+<li>如果视觉稿有更改 (不要小看这件事，微观上还是很频繁的哦)，不好意思，从第一步开始再重新走一遍……</li>
+</ul>
+<p>这里面“难搞”在哪些地方呢？我们逐一分析一下：</p>
+<ol>
+<li>“切图”的效率并不高，而且每一步都很容易出现返工或再沟通</li>
+<li>打开 TPS 网站上传图片放到前端开发流程中并不是一个连贯流畅的步骤，而且 GUI 相比于命令行工具的缺陷在于无法和其它工具更好的集成</li>
+<li>替换 CDN 图片路径的工作机械而繁琐，并且代码中替换后的图片地址失去了原本的可读性，非常容易造成后期的维护困惑甚至混乱</li>
+<li>适配工作异常繁杂和辛苦，也很容易漏掉其中的某个环节</li>
+<li>视觉变更的成本高，web 的快速响应的特点在丧失</li>
+</ol>
+<p>所以可能把这些东西画成一张图表的话：</p>
+<p><img src="http://img2.tbcdn.cn/L1/461/1/58a8b4f12816b6f71918c31ee5a0ceae74f40fb9" alt=""></p>
+<h3 id="团队的单点突破"><a href="#团队的单点突破" class="headerlink" title="团队的单点突破"></a>团队的单点突破</h3><p>在最近半年的一段时间里，无线前端团队先后发起了下面几项工作，从某个点上尝试解决这些问题：</p>
+  <p class="more">
+    <a href="/blog/our-image-workflow/">
+      阅读剩余部分...
+    </a>
+  </p>
+  
+</div>
+
+
+
+</div>
+
+    <div id="footer">
+      <a href="/">囧克斯</a>
+      
+      |
+      <a href="/atom.xml" title="rss_feed">RSS</a>
+      
+      |
+      我是百度统计
+      <script src="https://hm.baidu.com/h.js?a0a2372d4b7621d0bfe71f33c58a4bd8"></script>
+      |
+      我会翻脸 <a href="#" onclick="document.body.classList.toggle('dark-mode'), event.preventDefault()" style="font-size: 1.25em;">🌚🌝</a>
+    </div>
+  </div>
+
+  
+<script src="/js/script.js"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <!-- proud for contributing Vue.js -->
+  <meta charset="utf-8">
+  <meta name="format-detection" content="telephone=no" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-touch-fullscreen" content="yes" />
+
+  
+  <title>
+    
+    Javascript语言特性学习笔记(二) -
+    
+    囧克斯
+  </title>
+
+  
+<link rel="stylesheet" href="/css/pure.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+
+  
+  <link rel="alternate" href="/atom.xml" title="囧克斯" type="application/atom+xml">
+  
+  
+  <link rel="icon" href="/favicon.ico">
+  
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+<body>
+  <script>(() => { if ((new Date().getHours() + 6) % 24 < 12) document.body.classList.add('dark-mode') })()</script>
+
+  <div class="dark-mode-helper"></div>
+
+  <div id="wrapper">
+
+    <div id="header">
+      <h1>
+        <a href="/" title="囧克斯">
+          囧克斯
+        </a>
+      </h1>
+      <p class="description">
+        这里是勾三股四的家
+      </p>
+    </div>
+
+    <div id="nav" class="pure-menu pure-menu-open pure-menu-horizontal">
+      <ul>
+        
+        <li>
+          <a href="/all-demos/">
+            线上
+          </a>
+        </li>
+        
+        <li>
+          <a href="/all-slides/">
+            线下
+          </a>
+        </li>
+        
+        <li>
+          <a href="/about/">
+            关于
+          </a>
+        </li>
+        
+        <li><a href="/archives">归档</li>
+      </ul>
+    </div>
+
+    <div id="main"><div class="content">
+  <h2>
+    Javascript语言特性学习笔记(二)
+  </h2>
+  
+<p><mark>本文摘自 勾三股四 更早时期的 <a target="_blank" rel="noopener" href="http://bulaoge.net/?g3g4">不老歌</a> 博客。</mark></p>
+
+<a id="more"></a>
+<p>之前写过<a href="/topic.blg?dmn=g3g4&tid=1134019" target="_blank">一篇Javascript的学习笔记</a>，貌似过去很久了……<br />
+<br />
+今天是第二篇。<br />
+-----------------------------------------------------------------<br />
+<br />
+<strong>Javascript中的非函数式语言特性</strong><br />
+<br />
+<u>1</u>. Javascript中提供的变量作用域共有三种：表达式(直接量)、<del>语句</del>、函数(局部变量)和全局(全局变量)<br />
+<u>2</u>. typeof null == 'Object';<br />
+<u>3</u>. 对象只有“构造于某个原型”，并不存在“持有某个原型”，所以构造器(实质为一个函数)的原型是一个实例(对象)，而实例(实质为一个对象)的构造器是一个函数(构造器)<br />
+<u>4</u>. 函数只有在需要引用到原型时，才具有构造器的特性。而且函数的原型总是一个Object()构造器的实例。不过该实例创建后，constructor属性总先被赋值为当前函数，即：MyObj.prototype.constructor == MyObj<br />
+<u>5</u>. 多个原型和多个构造器之间交替相联系，形成了一条原型链<br />
+<u>6</u>. 万物皆为prototype链 + props链，空对象{}可理解为其prototype链为Object.prototype，props链为空<br />
+<u>7</u>. 一般Javascript的对象(构造器)组成为：内置对象(Number/String/.../Math/Global/Arguments)、引擎扩展对象(ActiveXObject/COM/XML/...)、宿主对象(window/navigator/image/...)<br />
+<br />
+写得有点粗略了，有些东西还是挺晦涩的，没有写出具体的例子……<br />
+暂总结如下，下一次是函数式语言特性的部分</p>
+
+</div>
+
+<p align="right">
+  <small>
+    <a href="https://github.com/Jinjiang/jinjiang.github.io/edit/dev/source/_posts/2010-01-19.md" target="_blank">
+      向本文提出修改或勘误建议
+    </a>
+  </small>
+</p>
+
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+
+<div id="gitalk-container"></div>
+
+<script>
+  const gitalk = new Gitalk({
+    clientID: 'c99e23053fc1bba6a58c',
+    clientSecret: '64efe1cd1438e77ae2bf8eba92b51c90d0cc2b9f',
+    repo: 'jinjiang.github.io',
+    owner: 'jinjiang',
+    admin: ['jinjiang'],
+    id: location.pathname,      // Ensure uniqueness and length less than 50
+    distractionFreeMode: false  // Facebook-like distraction free mode
+  })
+
+  gitalk.render('gitalk-container')
+</script>
+</div>
+
+    <div id="footer">
+      <a href="/">囧克斯</a>
+      
+      |
+      <a href="/atom.xml" title="rss_feed">RSS</a>
+      
+      |
+      我是百度统计
+      <script src="https://hm.baidu.com/h.js?a0a2372d4b7621d0bfe71f33c58a4bd8"></script>
+      |
+      我会翻脸 <a href="#" onclick="document.body.classList.toggle('dark-mode'), event.preventDefault()" style="font-size: 1.25em;">🌚🌝</a>
+    </div>
+  </div>
+
+  
+<script src="/js/script.js"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <!-- proud for contributing Vue.js -->
+  <meta charset="utf-8">
+  <meta name="format-detection" content="telephone=no" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-touch-fullscreen" content="yes" />
+
+  
+  <title>
+    
+    手机淘宝前端的图片相关工作流程梳理 -
+    
+    囧克斯
+  </title>
+
+  
+<link rel="stylesheet" href="/css/pure.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+
+  
+  <link rel="alternate" href="/atom.xml" title="囧克斯" type="application/atom+xml">
+  
+  
+  <link rel="icon" href="/favicon.ico">
+  
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+<body>
+  <script>(() => { if ((new Date().getHours() + 6) % 24 < 12) document.body.classList.add('dark-mode') })()</script>
+
+  <div class="dark-mode-helper"></div>
+
+  <div id="wrapper">
+
+    <div id="header">
+      <h1>
+        <a href="/" title="囧克斯">
+          囧克斯
+        </a>
+      </h1>
+      <p class="description">
+        这里是勾三股四的家
+      </p>
+    </div>
+
+    <div id="nav" class="pure-menu pure-menu-open pure-menu-horizontal">
+      <ul>
+        
+        <li>
+          <a href="/all-demos/">
+            线上
+          </a>
+        </li>
+        
+        <li>
+          <a href="/all-slides/">
+            线下
+          </a>
+        </li>
+        
+        <li>
+          <a href="/about/">
+            关于
+          </a>
+        </li>
+        
+        <li><a href="/archives">归档</li>
+      </ul>
+    </div>
+
+    <div id="main"><div class="content">
+  <h2>
+    手机淘宝前端的图片相关工作流程梳理
+  </h2>
+  <p>本文首发自<a target="_blank" rel="noopener" href="https://github.com/amfe/article/issues/8">阿里无线前端博客</a></p>
+<p><em>注：本文摘自阿里内网的无线前端博客《无线前端的图片相关工作流程梳理》。其实是一个月前写的，鉴于团队在<a target="_blank" rel="noopener" href="http://css.w3ctech.com/">中国第二届 CSS Conf</a> 上做了《手机淘宝 CSS 实践启示录》的分享，而图片工作流程梳理是其中的一个子话题，故在此一并分享出来，希望仍可以给大家一些经验和启发。另外，考虑到这是一篇公开分享，原版内容有部分删节和调整，里面有一些经验和产出是和我们的工作环境相关的，不完全具有普遍性，还请见谅。</em></p>
+<p>今天很荣幸的跟大家分享一件事情，就是经过差不多半年多的努力，尤其是最近 2 周的“突击扫尾”，无线前端团队又在工具流程方面有了一个不小的突破：我们暂且称其为“图片工作流”梳理。</p>
+<h3 id="图片！图片！图片！"><a href="#图片！图片！图片！" class="headerlink" title="图片！图片！图片！"></a>图片！图片！图片！</h3><p>要说最近 1 年里，无线前端开发的一线同学最“难搞”的几件事，图片处理绝对可以排在前三。</p>
+<ul>
+<li>首先，我们首先要从视觉稿 (绝大部分出自 photoshop) 里把图片合理的分解、测量、切割、导出——俗称“切图”</li>
+<li>然后，我们要把切好的图放入页面代码中，完成相关的本地调试</li>
+<li>第三步，把本地图片通过一个内部网站 (名叫 TPS) 上传到我们的图片 CDN 上，并复制图片的 CDN 地址，把本地调试用的相对路径替换掉</li>
+<li>第四步，不同的图片、不同的外部环境下 (比如 3g 还是 wifi)，我们需要给图片不一样的尺寸、画质展现，并有一系列的配置需要遵循</li>
+<li>如果视觉稿有更改 (不要小看这件事，微观上还是很频繁的哦)，不好意思，从第一步开始再重新走一遍……</li>
+</ul>
+<p>这里面“难搞”在哪些地方呢？我们逐一分析一下：</p>
+<ol>
+<li>“切图”的效率并不高，而且每一步都很容易出现返工或再沟通</li>
+<li>打开 TPS 网站上传图片放到前端开发流程中并不是一个连贯流畅的步骤，而且 GUI 相比于命令行工具的缺陷在于无法和其它工具更好的集成</li>
+<li>替换 CDN 图片路径的工作机械而繁琐，并且代码中替换后的图片地址失去了原本的可读性，非常容易造成后期的维护困惑甚至混乱</li>
+<li>适配工作异常繁杂和辛苦，也很容易漏掉其中的某个环节</li>
+<li>视觉变更的成本高，web 的快速响应的特点在丧失</li>
+</ol>
+<p>所以可能把这些东西画成一张图表的话：</p>
+<p><img src="http://img2.tbcdn.cn/L1/461/1/58a8b4f12816b6f71918c31ee5a0ceae74f40fb9" alt=""></p>
+<h3 id="团队的单点突破"><a href="#团队的单点突破" class="headerlink" title="团队的单点突破"></a>团队的单点突破</h3><p>在最近半年的一段时间里，无线前端团队先后发起了下面几项工作，从某个点上尝试解决这些问题：</p>
+<a id="more"></a>
+<h4 id="lib-flexible"><a href="#lib-flexible" class="headerlink" title="lib.flexible"></a>lib.flexible</h4><p>首先，我们和 UED 团队共同协商约定了一套 REM 方案 (后更名为 flexible 方案，进而演进为 lib.flexible 库)，通过对视觉稿的产出格式的约定，从工作流程的源头把控质量，同时在技术上产出了配套的 <a target="_blank" rel="noopener" href="https://github.com/amfe/lib-flexible/">lib.flexible</a> 库，可以“抹平”不同设备屏幕的尺寸差异，同时对清晰度进行了智能判断。这部分工作前端的部分是 @wintercn 寒老师和 @terrykingcha 共同创建的。</p>
+<p><img src="http://img4.tbcdn.cn/L1/461/1/bd051f9dbea5cf39a1b087f552181ce509ca5c7f" alt=""></p>
+<h4 id="视觉稿辅助工具普及"><a href="#视觉稿辅助工具普及" class="headerlink" title="视觉稿辅助工具普及"></a>视觉稿辅助工具普及</h4><p>其次，我们于去年 12 月开始启动了一个“视觉稿工具效率提升”的开放课题，由团队的 @songsiqi 负责牵头，我们从课题的一开始就确立了 KPI 和 roadmap，经过一段时间的调研和落实，收罗了很多实用的辅助工具帮助我们提升效率，同时布道给了整个团队。比如 <a target="_blank" rel="noopener" href="http://www.cutterman.cn/">cutterman</a>、<a target="_blank" rel="noopener" href="http://www.cutterman.cn/parker">parker</a>、<a target="_blank" rel="noopener" href="https://github.com/romashamin/Size-Marks-PS">Size Marks</a> 等</p>
+<h4 id="img-uploader"><a href="#img-uploader" class="headerlink" title="img-uploader"></a>img-uploader</h4><p>在 @hongru 去年主持完成的一系列 One-Request 前端工具集当中，有一个很有意义的名叫 <code>or-uploadimg</code> 的图片上传工具。它把 TPS 的图片上传服务命令化了。这给我们对图片上传工作批量化、集成化提供了一个非常重要的基础！这个工具同时也和淘宝网前端团队的另一个 TPS 图片上传工具有异曲同工之妙。大概用法是这样的，大家可以感受一下：</p>
+<pre><code>var uploader = require(&apos;@ali/or-uploadimg&apos;);
+
+// 上传 glob 多张图
+uploader(&apos;./**/*.jpg&apos;, function (list) &#123;
+    console.log(list)
+&#125;);
+// 上传多张
+uploader([&apos;./1.jpg&apos;, &apos;./3d-base.jpg&apos;], function (list1, list2) &#123;
+    console.log(list1, list2);
+&#125;)
+
+// 上传单张
+uploader(&apos;./3d-base.jpg&apos;, function (list1) &#123;
+    console.log(list1)
+&#125;)
+</code></pre><p>随后团队又出现了这一工具的 <a target="_blank" rel="noopener" href="http://gulpjs.com">gulp</a> 插件，可以对图片上传的工作流程做一个简单的集成，具体集成方式是分析网页的 html/css 代码，找到其中的相对图片地址并上传+替换 CDN URL。</p>
+<pre><code>var gulp = require(&apos;gulp&apos;);
+var imgex = require(&apos;@ali/gulp-imgex&apos;);
+
+gulp.task(&apos;imgex&apos;, function() &#123;
+    gulp.src([&apos;./*.html&apos;])
+        .pipe(imgex())
+        .pipe(gulp.dest(&apos;./&apos;));
+
+    gulp.src(&apos;./css/*.css&apos;)
+        .pipe(imgex(&#123;
+            base64Limit: 8000, // base64化的图片size上限，小于这个size会直接base64化，否则上传cdn
+            uploadDest: &apos;tps&apos; // 或者 `mt`
+        &#125;))
+        .pipe(gulp.dest(&apos;./css&apos;));
+&#125;);
+</code></pre><h4 id="lib-img"><a href="#lib-img" class="headerlink" title="lib.img"></a>lib.img</h4><p><code>lib.img</code> 是团队 @chenerlang666 主持开发的一个基础库，它是一套图片自动处理优化方案。可以同时解决屏幕尺寸判断、清晰度判断、网络环境判断、域名收敛、尺寸后缀计算、画质后缀计算、锐化度后缀计算、懒加载等一系列图片和性能相关的问题。这个库的意义和实用性都非常之高，并且始终保持着快速的业务响应和迭代周期，也算是无线前端团队的一个明星作品，也报送了当年度的无线技术金码奖。</p>
+<p><img src="http://img1.tbcdn.cn/L1/461/1/b98433bdbbf29c3682b169bd3f004a22fc5935d1" alt=""></p>
+<h4 id="px2rem"><a href="#px2rem" class="headerlink" title="px2rem"></a>px2rem</h4><p><a target="_blank" rel="noopener" href="https://www.npmjs.com/package/px2rem">px2rem</a> 是 @songsiqi 主持开发的另一个小工具，它因 lib.flexible 方案而生，因为我们统一采用 rem 单位来最终记录界面的尺寸，且对于个别1像素边框、文本字号来说，还有特殊的规则作为补充 (详见 lib.flexible 的文档)。</p>
+<p><img src="http://img4.tbcdn.cn/L1/461/1/b78ccf6e3f3332e03751e6fbbec1abeec25bee1c" alt=""></p>
+<p>同样的，它也有 <a target="_blank" rel="noopener" href="https://www.npmjs.com/package/gulp-px2rem">gulp</a> / browser 的各种版本。</p>
+<h4 id="img4dpr"><a href="#img4dpr" class="headerlink" title="img4dpr"></a>img4dpr</h4><p><code>img4dpr</code> 则是一个可以把 CSS 中的 CDN URL 自动转成 3 种 dpr 下不同的尺寸后缀。算是对 lib.img 的一个补充。如果你的图片不是产生在 <code>&lt;img&gt;</code> 标签或 JavaScript 中，而是写在了 CSS 文件里，那么即使是 lib.img 恐怕也无能为力，img4dpr 恰恰是在解决这个问题。</p>
+<p><img src="http://img1.tbcdn.cn/L1/461/1/d0d545549d5a93d5a717ac673c7d54701f0d4066" alt=""></p>
+<h3 id="完事儿了吗？"><a href="#完事儿了吗？" class="headerlink" title="完事儿了吗？"></a>完事儿了吗？</h3><p>看上去，团队为团队做了很多事情，每件事情都在单点上有所突破，解决了一定的问题。</p>
+<p>但我们并没有为此停止思考</p>
+<p>有一个很明显的改进空间在这里：今天我们的前端开发流程是一整套工程链路，每个环节之间都紧密相扣， <strong>解决了单点的问题并不是终点，基于场景而不是功能点的思考方式，才能够把每个环节都流畅的串联起来，才能给前端开发者在业务支持的过程当中提供完美高效畅通无阻的体验——这是我们为之努力的更大的价值！也是我认为真正“临门一脚”的最终价值体现！</strong></p>
+<h3 id="基于场景的思维方式"><a href="#基于场景的思维方式" class="headerlink" title="基于场景的思维方式"></a>基于场景的思维方式</h3><p><strong>这种思维方式听上去很玄幻，其实想做到很简单，我们不要单个儿看某个工具好不好用，牛不牛掰，模拟真实工程场景，创建个新项目，从“切图”的第一步连续走到发布的最后一步，看看中间哪里断掉了？哪里衔接的不自然？哪里不完备？哪里重复设计了？哪里可以整合？通常这些问题都会变得一目了然。</strong></p>
+<p>首先，在 Photoshop 中“切图”本身的过程对于后续的开发流程来说是相对独立的，所以这里并没有做更多的融合 <em>(从另外一个角度看，这里其实有潜在的改造空间，如何让“切图”的工作也能集成到前端工具链路中，这值得我们长期思考)</em></p>
+<p>然后，从图片导出产生的那一刻起，它所经历的场景大概会是这么几种：</p>
+<ul>
+<li>放入 <code>images</code> 文件夹<ul>
+<li>to HTML<ul>
+<li>src: (upload time) -&gt; set <code>[src]</code> -&gt; webpack require -&gt; hash filename (upload time) -&gt; file-loader</li>
+<li>data-src<ul>
+<li>(upload time) -&gt; set <code>[data-src]</code> -&gt; lib.img (auto resize)</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>to JavaScript: element.src, element.style.backgroundImage<ul>
+<li>(upload time) -&gt; set <code>[data-src]</code> data</li>
+<li>(upload time) -&gt; set <code>[src]</code> (manually resize)</li>
+<li>(upload time) -&gt; set <code>element.style.background</code> -&gt; lib.img (manually resize)</li>
+</ul>
+</li>
+<li>to CSS: background-image<ul>
+<li>(upload time) -&gt; set <code>background</code> -&gt; postcss (upload time) -&gt; px2rem, img4dpr</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>其中 <code>(upload time)</code> 指的是我有机会在这个时机把图片上传到 CDN 并把代码里的图片地址替换掉；<code>(* resize)</code> 指的是我有机会在这个时机把图片的域名收敛/尺寸/画质/锐化度等需求处理掉。</p>
+<p>经过这样一整理，我们很容易发现问题：</p>
+<ol>
+<li>图片上传存在很多种可选的时机，并没有形成最佳实践</li>
+<li>有些链路完全没有机会做必要的处理 (如 to HTML -&gt; src 的链路无法优化图片地址)</li>
+<li>有些链路处理图片的逻辑并不够智能 (比如需要手动确定优化图片选项的链路)</li>
+<li>图片上传 CDN 之后必须手动替换掉源代码里的图片路径，这个问题在任何一个链路里都没有得到解决</li>
+<li>CSS 相关的小工具很多，比较零散，学习和使用的成本在逐步变高变复杂</li>
+<li>没有统一完善的项目脚手架，大家创建新项目都需要初始化好多小工具的 gulp 配置 (当然有个土办法就是从就项目里 copy 一份 <code>package.json</code> 和一份 <code>gulpfile.js</code>)</li>
+</ol>
+<h3 id="基于场景的“查漏补缺”"><a href="#基于场景的“查漏补缺”" class="headerlink" title="基于场景的“查漏补缺”"></a>基于场景的“查漏补缺”</h3><p><img src="http://gtms03.alicdn.com/tps/i3/TB1xb2FIpXXXXb7XVXXtkvyUVXX-2048-1536.jpg" alt=""></p>
+<p>在完善场景的“最后一公里”，我们做了如下的工作：</p>
+<ol>
+<li>把所有的 CSS 工具集成到了 postcss，再通过 postcss 的 gulp 插件、webpack 插件、browserify 插件令其未来有机会灵活运用到多种场景而不需要做多种工具链的适配，即：postcss-px2rem、postcss-img4dpr，同时额外的，借此机会引入 postcss-autoprefixer，让团队拜托旧的 webkit 前缀，拥抱标准的写法</li>
+<li>把图片上传的时机由最早的 or-imgex-gulp 在最后阶段分析网页的html/css代码上传替换其中的图片，变为在 <code>images</code> 目录下约定一个名为 <code>_cdnurl.json</code> 的文件，记录图片的 hash 值和线上 CDN 地址，并写了一个 <code>@ali/gulp-img-uploader</code> 的 gulp 插件，每次运行的时候会便利 <code>images</code> 文件夹中的图片，如果出现新的 hash 值，就自动上传到 CDN，并把相应生成的 CDN URL 写入 <code>_cdnurl.json</code></li>
+<li>同时，这个文件可以引入到页面的 JavaScript 环境中，引入到 img4dpr 工具中，引入到 lib.img 的逻辑中，让 HTML/CSS/JavaScript 的各种使用图片的场景都可以访问到 <code>_cdnurl.json</code> 中记录的本地图片路径和线上地址的对应关系</li>
+<li>这也意味着 lib.img, img4dpr 需要做相应的改动，同时</li>
+<li>页面本身要默认把 <code>_cdnurl.json</code> 的信息引入以做准备</li>
+<li>创建一个 lib.cdnurl 的库，在图片未上传的情况下，返回本地路径，在已经上传的情况下，返回 CDN URL，这样通过这个库作支持，外加 lib.img、img4dpr，开发者可以做到在源代码中完全使用本地路径，源代码的可读性得到了最大程度的保证</li>
+<li>基于 adam 创建一个包含全套工具链路的项目模板 (脚手架)</li>
+</ol>
+<p>上述几件事我们于上周一做了统一讨论和分工，这里要感谢 @mingelz @songsiqi @chenerlang666 的共同努力！！</p>
+<h4 id="夹带私货-偷笑"><a href="#夹带私货-偷笑" class="headerlink" title="夹带私货 (偷笑)"></a>夹带私货 (偷笑)</h4><p>我在这个过程中，融入了之前一段时间集中实践的 <a href="https://jiongks.name/blog/just-vue/">vue 和 webpack 的工程体系</a>，在 vue 的基础上进行组件化开发，在 webpack 的基础上管理资源打包、集成和发布，最终合并在了最新的 just-vue 的 adam template 里面。</p>
+<p>之前不是在文章的最后卖了个“最后一公里”的关子吗，这里介绍的图片工作流改进就是其中的一部分：）</p>
+<p>同时，我基于 lib.img 的思路，结合 vue.js 自身的特点，写了一个 <code>v-src</code> 的 directive，在做到 lib.img 里 <code>[data-src]</code> 相同目的的同时，更好的融入了 vue.js 的体系，同时加入了更高集成度的功能，稍后会再介绍。</p>
+<p><strong>夹带了私货之后是不是我就没法用了？</strong></p>
+<p>最后我想强调的是，除了自己的这些“私货”之外，上面提到的几个改进点和这些个人的内容是完全解耦的，如果你不选择 vue.js 或 webpack 而是别的同类型工具或自己研发的一套工具，它依然可以灵活的融入你的工作流程中。</p>
+<h3 id="最终效果"><a href="#最终效果" class="headerlink" title="最终效果"></a>最终效果</h3><p>我们在团队内部把这些工作流程以脚手架的方式进行了沉淀，并放在了团队内部叫做 <code>adam</code> 的 generator 平台上 (后续会有介绍) 取名叫做 <code>just-vue</code> (时间仓促，adam 和相关的 generator 未来会在适当的时机开放出来)。大致用法：</p>
+<p>安装 adam 和 just-vue 模板：</p>
+<pre><code>tnpm install -g @ali/adam
+adam tmpl add &lt;just-vue git repo&gt;
+</code></pre><p>交互式初始化新项目：</p>
+<pre><code>$ adam
+
+? Choose a template: just-vue
+? Project Name: y
+? Git User or Project Author: ...
+? Your email address: ...
+Awesome! Your project is created!
+ |--.gitignore
+ |--components
+ |--|--foo.vue
+ |--gulpfile.js
+ |--images
+ |--|--_cdnurl.json
+ |--|--logo.png
+ |--|--one.png
+ |--|--taobao.jpg
+ |--lib
+ |--|--lib-cdnurl.js
+ |--|--lib-img.js
+ |--|--vue-src.js
+ |--package.json
+ |--README.md
+ |--src
+ |--|--main.html
+ |--|--main.js
+ |--|--main.vue
+</code></pre><h4 id="目录结构剖析"><a href="#目录结构剖析" class="headerlink" title="目录结构剖析"></a>目录结构剖析</h4><p>然后大家会看到项目目录里默认就有：</p>
+<ul>
+<li><code>gulpfile.js</code>，里面默认写好了图片批量上传并更新 <code>_cdnurl.json</code>、webpack 打包、htmlone 合并 等常见任务</li>
+<li><code>images</code> 目录，里面放好了关键的 <code>_cdnurl.json</code>，还有几张图片作为示例，它们的 hash 和 CDN URL 已经写好了</li>
+<li><code>src/main.*</code>，主页面入口，包括一个 htmlone 文件 (<code>main.html</code>)，一个 webpack 文件 (<code>main.js</code>) 和一个 vue 主文件 (<code>main.vue</code>)，默认引入了需要的所有样式和脚本，比如 lib.img, lib.flexible, lib.cdnurl, _cdnurl.json, v-src.js 等，我们将来主要的代码都会从 <code>main.vue</code> 写起——额外的，我们为 MT 模板开发者贴心的引入了默认的 mock 数据的 <code>&lt;script data-mt-variable=&quot;data&quot;&gt;</code> 标签，不需要 MT 模板开发环境的将其删掉即可</li>
+<li><code>components</code> 目录，这里会把我们拆分下来的子组件都放在这里，我们示范性的放了一个 <code>foo.vue</code> 的组件在里面，并默认引入了 lib.cdnurl 库</li>
+<li><code>lib</code> 这里默认放入了 lib.img, lib.cdnurl, v-src.js 几个库，这几个库在未来逐步稳定之后都会通过 tnpm + CommonJS 的方式进行管理，目前团队 tnpm + CommonJS 的组件整合还需要一定时间，这里是个方便调整迭代的临时状态。</li>
+</ul>
+<p>然后，我们来看一看 <code>main.vue</code> 里的细节，这才是真正让你真切感受到未来开发体验的地方。</p>
+<h4 id="图片工作场景"><a href="#图片工作场景" class="headerlink" title="图片工作场景"></a>图片工作场景</h4><p>首先，新产生任何图片，尽管丢到 <code>images</code> 目录，别忘了起个好理解的文件名</p>
+<h4 id="CSS-中的图片"><a href="#CSS-中的图片" class="headerlink" title="CSS 中的图片"></a>CSS 中的图片</h4><p>然后，在 <code>main.vue</code> 的第 11 行看到了一个 CSS 的 background-image 的场景，我们只是把 <code>url(../images/taobao.jpg)</code> 设为其背景图片：</p>
+<pre><code>background-image: url(../images/taobao.jpg);
+</code></pre><p><strong>完成了！就这样！你在发布之前不需要再关注额外的事情了。没有手动上传图片、没有另外的GUI、没有重命名、没有 CDN 地址替换、没有图片地址优化、没有不可读的代码</strong></p>
+<h4 id="HTML-中的图片"><a href="#HTML-中的图片" class="headerlink" title="HTML 中的图片"></a>HTML 中的图片</h4><p>我们再来看看 HTML 里的图片，来到 39 行：</p>
+<pre><code>&lt;img id=&quot;test-img&quot; v-src=&quot;../images/one.png&quot; size=&quot;cover&quot;&gt;
+</code></pre><p><strong>一个 <code>[v-src]</code> 特性搞定！就这样！你在发布之前不需要再关注额外的事情了</strong> (这里 <code>[size]</code> 特性提供了更多的图片地址优化策略，篇幅有限，大家感兴趣可以移步到 <code>lib/vue-src.js</code> 看其中的实现原理)。</p>
+<h4 id="JavaScript-中的图片"><a href="#JavaScript-中的图片" class="headerlink" title="JavaScript 中的图片"></a>JavaScript 中的图片</h4><p>最后再看看在 JavaScript 里使用图片，来到 68 行：</p>
+<pre><code>this.$el.style.backgroundImage = &apos;url(&apos; + cdn(&apos;../images/logo.png&apos;) + &apos;)&apos;
+</code></pre><p><strong>只加入了一步 <code>cdn(...)</code> 的图片生成，也搞定了！就这样！你在发布之前不需要再关注额外的事情了。</strong></p>
+<h4 id="发布"><a href="#发布" class="headerlink" title="发布"></a>发布</h4><p>那有人可能会怀疑： <strong>“那你都说发布之前很方便，发布的时候会不会太麻烦啊？”</strong></p>
+<p>好问题，发布就两行命令：</p>
+<pre><code># 图片增量上传、webpack 打包、htmlone 合并，最终生成在 dist 目录
+gulp
+# 交互式上传到 awp
+awp
+</code></pre><p>正常的命令行反应是类似这样的：</p>
+<pre><code>$ gulp
+[04:46:48] Using gulpfile ~/Sites/alibaba/samples/y/gulpfile.js
+[04:46:48] Starting &apos;images&apos;...
+uploaded ../images/logo.png e1ea82cb1c39656b925012efe60f22ea http://gw.alicdn.com/tfscom/TB1SDNqIFXXXXaTaXXX7WcCNVXX-400-400.png
+uploaded ../images/one.png 64eb2181ebb96809c7202a162b9289fb http://gw.alicdn.com/tfscom/TB1G7JHIFXXXXbTXpXX_g.pNVXX-400-300.png
+uploaded ../images/taobao.jpg 4771bae84dfc0e57f841147b86844363 http://gw.alicdn.com/tfscom/TB1f2xSIFXXXXa1XXXXuLfz_XXX-1125-422.jpg
+[04:46:48] Finished &apos;images&apos; after 46 ms
+[04:46:48] Starting &apos;bundle&apos;...
+[04:46:49] Version: webpack 1.10.1
+      Asset     Size  Chunks             Chunk Names
+    main.js  17.1 kB       0  [emitted]  main
+main.js.map  23.5 kB       0  [emitted]  main
+[04:46:49] Finished &apos;bundle&apos; after 1.28 s
+[04:46:49] Starting &apos;build&apos;...
+&quot;htmlone_temp/cdn_combo_1.css&quot; downloaded!
+&quot;htmlone_temp/cdn_combo_0.js&quot; downloaded!
+[04:46:57] &gt;&gt; All html done!
+[04:46:57] Finished &apos;build&apos; after 8.07 s
+[04:46:57] Starting &apos;default&apos;...
+done
+[04:46:57] Finished &apos;default&apos; after 130 μs
+$ awp (交互式过程略)
+</code></pre><p>你甚至可以写成一行：</p>
+<pre><code>gulp &amp;&amp; awp
+</code></pre><p>最终这个初始化工程的示例页面的效果如下</p>
+<p><img src="http://img4.tbcdn.cn/L1/461/1/a9b1d49e0461e8f7b652d4fac2bb21998eed638d" alt=""></p>
+<h4 id="设计变更了？"><a href="#设计变更了？" class="headerlink" title="设计变更了？"></a>设计变更了？</h4><p>这条链路是我们之前最不愿意面对的，今天，我们来看看这条链路变成了什么，假设有一张设计图要换：</p>
+<ol>
+<li>在 Photoshop 里把图重新切下来</li>
+<li>同名图片文件放入 <code>images</code> 文件夹</li>
+<li>运行 <code>gulp &amp;&amp; awp</code></li>
+</ol>
+<p><strong>就这样！</strong></p>
+<p>额外的，如果尺寸有变化，就加一步：更改相应的 CSS 尺寸代码</p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>在整个团队架构的过程中，大家都在不断尝试，如何以更贴近开发者真实场景的方式，还原真实的问题，找出切实有效的解决方案，而不仅仅是单个功能或特性。这样我们往往会找到问题的关键，用最精细有效的方式把工作的价值最大化。其实“基于场景的思维方式”不只是流程设计的专利，我们业务上的产品设计、交互设计更需要这样的思维。我个人也正是受到了一些产品经理朋友们的思维方式的影响，把这种方式运用在了我自己的工作内容当中。希望我们产出的这套方案能够给大家创造一些价值，更是向大家传递我们的心得体会，希望这样的思维方式和做事方式可以有更多更广的用武之地。</p>
+
+</div>
+
+<p align="right">
+  <small>
+    <a href="https://github.com/Jinjiang/jinjiang.github.io/edit/dev/source/_posts/our-image-workflow.md" target="_blank">
+      向本文提出修改或勘误建议
+    </a>
+  </small>
+</p>
+
+
+
+<div id="comments">
+  <h2>早期评论</h2>
+  <ul>
+  
+    <li id="comment-112944" style="margin-left: 0em;">
+      <p>
+        <strong>
+        Darren
+        
+        </strong>
+        <small>2016/08/26 12:54:41</small></p>
+      期待just-vue的开源
+    </li>
+  
+  </ul>
+</div>
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+
+<div id="gitalk-container"></div>
+
+<script>
+  const gitalk = new Gitalk({
+    clientID: 'c99e23053fc1bba6a58c',
+    clientSecret: '64efe1cd1438e77ae2bf8eba92b51c90d0cc2b9f',
+    repo: 'jinjiang.github.io',
+    owner: 'jinjiang',
+    admin: ['jinjiang'],
+    id: location.pathname,      // Ensure uniqueness and length less than 50
+    distractionFreeMode: false  // Facebook-like distraction free mode
+  })
+
+  gitalk.render('gitalk-container')
+</script>
+</div>
+
+    <div id="footer">
+      <a href="/">囧克斯</a>
+      
+      |
+      <a href="/atom.xml" title="rss_feed">RSS</a>
+      
+      |
+      我是百度统计
+      <script src="https://hm.baidu.com/h.js?a0a2372d4b7621d0bfe71f33c58a4bd8"></script>
+      |
+      我会翻脸 <a href="#" onclick="document.body.classList.toggle('dark-mode'), event.preventDefault()" style="font-size: 1.25em;">🌚🌝</a>
+    </div>
+  </div>
+
+  
+<script src="/js/script.js"></script>
+
+</body>
+
+</html>

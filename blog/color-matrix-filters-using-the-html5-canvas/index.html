@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <!-- proud for contributing Vue.js -->
+  <meta charset="utf-8">
+  <meta name="format-detection" content="telephone=no" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-touch-fullscreen" content="yes" />
+
+  
+  <title>
+    
+    [译]通过HTML5 Canvas API调节图像的亮度和颜色 -
+    
+    囧克斯
+  </title>
+
+  
+<link rel="stylesheet" href="/css/pure.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+
+  
+  <link rel="alternate" href="/atom.xml" title="囧克斯" type="application/atom+xml">
+  
+  
+  <link rel="icon" href="/favicon.ico">
+  
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+<body>
+  <script>(() => { if ((new Date().getHours() + 6) % 24 < 12) document.body.classList.add('dark-mode') })()</script>
+
+  <div class="dark-mode-helper"></div>
+
+  <div id="wrapper">
+
+    <div id="header">
+      <h1>
+        <a href="/" title="囧克斯">
+          囧克斯
+        </a>
+      </h1>
+      <p class="description">
+        这里是勾三股四的家
+      </p>
+    </div>
+
+    <div id="nav" class="pure-menu pure-menu-open pure-menu-horizontal">
+      <ul>
+        
+        <li>
+          <a href="/all-demos/">
+            线上
+          </a>
+        </li>
+        
+        <li>
+          <a href="/all-slides/">
+            线下
+          </a>
+        </li>
+        
+        <li>
+          <a href="/about/">
+            关于
+          </a>
+        </li>
+        
+        <li><a href="/archives">归档</li>
+      </ul>
+    </div>
+
+    <div id="main"><div class="content">
+  <h2>
+    [译]通过HTML5 Canvas API调节图像的亮度和颜色
+  </h2>
+  <p><mark>译自：<a target="_blank" rel="noopener" href="http://www.storminthecastle.com/2013/10/06/color-matrix-filters-using-the-html5-canvas/">Adjusting Image Brightness and Color Using the HTML5 Canvas API</a></mark></p>
+<p>你曾否需要调节一张图片的亮度？或者增强红色通道让它变得温暖一些？</p>
+<p><img src="http://www.storminthecastle.com/wp-content/uploads/2013/04/filtered.jpg" alt=""></p>
+<p>这是我之前两篇文章“<a target="_blank" rel="noopener" href="http://www.storminthecastle.com/2013/04/06/how-you-can-do-cool-image-effects-using-html5-canvas/">如何通过HTML5 Canvas处理图片酷效</a>”和“<a target="_blank" rel="noopener" href="http://www.storminthecastle.com/2013/10/06/color-matrix-filters-using-the-html5-canvas/how-you-can-build-an-html5-photobooth-app/">如何创建一个HTML5的大头贴应用</a>”的后续。在之前的那些文章里，我提供了一些可分离的颜色滤镜代码：灰度、灰褐色、红色、变亮、变暗等。这些滤镜都是经典的颜色滤镜，每个像素点的颜色都是独立运算的，互不影响。我们的可以将其建模成一个单独数据驱动的称为颜色矩阵滤镜(Color Matrix Filter)的东西。这一概念将会遍布本文。这种滤镜将会以一个包含权重(即系数)的颜色矩阵作为输入，并决定输出的颜色组件(color component)如何和输入的颜色组建相对应。</p>
+<a id="more"></a>
+<p>这个应用实例允许你在一个表格里编辑颜色矩阵，并立即把矩阵应用到当前加载的图片中。下图的表格展示了灰褐色滤镜的矩阵：</p>
+<p><img src="http://www.storminthecastle.com/wp-content/uploads/2013/05/sepia.png" alt="sepia"></p>
+<p>通过这个例子，每个像素的新红色组件<code>r’</code>都将会根据给定的<code>r</code>、<code>g</code>、<code>b</code>、<code>a</code>进行如下计算：</p>
+<pre><code>r&apos; = 0.393r + 0.769g + 0.189b + 0
+</code></pre><p>作为每个颜色组件值额外的系数<code>i</code>被加载了表格的最后，用来变量或变暗最终的计算值。同理新的<code>g’</code>、<code>b’</code>、<code>a’</code>也进行相似的计算。下面的代码展示了等同于灰褐色颜色矩阵的JavaScript数组：</p>
+<pre><code>var sepiaMatrix = 
+[
+  0.393, 0.769, 0.189, 0, 0,
+  0.349, 0.686, 0.168, 0, 0,
+  0.272, 0.534, 0.131, 0, 0,
+      0,     0,     0, 1, 0,
+];
+</code></pre><p>下面这段代码展示了等同于灰度特效矩阵的JavaScript数组：</p>
+<pre><code>var grayscaleMatrix = 
+[
+  0.33, 0.34, 0.33, 0, 0,
+  0.33, 0.34, 0.33, 0, 0,
+  0.33, 0.34, 0.33, 0, 0,
+     0,    0,    0, 1, 0,
+];
+</code></pre><p>颜色矩阵滤镜的代码如下：</p>
+<pre><code>colorMatrixFilter = function (pixels, m) &#123;
+  var d = pixels.data;
+  for (var i = 0; i &lt; d.length; i += 4) &#123;
+    var r = d[i];
+    var g = d[i + 1];
+    var b = d[i + 2]; 
+    var a = d[i + 3];
+
+    d[i]   = r * m[0] + g * m[1] + b * m[2] + a * m[3] + m[4];
+    d[i+1] = r * m[5] + g * m[6] + b * m[7] + a * m[8] + m[9];
+    d[i+2] = r * m[10]+ g * m[11]+ b * m[12]+ a * m[13]+ m[14];
+    d[i+3] = r * m[15]+ g * m[16]+ b * m[17]+ a * m[18]+ m[19]; 
+  &#125;
+  return pixels;
+&#125;;
+</code></pre><p>我希望你已经乐在其中了。颜色矩阵提供了一个应用颜色滤镜的强大通用工具。</p>
+<p><a target="_blank" rel="noopener" href="http://www.storminthecastle.com/projects/colormatriximage/">demo</a> &amp; <a target="_blank" rel="noopener" href="http://www.storminthecastle.com/projects/colormatriximage/colormatriximage.zip">源码</a></p>
+
+</div>
+
+<p align="right">
+  <small>
+    <a href="https://github.com/Jinjiang/jinjiang.github.io/edit/dev/source/_posts/color-matrix-filters-using-the-html5-canvas.md" target="_blank">
+      向本文提出修改或勘误建议
+    </a>
+  </small>
+</p>
+
+
+
+<div id="comments">
+  <h2>早期评论</h2>
+  <ul>
+  
+    <li id="comment-118518" style="margin-left: 0em;">
+      <p>
+        <strong>
+        yixiaostyle
+        
+        </strong>
+        <small>2017/09/28 09:25:59</small></p>
+      代码怎么看？
+    </li>
+  
+    <li id="comment-125376" style="margin-left: 2em;">
+      <p>
+        <strong>
+        彼岸花
+        
+        </strong>
+        <small>2018/07/05 01:27:15</small></p>
+      想观摩一下大佬的代码
+    </li>
+  
+  </ul>
+</div>
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+
+<div id="gitalk-container"></div>
+
+<script>
+  const gitalk = new Gitalk({
+    clientID: 'c99e23053fc1bba6a58c',
+    clientSecret: '64efe1cd1438e77ae2bf8eba92b51c90d0cc2b9f',
+    repo: 'jinjiang.github.io',
+    owner: 'jinjiang',
+    admin: ['jinjiang'],
+    id: location.pathname,      // Ensure uniqueness and length less than 50
+    distractionFreeMode: false  // Facebook-like distraction free mode
+  })
+
+  gitalk.render('gitalk-container')
+</script>
+</div>
+
+    <div id="footer">
+      <a href="/">囧克斯</a>
+      
+      |
+      <a href="/atom.xml" title="rss_feed">RSS</a>
+      
+      |
+      我是百度统计
+      <script src="https://hm.baidu.com/h.js?a0a2372d4b7621d0bfe71f33c58a4bd8"></script>
+      |
+      我会翻脸 <a href="#" onclick="document.body.classList.toggle('dark-mode'), event.preventDefault()" style="font-size: 1.25em;">🌚🌝</a>
+    </div>
+  </div>
+
+  
+<script src="/js/script.js"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <!-- proud for contributing Vue.js -->
+  <meta charset="utf-8">
+  <meta name="format-detection" content="telephone=no" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-touch-fullscreen" content="yes" />
+
+  
+  <title>
+    
+    【整理】Vue 2.0 自 beta 1 到 beta 4 以来的主要更新 -
+    
+    囧克斯
+  </title>
+
+  
+<link rel="stylesheet" href="/css/pure.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+
+  
+  <link rel="alternate" href="/atom.xml" title="囧克斯" type="application/atom+xml">
+  
+  
+  <link rel="icon" href="/favicon.ico">
+  
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+<body>
+  <script>(() => { if ((new Date().getHours() + 6) % 24 < 12) document.body.classList.add('dark-mode') })()</script>
+
+  <div class="dark-mode-helper"></div>
+
+  <div id="wrapper">
+
+    <div id="header">
+      <h1>
+        <a href="/" title="囧克斯">
+          囧克斯
+        </a>
+      </h1>
+      <p class="description">
+        这里是勾三股四的家
+      </p>
+    </div>
+
+    <div id="nav" class="pure-menu pure-menu-open pure-menu-horizontal">
+      <ul>
+        
+        <li>
+          <a href="/all-demos/">
+            线上
+          </a>
+        </li>
+        
+        <li>
+          <a href="/all-slides/">
+            线下
+          </a>
+        </li>
+        
+        <li>
+          <a href="/about/">
+            关于
+          </a>
+        </li>
+        
+        <li><a href="/archives">归档</li>
+      </ul>
+    </div>
+
+    <div id="main"><div class="content">
+  <h2>
+    【整理】Vue 2.0 自 beta 1 到 beta 4 以来的主要更新
+  </h2>
+  <p>主要内容来自 <a target="_blank" rel="noopener" href="https://github.com/vuejs/vue/releases">https://github.com/vuejs/vue/releases</a></p>
+<p>之前 <a href="https://jiongks.name/blog/announcing-vue-2/">Vue 2.0 发布技术预览版</a> 到现在差不多三个月了，之前写过一篇简单的 <a href="https://jiongks.name/blog/code-review-for-vue-next/">code review</a>，如今三个月过去了，Vue 2.0 在这个<a href="https://jiongks.name/blog/a-big-map-to-intro-vue-next/">基础</a>之上又带来了不少更新，这里汇总 beta 以来 (最新的版本是 beta 4) 的主要更新，大家随意学习感受一下</p>
+<h3 id="alpha-和-beta-版本的侧重点会有所不同"><a href="#alpha-和-beta-版本的侧重点会有所不同" class="headerlink" title="alpha 和 beta 版本的侧重点会有所不同"></a>alpha 和 beta 版本的侧重点会有所不同</h3><p>首先 Vue 2.0 对 alpha、beta 有自己的理解和设定：alpha 版本旨在完善 API、考虑所需的特性；而来到 beta 版则会对未来的正式发布进行充分的“消化”，比如提前进行一些必要的 breaking change，增强框架的稳定性、完善文档和周边工具 (如 vue-router 2.0 等)</p>
+<h3 id="最后的几个-alpha-版本主要更新"><a href="#最后的几个-alpha-版本主要更新" class="headerlink" title="最后的几个 alpha 版本主要更新"></a>最后的几个 alpha 版本主要更新</h3><p>Vue 本身的语法基础这里就不多赘述了，网上有很多资料可以查阅，我们已经假定你比较熟悉 Vue 并对 2.0 的理念和技术预览版的状态有一定的了解。</p>
+<a id="more"></a>
+<h4 id="alpha-5"><a href="#alpha-5" class="headerlink" title="alpha 5"></a>alpha 5</h4><ol>
+<li>ref 的写法由 <code>&lt;comp v-ref:foo&gt;</code> 变成了 <code>&lt;comp ref=&quot;foo&quot;&gt;</code>，更加简单，同时动态数据的写法是 <code>&lt;comp :ref=&quot;x&quot;&gt;</code></li>
+<li><p>支持 functional components，这个特性蛮酷的，可以把一个组件的生成过程完全变成一个高度自定义的函数执行过程，比如：</p>
+<p> Vue.component(‘name’, {</p>
+<pre><code>functional: true,
+props: [&apos;x&apos;],
+render: (h, props, children) &#123;
+    return h(props.tag, null, children)
+&#125;
+</code></pre><p> })</p>
+</li>
+</ol>
+<p>你可以在 <code>render()</code> 函数里写各种特殊的逻辑，这样标签的含义和能力都得到了非常大的扩展，在后续的几次更新中，你马上会感受到一些 functional components 的威力</p>
+<p>另外剧透一下，<code>h</code> 方法里的第二个参数如果是 <code>null</code> 就可以省略，这个改动出现在了 beta 1</p>
+<h4 id="alpha-6"><a href="#alpha-6" class="headerlink" title="alpha 6"></a>alpha 6</h4><p>可以设置特殊的 keyCode，比如 <code>Vue.config.keyCodes.a = 65</code>，然后你就可以写 <code>&lt;input @keyup.a=&quot;aPressed&quot;&gt;</code> 了</p>
+<h4 id="alpha7"><a href="#alpha7" class="headerlink" title="alpha7"></a>alpha7</h4><ol>
+<li>一个组件的生命周期名由 <code>init</code> 改成了 <code>beforeCreated</code> (大家可以在 Vuex 的源码里看到对应的改变哦)</li>
+<li><code>Vue.transition</code> 的 hook 支持第二个参数，把 vm 传递进去</li>
+</ol>
+<p>如：</p>
+<pre><code>Vue.transition(&apos;name&apos;, &#123;
+    onEnter (el, vm) &#123;
+        ...
+    &#125;
+&#125;)
+</code></pre><h3 id="Beta-1-Beta-4"><a href="#Beta-1-Beta-4" class="headerlink" title="Beta 1 ~ Beta 4"></a>Beta 1 ~ Beta 4</h3><h4 id="beta-1"><a href="#beta-1" class="headerlink" title="beta 1"></a>beta 1</h4><ol>
+<li>自定义 directive 里 <code>update</code> 的触发时机发生了变化，由于 functional component 等概念的引入，一个 directive 的变更的颗粒度也不完全是 directive 本身引起的，所以这里做了一个更具有通用性的调整；同时 hook 名 <code>postupdate</code> 也相应的更名为 <code>componentUpdated</code>——如果你想让 <code>update</code> 保持原有的触发时机，可以加入一句 <code>binding.value !== binding.oldValue</code> 即可。</li>
+<li><code>Vue.traisition</code> 的 hook 名做了简化<ul>
+<li><code>onEnter</code> -&gt; <code>enter</code></li>
+<li><code>onLeave</code> -&gt; <code>leave</code></li>
+</ul>
+</li>
+<li>server-side rendering<ul>
+<li><code>server.getCacheKey</code> 更名为 <code>serverCacheKey</code>，避免多一层结构嵌套</li>
+<li><code>createRenderer</code>/<code>createBundleRenderer</code> 方法不会强制应用 <code>lru-cache</code>，而是开发者手动选择</li>
+</ul>
+</li>
+</ol>
+<h4 id="beta-2"><a href="#beta-2" class="headerlink" title="beta 2"></a>beta 2</h4><p><code>&lt;transition&gt;</code> 标签来了！</p>
+<p>其实这个玩意儿我之前在 polymer 等其他框架里也见到过，不过看到 Vue 的语法设计，还是觉得巧妙而简洁：</p>
+<pre><code>&lt;transition&gt;
+    &lt;div v-if=&quot;...&quot;&gt;...&lt;/div&gt;
+&lt;/traisition&gt;
+
+&lt;transition-group tag=&quot;ul&quot;&gt;
+    &lt;li v-for=&quot;...&quot;&gt;...&lt;/li&gt;
+&lt;/traisition-group&gt;
+</code></pre><p>更牛掰的在这里，还记得 functional components 吧，你今天可以这样抽象一个动画效果的标签：</p>
+<pre><code>Vue.component(&apos;fade&apos;, &#123;
+    functional: true,
+    render (h, children) &#123;
+        return h(&apos;transition&apos;, &#123;
+            props: &#123;...&#125;,
+            on: &#123;
+                beforeEnter,
+                afterEnter
+            &#125;
+        &#125;, children)
+    &#125;
+&#125;)
+</code></pre><p>然后</p>
+<pre><code>&lt;fade&gt;...&lt;/fade&gt;
+</code></pre><p>就可以实现高度自定义的动画效果了，这个我个人觉得是非常赞的设计和实现！</p>
+<h4 id="beta-3"><a href="#beta-3" class="headerlink" title="beta 3"></a>beta 3</h4><ol>
+<li>支持在自定义组件中使用原生事件。因为在 Vue 2.0 的设计中，自定义组件上是不能绑定原生事件的，自定义组件上的事件绑定被默认理解为组件的自定义事件，而不是原生事件。针对这个问题我很早就提了 <a target="_blank" rel="noopener" href="https://github.com/vuejs/vue/issues/2942">issue</a> 当时小右提出了一个新的语法设计，就是 <code>&lt;comp @click.native=&quot;...&quot;&gt;&lt;/comp&gt;</code>，beta 3 的时候终于看到它被实现了，嘿嘿，有点小激动</li>
+<li>支持两种语法 <code>&lt;div :xxx.prop=&quot;x&quot;&gt;</code> 和 <code>&lt;div v-bind:prop=&quot;&#123; xxx: x &#125;&quot;&gt;</code> 来对 DOM 的 property 进行绑定，最近我自己也在思考一些在 virtual-DOM 上支持 properties 而不只是 attributes 的想法，这个设计让我也多了一些新的思路。</li>
+</ol>
+<h4 id="beta-4"><a href="#beta-4" class="headerlink" title="beta 4"></a>beta 4</h4><p>2 天前发布的，其实这个版本以 bugfix 为主</p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>以上是近期 Vue 2.0 的一些更新，让我自己比较兴奋的主要是 functional component 以及基于这个设计的 <code>&lt;transition&gt;</code> 和 <code>&lt;transition-group&gt;</code> 标签和自定义 transition 标签的能力拓展，还有就是久违的 <code>&lt;comp @click.native=&quot;...&quot;&gt;&lt;/comp&gt;</code></p>
+<p>最后希望大家可以多多试用，有更大兴趣的可以多多学习 Vue 的源码！</p>
+
+</div>
+
+<p align="right">
+  <small>
+    <a href="https://github.com/Jinjiang/jinjiang.github.io/edit/dev/source/_posts/vue-2-from-beta-1-to-beta-4.md" target="_blank">
+      向本文提出修改或勘误建议
+    </a>
+  </small>
+</p>
+
+
+
+<div id="comments">
+  <h2>早期评论</h2>
+  <ul>
+  
+    <li id="comment-112873" style="margin-left: 0em;">
+      <p>
+        <strong>
+        banri
+        
+        </strong>
+        <small>2016/07/29 12:23:31</small></p>
+      对我来说最激动的还是 component + keep-alive 终于可以正常的在同构造器的组件实例间切换了。<br/>
+各种 tab 切换的需求处理起来就简单多了，这个必须是最感人的特性啊 QAQ
+    </li>
+  
+    <li id="comment-113127" style="margin-left: 0em;">
+      <p>
+        <strong>
+        <a href="http://shenzm.cn" target="_blank" title="志敏">志敏</a>
+        
+        </strong>
+        <small>2016/09/13 04:27:42</small></p>
+      2.0上 删除了prop的prop binding modes部分，理由是"v-model can work on components"，<br/>
+关于这点，不是很明白啊？<br/>
+是说父子组件之间传递的prop都是双向绑定么？
+    </li>
+  
+    <li id="comment-113420" style="margin-left: 0em;">
+      <p>
+        <strong>
+        plortinus
+        
+        </strong>
+        <small>2016/10/09 10:30:53</small></p>
+      beta3里,有个文字错误"时间绑定"应该是"事件绑定"
+    </li>
+  
+    <li id="comment-113495" style="margin-left: 2em;">
+      <p>
+        <strong>
+        <a href="http://jiongks.name/" target="_blank" title="囧克斯">囧克斯</a>
+        
+        </strong>
+        <small>2016/10/13 07:57:53</small></p>
+      <a href="#comment-113420">@plortinus</a><br/>
+多谢！已修正
+    </li>
+  
+  </ul>
+</div>
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+
+<div id="gitalk-container"></div>
+
+<script>
+  const gitalk = new Gitalk({
+    clientID: 'c99e23053fc1bba6a58c',
+    clientSecret: '64efe1cd1438e77ae2bf8eba92b51c90d0cc2b9f',
+    repo: 'jinjiang.github.io',
+    owner: 'jinjiang',
+    admin: ['jinjiang'],
+    id: location.pathname,      // Ensure uniqueness and length less than 50
+    distractionFreeMode: false  // Facebook-like distraction free mode
+  })
+
+  gitalk.render('gitalk-container')
+</script>
+</div>
+
+    <div id="footer">
+      <a href="/">囧克斯</a>
+      
+      |
+      <a href="/atom.xml" title="rss_feed">RSS</a>
+      
+      |
+      我是百度统计
+      <script src="https://hm.baidu.com/h.js?a0a2372d4b7621d0bfe71f33c58a4bd8"></script>
+      |
+      我会翻脸 <a href="#" onclick="document.body.classList.toggle('dark-mode'), event.preventDefault()" style="font-size: 1.25em;">🌚🌝</a>
+    </div>
+  </div>
+
+  
+<script src="/js/script.js"></script>
+
+</body>
+
+</html>
