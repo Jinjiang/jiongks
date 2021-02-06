@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="viewport" content="width=device-width">
-<title><?php $this->archiveTitle(' &raquo; ', '', ' - '); ?><?php $this->options->title(); ?></title>
+<title><?php $this->archiveTitle('» ', '', ' - '); ?><?php $this->options->title(); ?></title>
 <link rel="stylesheet" type="text/css" href="<?php $this->options->themeUrl('style.css'); ?>" />
 <!--[if IE 6]>
     <link rel="stylesheet" type="text/css" href="<?php $this->options->themeUrl('style-ie.css'); ?>" />

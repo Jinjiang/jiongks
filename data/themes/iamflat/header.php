@@ -11,7 +11,7 @@
 <link rel="shortcut icon" href="/faviconx.ico" type="image/x-icon" />
 <link rel="icon" sizes="any" mask href="/faviconx.ico">
 
-<title><?php $this->archiveTitle(' &raquo; ', '', ' - '); ?><?php $this->options->title(); ?></title>
+<title><?php $this->archiveTitle('» ', '', ' - '); ?><?php $this->options->title(); ?></title>
 <link rel="stylesheet" type="text/css" href="<?php $this->options->themeUrl('pure.css'); ?>" />
 <link rel="stylesheet" type="text/css" href="<?php $this->options->themeUrl('style.css'); ?>" />
 <!--[if IE 6]>

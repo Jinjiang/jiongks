@@ -1,7 +1,7 @@
 <div id="comments">
     <?php $this->comments()->to($comments); ?>
     <?php if ($comments->have()): ?>
-    <h2><?php $this->commentsNum(_t('当前暂无评论'), _t('仅有一条评论'), _t('已有 %d 条评论')); ?> &raquo;</h2>
+    <h2><?php $this->commentsNum(_t('当前暂无评论'), _t('仅有一条评论'), _t('已有 %d 条评论')); ?>»</h2>
     
     <?php $comments->pageNav(); ?>
     
@@ -16,7 +16,7 @@
     <?php $comments->cancelReply(); ?>
     </div>
     
-    <!-- <h2 id="response"><?php _e('添加新评论'); ?> &raquo;</h2> -->
+    <!-- <h2 id="response"><?php _e('添加新评论'); ?>»</h2> -->
     <h3 id="response"><?php _e('抱歉暂不支持添加新评论'); ?></h3>
     <!-- form method="post" action="<?php $this->commentUrl() ?>" id="comment_form" class="pure-form">
         <?php if($this->user->hasLogin()): ?>

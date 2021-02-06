@@ -1,7 +1,7 @@
 <div id="comments">
     <?php $this->comments()->to($comments); ?>
     <?php if ($comments->have()): ?>
-	<h2><?php $this->commentsNum(_t('当前暂无评论'), _t('仅有一条评论'), _t('已有 %d 条评论')); ?> &raquo;</h2>
+	<h2><?php $this->commentsNum(_t('当前暂无评论'), _t('仅有一条评论'), _t('已有 %d 条评论')); ?>»</h2>
     
     <?php $comments->pageNav(); ?>
     
@@ -16,11 +16,11 @@
     <?php $comments->cancelReply(); ?>
     </div>
     
-	<h2 id="response"><?php _e('添加新评论'); ?> &raquo;</h2>
+	<h2 id="response"><?php _e('添加新评论'); ?>»</h2>
 	<form method="post" action="<?php $this->commentUrl() ?>" id="comment_form">
         <?php if($this->user->hasLogin()): ?>
 		<p>
-            <a href="<?php $this->options->logoutUrl(); ?>" title="Logout" style="float: right;"><?php _e('退出'); ?> &raquo;</a>
+            <a href="<?php $this->options->logoutUrl(); ?>" title="Logout" style="float: right;"><?php _e('退出'); ?>»</a>
             <a href="<?php $this->options->profileUrl(); ?>"><?php $this->user->screenName(); ?></a> 童鞋教导我们：
         </p>
         <?php else: ?>

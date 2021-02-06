@@ -4,7 +4,7 @@ date: 2014/01/01 11:59:23
 updated: 2014/10/15 05:40:07
 ---
 
-<mark>译自：[A successful Git branching model &raquo; nvie.com](https://nvie.com/posts/a-successful-git-branching-model/)</mark>
+<mark>译自：[A successful Git branching model» nvie.com](https://nvie.com/posts/a-successful-git-branching-model/)</mark>
 
 ----
 
